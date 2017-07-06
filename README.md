@@ -125,6 +125,8 @@ enableOutsideDays: PropTypes.bool,
 isDayBlocked: PropTypes.func,
 isOutsideRange: PropTypes.func,
 isDayHighlighted: PropTypes.func,
+// new function to set classes for days
+assignImportantCalendarClass: PropTypes.func,
 
 // internationalization props
 displayFormat: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
@@ -239,6 +241,9 @@ The following is a list of other *OPTIONAL* props you may provide to the `DayPic
   isOutsideRange: PropTypes.func,
   isDayBlocked: PropTypes.func,
   isDayHighlighted: PropTypes.func,
+  // new function to set classes for days
+  assignImportantCalendarClass: PropTypes.func,
+  
 
   // internationalization props
   monthFormat: PropTypes.string,

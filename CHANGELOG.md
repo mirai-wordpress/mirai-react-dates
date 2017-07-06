@@ -1,7 +1,13 @@
 # Change Log
 
+## 1.0.0
+- [new] Allow set custom classes for days 
+
+# FORKED
+- Done fork from airbnb-react-dates
+ 
 ## 12.2.2
-- [fix] Reevaluate `--blocked` and `--blocked-outside-range` modifiers in the SDP componentWilLReceiveProps ([https://github.com/airbnb/react-dates/pull/550](#550))
+- [fix] Reevaluate `--blocked` and `--blocked-outside-range` modifiers in the SDP componentWilLReceiveProps ([https://github.com/airbnb/react-dates/pull/550](550))
 
 ## 12.2.1
 - [fix] Fix `isTouchDevice` warning in `DayPickerSingleDateController` ([77e2135](https://github.com/airbnb/react-dates/commit/77e2135d2009994fbf2c62e3ff68ce82e5786194))
