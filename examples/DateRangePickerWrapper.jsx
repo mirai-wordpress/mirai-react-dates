@@ -74,6 +74,7 @@ const defaultProps = {
   isDayBlocked: () => false,
   isOutsideRange: day => !isInclusivelyAfterDay(day, moment()),
   isDayHighlighted: () => false,
+  //Mirai : Set default function for assign custom classes for days
   assignImportantCalendarClass: day => [],
 
   // internationalization

@@ -87,6 +87,7 @@ const defaultProps = {
   isDayBlocked: () => false,
   isOutsideRange: day => !isInclusivelyAfterDay(day, moment()),
   isDayHighlighted: () => false,
+  // Mirai: New example to set custom classes for days 
   assignImportantCalendarClass: day => [],
 
   // internationalization
@@ -284,6 +285,7 @@ export default class DateRangePicker extends React.Component {
     const {
       isDayBlocked,
       isDayHighlighted,
+      // Mirai: New example to set custom classes for days 
       assignImportantCalendarClass,
       isOutsideRange,
       numberOfMonths,
@@ -355,6 +357,7 @@ export default class DateRangePicker extends React.Component {
           minimumNights={minimumNights}
           isOutsideRange={isOutsideRange}
           isDayHighlighted={isDayHighlighted}
+          // Mirai: New example to set custom classes for days 
           assignImportantCalendarClass={assignImportantCalendarClass}
           isDayBlocked={isDayBlocked}
           keepOpenOnDateSelect={keepOpenOnDateSelect}

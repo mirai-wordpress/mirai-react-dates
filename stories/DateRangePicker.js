@@ -102,6 +102,7 @@ storiesOf('DateRangePicker (DRP)', module)
       />
     )
   })
+  // Mirai: New example to set custom classes for days 
   .addWithInfo('Assign important classes to calendar', () => {
     return (
       <DateRangePickerWrapper 

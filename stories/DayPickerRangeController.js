@@ -257,6 +257,7 @@ storiesOf('DayPickerRangeController', module)
       )}
     />
   ))
+  // Mirai: New example to set custom classes for days 
   .addWithInfo('Assign multiples classes to calendar', () => (
     <DayPickerRangeControllerWrapper
       onOutsideClick={action('DayPickerRangeController::onOutsideClick')}

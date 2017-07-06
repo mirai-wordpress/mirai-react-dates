@@ -48,6 +48,7 @@ const propTypes = forbidExtraProps({
   isOutsideRange: PropTypes.func,
   isDayBlocked: PropTypes.func,
   isDayHighlighted: PropTypes.func,
+  // Mirai: New example to set custom classes for days 
   assignImportantCalendarClass: PropTypes.func,
 
   // DayPicker props
@@ -95,6 +96,7 @@ const defaultProps = {
   isOutsideRange() {},
   isDayBlocked() {},
   isDayHighlighted() {},
+  // Mirai: New example to set custom classes for days 
   assignImportantCalendarClass() {},
 
   // DayPicker props
@@ -141,6 +143,7 @@ export default class DayPickerRangeController extends React.Component {
       'blocked-calendar': day => props.isDayBlocked(day),
       'blocked-out-of-range': day => props.isOutsideRange(day),
       'highlighted-calendar': day => props.isDayHighlighted(day),
+      // Mirai: New example to set custom classes for days 
       'important-calendar-class': day => props.assignImportantCalendarClass(day),
       valid: day => !this.isBlocked(day),
       'selected-start': day => this.isStartDate(day),
@@ -200,6 +203,7 @@ export default class DayPickerRangeController extends React.Component {
       this.modifiers['highlighted-calendar'] = day => isDayHighlighted(day);
     }
     
+    // Mirai: New example to set custom classes for days 
     if (assignImportantCalendarClass !== this.props.assignImportantCalendarClass) {
       this.modifiers['important-calendar-class'] = day => assignImportantCalendarClass(day);
     }
@@ -321,6 +325,8 @@ export default class DayPickerRangeController extends React.Component {
           } else {
             modifiers = this.deleteModifier(modifiers, momentObj, 'highlighted-calendar');
           }
+
+          // Mirai: New example to set custom classes for days 
           const importantCalendarClasses = assignImportantCalendarClass(momentObj);
           modifiers = this.deleteModifier(modifiers, momentObj, /important-calendar-*/);
           if (importantCalendarClasses != null && importantCalendarClasses.length > 0) {
@@ -589,6 +595,7 @@ export default class DayPickerRangeController extends React.Component {
       visibleDays[month].forEach((day) => {
         let modifiersByDay = this.getModifiersForDay(day);
         modifiers[month][toISODateString(day)] = modifiersByDay;
+        // Mirai: Add to modifers for a day new custom classes 
         this.addImportantCalendarClasses(modifiers[month][toISODateString(day)], day);
       });
     });
@@ -596,11 +603,13 @@ export default class DayPickerRangeController extends React.Component {
     return modifiers;
   }
 
+  // Mirai: Callback to a function to get custom classes by day 
   getImportantCalendarClasses(day) {
     const modifiers = this.modifiers['important-calendar-class'](day);
     return modifiers ? modifiers : [];
   }
   
+  // Mirai : Assign new custom classes to a day
   addImportantCalendarClasses(modifierByDay, day) {
       let importantCalendarClasses = this.getImportantCalendarClasses(day);
       importantCalendarClasses.forEach((clazz) => modifierByDay.add("important-calendar-" + clazz));
@@ -609,6 +618,7 @@ export default class DayPickerRangeController extends React.Component {
   getModifiersForDay(day) {
     return new Set(Object.keys(this.modifiers).filter(modifier => {
       let result = this.modifiers[modifier](day);
+      // Mirai: Only filter results that return boolean
       if (typeof(result) === "boolean") {
           return result;
       }
@@ -723,6 +733,7 @@ export default class DayPickerRangeController extends React.Component {
       updatedDaysAfterDeletion = monthsToUpdate.reduce((days, monthIso) => {
         const month = updatedDays[monthIso] || visibleDays[monthIso];
         let modifiers = new Set(month[iso]);
+        // Mirai : modifier can be an Regular expression, then it compare with an object  
         if (typeof modifier == "object") {
             modifiers.forEach(currentModifier => {
               if (currentModifier.search(modifier) != -1) {
@@ -746,6 +757,7 @@ export default class DayPickerRangeController extends React.Component {
       const month = updatedDays[monthIso] || visibleDays[monthIso];
 
       let modifiers = new Set(month[iso]);
+      // Mirai : modifier can be an Regular expression, then it compare with an object  
       if (typeof modifier == "object") {
         modifiers.forEach(currentModifier => {
           if (currentModifier.search(modifier) != -1) {
