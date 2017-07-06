@@ -48,6 +48,7 @@ const propTypes = forbidExtraProps({
   isOutsideRange: PropTypes.func,
   isDayBlocked: PropTypes.func,
   isDayHighlighted: PropTypes.func,
+  assignImportantCalendarClass: PropTypes.func,
 
   // DayPicker props
   renderMonth: PropTypes.func,
@@ -94,6 +95,7 @@ const defaultProps = {
   isOutsideRange() {},
   isDayBlocked() {},
   isDayHighlighted() {},
+  assignImportantCalendarClass() {},
 
   // DayPicker props
   renderMonth: null,
@@ -139,6 +141,7 @@ export default class DayPickerRangeController extends React.Component {
       'blocked-calendar': day => props.isDayBlocked(day),
       'blocked-out-of-range': day => props.isOutsideRange(day),
       'highlighted-calendar': day => props.isDayHighlighted(day),
+      'important-calendar-class': day => props.assignImportantCalendarClass(day),
       valid: day => !this.isBlocked(day),
       'selected-start': day => this.isStartDate(day),
       'selected-end': day => this.isEndDate(day),
@@ -177,6 +180,7 @@ export default class DayPickerRangeController extends React.Component {
       isOutsideRange,
       isDayBlocked,
       isDayHighlighted,
+      assignImportantCalendarClass,
       phrases,
       initialVisibleMonth,
       numberOfMonths,
@@ -194,6 +198,10 @@ export default class DayPickerRangeController extends React.Component {
 
     if (isDayHighlighted !== this.props.isDayHighlighted) {
       this.modifiers['highlighted-calendar'] = day => isDayHighlighted(day);
+    }
+    
+    if (assignImportantCalendarClass !== this.props.assignImportantCalendarClass) {
+      this.modifiers['important-calendar-class'] = day => assignImportantCalendarClass(day);
     }
 
     const didStartDateChange = startDate !== this.props.startDate;
@@ -312,6 +320,13 @@ export default class DayPickerRangeController extends React.Component {
             modifiers = this.addModifier(modifiers, momentObj, 'highlighted-calendar');
           } else {
             modifiers = this.deleteModifier(modifiers, momentObj, 'highlighted-calendar');
+          }
+          const importantCalendarClasses = assignImportantCalendarClass(momentObj);
+          modifiers = this.deleteModifier(modifiers, momentObj, /important-calendar-*/);
+          if (importantCalendarClasses != null && importantCalendarClasses.length > 0) {
+            importantCalendarClasses.forEach(importantCalendarClass => {
+              modifiers = this.addModifier(modifiers, momentObj, "important-calendar-" + importantCalendarClass);
+            });
           }
         });
       });
@@ -572,15 +587,33 @@ export default class DayPickerRangeController extends React.Component {
     Object.keys(visibleDays).forEach((month) => {
       modifiers[month] = {};
       visibleDays[month].forEach((day) => {
-        modifiers[month][toISODateString(day)] = this.getModifiersForDay(day);
+        let modifiersByDay = this.getModifiersForDay(day);
+        modifiers[month][toISODateString(day)] = modifiersByDay;
+        this.addImportantCalendarClasses(modifiers[month][toISODateString(day)], day);
       });
     });
 
     return modifiers;
   }
 
+  getImportantCalendarClasses(day) {
+    const modifiers = this.modifiers['important-calendar-class'](day);
+    return modifiers ? modifiers : [];
+  }
+  
+  addImportantCalendarClasses(modifierByDay, day) {
+      let importantCalendarClasses = this.getImportantCalendarClasses(day);
+      importantCalendarClasses.forEach((clazz) => modifierByDay.add("important-calendar-" + clazz));
+  }
+
   getModifiersForDay(day) {
-    return new Set(Object.keys(this.modifiers).filter(modifier => this.modifiers[modifier](day)));
+    return new Set(Object.keys(this.modifiers).filter(modifier => {
+      let result = this.modifiers[modifier](day);
+      if (typeof(result) === "boolean") {
+          return result;
+      }
+      return false;
+    }));
   }
 
   getStateForNewMonth(nextProps) {
@@ -689,8 +722,17 @@ export default class DayPickerRangeController extends React.Component {
 
       updatedDaysAfterDeletion = monthsToUpdate.reduce((days, monthIso) => {
         const month = updatedDays[monthIso] || visibleDays[monthIso];
-        const modifiers = new Set(month[iso]);
-        modifiers.delete(modifier);
+        let modifiers = new Set(month[iso]);
+        if (typeof modifier == "object") {
+            modifiers.forEach(currentModifier => {
+              if (currentModifier.search(modifier) != -1) {
+                modifiers.delete(currentModifier);
+              }
+            });
+          } else {
+            modifiers.delete(modifier);
+          }
+        
         return {
           ...days,
           [monthIso]: {
@@ -703,8 +745,16 @@ export default class DayPickerRangeController extends React.Component {
       const monthIso = toISOMonthString(day);
       const month = updatedDays[monthIso] || visibleDays[monthIso];
 
-      const modifiers = new Set(month[iso]);
-      modifiers.delete(modifier);
+      let modifiers = new Set(month[iso]);
+      if (typeof modifier == "object") {
+        modifiers.forEach(currentModifier => {
+          if (currentModifier.search(modifier) != -1) {
+            modifiers.delete(currentModifier);
+          }
+        });
+      } else {
+        modifiers.delete(modifier);
+      }
       updatedDaysAfterDeletion = {
         ...updatedDaysAfterDeletion,
         [monthIso]: {

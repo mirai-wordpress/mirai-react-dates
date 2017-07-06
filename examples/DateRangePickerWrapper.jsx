@@ -74,6 +74,7 @@ const defaultProps = {
   isDayBlocked: () => false,
   isOutsideRange: day => !isInclusivelyAfterDay(day, moment()),
   isDayHighlighted: () => false,
+  assignImportantCalendarClass: day => [],
 
   // internationalization
   displayFormat: () => moment.localeData().longDateFormat('L'),

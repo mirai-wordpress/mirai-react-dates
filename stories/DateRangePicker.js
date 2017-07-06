@@ -2,6 +2,8 @@ import React from 'react';
 import moment from 'moment';
 import momentJalaali from 'moment-jalaali';
 import { storiesOf } from '@storybook/react';
+import isSameDay from '../src/utils/isSameDay';
+
 
 import DateRangePickerWrapper from '../examples/DateRangePickerWrapper';
 
@@ -49,6 +51,17 @@ class TestWrapper extends React.Component {
   }
 }
 
+const datesList = [
+	  moment(),
+	  moment().add(1, 'days'),
+	  moment().add(3, 'days'),
+	  moment().add(9, 'days'),
+	  moment().add(10, 'days'),
+	  moment().add(11, 'days'),
+	  moment().add(12, 'days'),
+	  moment().add(13, 'days'),
+	];
+
 storiesOf('DateRangePicker (DRP)', module)
   .addWithInfo('default', () => (
     <DateRangePickerWrapper />
@@ -86,6 +99,13 @@ storiesOf('DateRangePicker (DRP)', module)
         placeholder="تقویم فارسی"
         renderMonth={month => momentJalaali(month).format('jMMMM jYYYY')}
         renderDay={day => momentJalaali(day).format('jD')}
+      />
+    )
+  })
+  .addWithInfo('Assign important classes to calendar', () => {
+    return (
+      <DateRangePickerWrapper 
+        assignImportantCalendarClass={day1 => datesList.some(day2 => isSameDay(day1, day2)) ? ["clase1","clase2"] : []}
       />
     );
   });

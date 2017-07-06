@@ -87,6 +87,7 @@ const defaultProps = {
   isDayBlocked: () => false,
   isOutsideRange: day => !isInclusivelyAfterDay(day, moment()),
   isDayHighlighted: () => false,
+  assignImportantCalendarClass: day => [],
 
   // internationalization
   displayFormat: () => moment.localeData().longDateFormat('L'),
@@ -283,6 +284,7 @@ export default class DateRangePicker extends React.Component {
     const {
       isDayBlocked,
       isDayHighlighted,
+      assignImportantCalendarClass,
       isOutsideRange,
       numberOfMonths,
       orientation,
@@ -353,6 +355,7 @@ export default class DateRangePicker extends React.Component {
           minimumNights={minimumNights}
           isOutsideRange={isOutsideRange}
           isDayHighlighted={isDayHighlighted}
+          assignImportantCalendarClass={assignImportantCalendarClass}
           isDayBlocked={isDayBlocked}
           keepOpenOnDateSelect={keepOpenOnDateSelect}
           renderDay={renderDay}

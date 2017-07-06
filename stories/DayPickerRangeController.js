@@ -256,4 +256,13 @@ storiesOf('DayPickerRangeController', module)
         <TestCustomInfoPanel />
       )}
     />
+  ))
+  .addWithInfo('Assign multiples classes to calendar', () => (
+    <DayPickerRangeControllerWrapper
+      onOutsideClick={action('DayPickerRangeController::onOutsideClick')}
+      onPrevMonthClick={action('DayPickerRangeController::onPrevMonthClick')}
+      onNextMonthClick={action('DayPickerRangeController::onNextMonthClick')}
+      assignImportantCalendarClass={day1 => datesList.some(day2 => isSameDay(day1, day2)) ? ["clase1","clase2"] : []}
+      isDayHighlighted={day1 => datesList.some(day2 => isSameDay(day1, day2))}
+    />
   ));
