@@ -76,6 +76,8 @@ const defaultProps = {
   isDayHighlighted: () => false,
   //Mirai : Set default function for assign custom classes for days
   assignImportantCalendarClass: day => [],
+  //Mirai : Set default maximum nights. if it is 0 there is not maximum nights limitation
+  maximumNights: 0,
 
   // internationalization
   displayFormat: () => moment.localeData().longDateFormat('L'),

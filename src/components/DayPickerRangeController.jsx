@@ -45,6 +45,8 @@ const propTypes = forbidExtraProps({
 
   keepOpenOnDateSelect: PropTypes.bool,
   minimumNights: PropTypes.number,
+  // Mirai: New prop to set maximum nights selected
+  maximumNights: PropTypes.number,
   isOutsideRange: PropTypes.func,
   isDayBlocked: PropTypes.func,
   isDayHighlighted: PropTypes.func,
@@ -93,6 +95,8 @@ const defaultProps = {
 
   keepOpenOnDateSelect: false,
   minimumNights: 1,
+  // Mirai: New prop to set maximum nights selected
+  maximumNights: 0,
   isOutsideRange() {},
   isDayBlocked() {},
   isDayHighlighted() {},
@@ -135,7 +139,7 @@ export default class DayPickerRangeController extends React.Component {
   constructor(props) {
     super(props);
 
-    this.isTouchDevice = isTouchDevice();
+    this.isTouchDevice = false;//isTouchDevice();
     this.today = moment();
     this.modifiers = {
       today: day => this.isToday(day),
@@ -149,6 +153,7 @@ export default class DayPickerRangeController extends React.Component {
       'selected-start': day => this.isStartDate(day),
       'selected-end': day => this.isEndDate(day),
       'blocked-minimum-nights': day => this.doesNotMeetMinimumNights(day),
+      'blocked-maximum-nights': day => this.doesNotMeetMaximumNights(day),
       'selected-span': day => this.isInSelectedSpan(day),
       'last-in-range': day => this.isLastInRange(day),
       hovered: day => this.isHovered(day),
@@ -180,6 +185,7 @@ export default class DayPickerRangeController extends React.Component {
       endDate,
       focusedInput,
       minimumNights,
+      maximumNights,
       isOutsideRange,
       isDayBlocked,
       isDayHighlighted,
@@ -293,6 +299,43 @@ export default class DayPickerRangeController extends React.Component {
           startDate,
           startDate.clone().add(minimumNights, 'days'),
           'blocked-minimum-nights',
+        );
+      }
+    }
+    
+    if (maximumNights > 0 || maximumNights !== this.props.maximumNights) {
+      if (didFocusChange || didStartDateChange) {
+        const startSpan = this.props.startDate ? this.props.startDate : this.today;
+        const fromDateToBlock = startSpan.clone().add(maximumNights + 1, 'days');
+        let numDaysToBlock = fromDateToBlock.clone().endOf('month').date() - fromDateToBlock.date();
+        let monthISO = toISOMonthString(fromDateToBlock.add(1, 'months'));
+        while (visibleDays[monthISO]) {
+          numDaysToBlock += Object.keys(visibleDays[monthISO]).length;
+          monthISO = toISOMonthString(fromDateToBlock.add(1, 'months'));
+        }
+        
+        modifiers = this.deleteModifierFromRange(
+          modifiers,
+          startSpan.clone().add(maximumNights + 1, 'days'),
+          startSpan.clone().add(maximumNights + 1 + numDaysToBlock, 'days'),
+          'blocked-maximum-nights',
+        );
+      }
+      
+      if (startDate && focusedInput === END_DATE) {
+        const startSpan = this.props.startDate ? this.props.startDate : this.today;
+        const fromDateToBlock = startSpan.clone().add(maximumNights + 1, 'days');
+        let numDaysToBlock = fromDateToBlock.clone().endOf('month').date() - fromDateToBlock.date();
+        let monthISO = toISOMonthString(fromDateToBlock.add(1, 'months'));
+        while (visibleDays[monthISO]) {
+          numDaysToBlock += Object.keys(visibleDays[monthISO]).length;
+          monthISO = toISOMonthString(fromDateToBlock.add(1, 'months'));
+        }
+        modifiers = this.addModifierToRange(
+          modifiers,
+          startDate.clone().add(maximumNights + 1, 'days'),
+          startDate.clone().add(maximumNights + 1 + numDaysToBlock, 'days'),
+          'blocked-maximum-nights',
         );
       }
     }
@@ -802,6 +845,18 @@ export default class DayPickerRangeController extends React.Component {
     return isOutsideRange(moment(day).subtract(minimumNights, 'days'));
   }
 
+  doesNotMeetMaximumNights(day) {
+    const { startDate, isOutsideRange, focusedInput, maximumNights } = this.props;
+    if (maximumNights <= 0) return false;
+    if (focusedInput !== END_DATE) return false;
+
+    if (startDate) {
+      const dayDiff = day.diff(startDate.clone().startOf('day').hour(12), 'days');
+      return dayDiff > maximumNights;
+    }
+    return isOutsideRange(moment(day).subtract(maximumNights, 'days'));
+  }
+
   isDayAfterHoveredStartDate(day) {
     const { startDate, endDate, minimumNights } = this.props;
     const { hoverDate } = this.state || {};
@@ -850,7 +905,7 @@ export default class DayPickerRangeController extends React.Component {
 
   isBlocked(day) {
     const { isDayBlocked, isOutsideRange } = this.props;
-    return isDayBlocked(day) || isOutsideRange(day) || this.doesNotMeetMinimumNights(day);
+    return isDayBlocked(day) || isOutsideRange(day) || this.doesNotMeetMinimumNights(day) || this.doesNotMeetMaximumNights(day);
   }
 
   isToday(day) {

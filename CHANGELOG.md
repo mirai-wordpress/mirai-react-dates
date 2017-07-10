@@ -1,7 +1,8 @@
 # Change Log
 
 ## 1.0.0
-- [new] Allow set custom classes for days 
+- [new] Allow set custom classes for days
+- [new] Allow set maximum nights. If it is not specified there is not maximum nights limitation
 
 # FORKED
 - Done fork from airbnb-react-dates

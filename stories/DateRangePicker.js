@@ -109,4 +109,12 @@ storiesOf('DateRangePicker (DRP)', module)
         assignImportantCalendarClass={day1 => datesList.some(day2 => isSameDay(day1, day2)) ? ["clase1","clase2"] : []}
       />
     );
+  })
+  // Mirai: New example to set maximum nights 
+  .addWithInfo('Maximum nights selected', () => {
+    return (
+      <DateRangePickerWrapper 
+         maximumNights={20}
+      />
+    );
   });

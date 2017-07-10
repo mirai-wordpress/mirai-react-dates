@@ -266,4 +266,16 @@ storiesOf('DayPickerRangeController', module)
       assignImportantCalendarClass={day1 => datesList.some(day2 => isSameDay(day1, day2)) ? ["clase1","clase2"] : []}
       isDayHighlighted={day1 => datesList.some(day2 => isSameDay(day1, day2))}
     />
+  ))
+    // Mirai: New prop to set maximum nights availables 
+  .addWithInfo('set Maximum nights availables', () => (
+    <DayPickerRangeControllerWrapper
+      onOutsideClick={action('DayPickerRangeController::onOutsideClick')}
+      onPrevMonthClick={action('DayPickerRangeController::onPrevMonthClick')}
+      onNextMonthClick={action('DayPickerRangeController::onNextMonthClick')}
+      maximumNights={32}
+      initialStartDate={moment().add(3, 'days')}
+      autoFocusEndDate
+      focusedInput
+    />
   ));

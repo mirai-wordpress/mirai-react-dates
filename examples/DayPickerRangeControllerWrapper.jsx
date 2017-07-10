@@ -22,6 +22,7 @@ const propTypes = forbidExtraProps({
 
   keepOpenOnDateSelect: PropTypes.bool,
   minimumNights: PropTypes.number,
+  maximumNights: PropTypes.number,
   isOutsideRange: PropTypes.func,
   isDayBlocked: PropTypes.func,
   isDayHighlighted: PropTypes.func,

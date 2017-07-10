@@ -89,7 +89,8 @@ const defaultProps = {
   isDayHighlighted: () => false,
   // Mirai: New example to set custom classes for days 
   assignImportantCalendarClass: day => [],
-
+  //Mirai : Set default maximum nights. if it is 0 there is not maximum nights limitation
+  maximumNights: 0,
   // internationalization
   displayFormat: () => moment.localeData().longDateFormat('L'),
   monthFormat: 'MMMM YYYY',
@@ -306,6 +307,8 @@ export default class DateRangePicker extends React.Component {
       startDate,
       endDate,
       minimumNights,
+      // Mirai: New maximum nights prop 
+      maximumNights,
       keepOpenOnDateSelect,
       renderDay,
       renderCalendarInfo,
@@ -355,6 +358,8 @@ export default class DateRangePicker extends React.Component {
           navPrev={navPrev}
           navNext={navNext}
           minimumNights={minimumNights}
+          // Mirai: New maximum nights prop 
+          maximumNights={maximumNights}
           isOutsideRange={isOutsideRange}
           isDayHighlighted={isDayHighlighted}
           // Mirai: New example to set custom classes for days 
