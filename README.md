@@ -14,10 +14,6 @@
 
 ## Live Playground
 
-For examples of the datepicker in action, go to http://airbnb.io/react-dates.
-
-OR
-
 To run that demo on your own computer:
 * Clone this repository
 * `npm install`
@@ -265,13 +261,13 @@ $react-dates-color-secondary: $some-other-color-specific-to-my-project;
 [package-url]: https://npmjs.org/package/mirai-react-dates
 [npm-version-svg]: http://versionbadg.es/mirai-wordpress/mirai-react-dates.svg
 [travis-svg]: https://travis-ci.org/mirai-wordpress/mirai-react-dates.svg
-[travis-url]: https://travis-ci.org/airbnb/react-dates
-[deps-svg]: https://david-dm.org/airbnb/react-dates.svg
-[deps-url]: https://david-dm.org/airbnb/react-dates
-[dev-deps-svg]: https://david-dm.org/airbnb/react-dates/dev-status.svg
-[dev-deps-url]: https://david-dm.org/airbnb/react-dates#info=devDependencies
-[npm-badge-png]: https://nodei.co/npm/react-dates.png?downloads=true&stars=true
+[travis-url]: https://travis-ci.org/mirai-wordpress/mirai-react-dates
+[deps-svg]: https://david-dm.org/mirai-wordpress/mirai-react-dates.svg
+[deps-url]: https://david-dm.org/mirai-wordpress/mirai-react-dates
+[dev-deps-svg]: https://david-dm.org/mirai-wordpress/mirai-react-dates/dev-status.svg
+[dev-deps-url]: https://david-dm.org/mirai-wordpress/mirai-react-dates#info=devDependencies
+[npm-badge-png]: https://nodei.co/npm/mirai-react-dates.png?downloads=true&stars=true
 [license-image]: http://img.shields.io/npm/l/react-dates.svg
 [license-url]: LICENSE
-[downloads-image]: http://img.shields.io/npm/dm/react-dates.svg
-[downloads-url]: http://npm-stat.com/charts.html?package=react-dates
+[downloads-image]: http://img.shields.io/npm/dm/mirai-react-dates.svg
+[downloads-url]: http://npm-stat.com/charts.html?package=mirai-react-dates
