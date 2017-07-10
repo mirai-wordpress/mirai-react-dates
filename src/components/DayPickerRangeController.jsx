@@ -306,14 +306,7 @@ export default class DayPickerRangeController extends React.Component {
     if (maximumNights > 0 || maximumNights !== this.props.maximumNights) {
       if (didFocusChange || didStartDateChange) {
         const startSpan = this.props.startDate ? this.props.startDate : this.today;
-        const fromDateToBlock = startSpan.clone().add(maximumNights + 1, 'days');
-        let numDaysToBlock = fromDateToBlock.clone().endOf('month').date() - fromDateToBlock.date();
-        let monthISO = toISOMonthString(fromDateToBlock.add(1, 'months'));
-        while (visibleDays[monthISO]) {
-          numDaysToBlock += Object.keys(visibleDays[monthISO]).length;
-          monthISO = toISOMonthString(fromDateToBlock.add(1, 'months'));
-        }
-        
+        const numDaysToBlock = Object.keys(visibleDays).length * 31 - maximumNights;
         modifiers = this.deleteModifierFromRange(
           modifiers,
           startSpan.clone().add(maximumNights + 1, 'days'),
@@ -324,13 +317,7 @@ export default class DayPickerRangeController extends React.Component {
       
       if (startDate && focusedInput === END_DATE) {
         const startSpan = this.props.startDate ? this.props.startDate : this.today;
-        const fromDateToBlock = startSpan.clone().add(maximumNights + 1, 'days');
-        let numDaysToBlock = fromDateToBlock.clone().endOf('month').date() - fromDateToBlock.date();
-        let monthISO = toISOMonthString(fromDateToBlock.add(1, 'months'));
-        while (visibleDays[monthISO]) {
-          numDaysToBlock += Object.keys(visibleDays[monthISO]).length;
-          monthISO = toISOMonthString(fromDateToBlock.add(1, 'months'));
-        }
+        const numDaysToBlock = Object.keys(visibleDays).length * 31 - maximumNights;
         modifiers = this.addModifierToRange(
           modifiers,
           startDate.clone().add(maximumNights + 1, 'days'),

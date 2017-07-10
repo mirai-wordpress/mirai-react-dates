@@ -1,4 +1,4 @@
-# react-dates <sup>[![Version Badge][npm-version-svg]][package-url]</sup>
+# mirai-react-dates <sup>[![Version Badge][npm-version-svg]][package-url]</sup>
 
 [![Build Status][travis-svg]][travis-url]
 [![dependency status][deps-svg]][deps-url]
@@ -262,9 +262,9 @@ $react-dates-color-secondary: $some-other-color-specific-to-my-project;
 @import '~react-dates/css/styles.scss';
 ```
 
-[package-url]: https://npmjs.org/package/react-dates
-[npm-version-svg]: http://versionbadg.es/airbnb/react-dates.svg
-[travis-svg]: https://travis-ci.org/airbnb/react-dates.svg
+[package-url]: https://npmjs.org/package/mirai-react-dates
+[npm-version-svg]: http://versionbadg.es/mirai-wordpress/mirai-react-dates.svg
+[travis-svg]: https://travis-ci.org/mirai-wordpress/mirai-react-dates.svg
 [travis-url]: https://travis-ci.org/airbnb/react-dates
 [deps-svg]: https://david-dm.org/airbnb/react-dates.svg
 [deps-url]: https://david-dm.org/airbnb/react-dates
