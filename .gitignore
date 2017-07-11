@@ -45,3 +45,4 @@ _gh-pages
 yarn.lock
 package-lock.json
 /.project
+/.README.md.swp

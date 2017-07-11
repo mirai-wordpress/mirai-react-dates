@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.0.2
+- [fix] Fix warning showing invalid props for new attributes
+
+## 1.0.1
+- [fix] Fix issue when mark days with maximum-nights-blocked
+- [fix] Update documentation
+ 
 ## 1.0.0
 - [new] Allow set custom classes for days
 - [new] Allow set maximum nights. If it is not specified there is not maximum nights limitation

@@ -139,7 +139,7 @@ export default class DayPickerRangeController extends React.Component {
   constructor(props) {
     super(props);
 
-    this.isTouchDevice = false;//isTouchDevice();
+    this.isTouchDevice = isTouchDevice();
     this.today = moment();
     this.modifiers = {
       today: day => this.isToday(day),

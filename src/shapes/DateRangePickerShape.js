@@ -61,10 +61,14 @@ export default {
   // day presentation and interaction related props
   renderDay: PropTypes.func,
   minimumNights: PropTypes.number,
+  // Mirai new prop: maximum nights availables to select
+  maximumNights: PropTypes.number,
   enableOutsideDays: PropTypes.bool,
   isDayBlocked: PropTypes.func,
   isOutsideRange: PropTypes.func,
   isDayHighlighted: PropTypes.func,
+  // Mirai new function prop: To assign classes to days
+  assignImportantCalendarClass: PropTypes.func,
 
   // internationalization props
   displayFormat: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
