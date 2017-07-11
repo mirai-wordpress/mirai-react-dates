@@ -40,14 +40,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/airbnb/react-dates.git"
+    "url": "git+https://github.com/mirai-wordpress/mirai-react-dates.git"
   },
   "author": "Maja Wichrowska <maja.wichrowska@airbnb.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/airbnb/react-dates/issues"
+    "url": "https://github.com/mirai-wordpress/mirai-react-dates/issues"
   },
-  "homepage": "https://github.com/airbnb/react-dates#readme",
+  "homepage": "https://github.com/mirai-wordpress/mirai-react-dates#readme",
   "devDependencies": {
     "@storybook/addon-info": "^3.1.6",
     "@storybook/addon-options": "^3.1.6",

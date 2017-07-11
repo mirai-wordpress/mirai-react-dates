@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.3
+- [fix] Update documentation to publich on npm
+
 ## 1.0.2
 - [fix] Fix warning showing invalid props for new attributes
 

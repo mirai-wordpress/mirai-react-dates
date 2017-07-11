@@ -10,10 +10,11 @@
 
 > An easily internationalizable, mobile-friendly datepicker library for the web.
 
-![react-dates in action](https://raw.githubusercontent.com/airbnb/react-dates/master/react-dates-demo.gif)
+![react-dates in action](https://raw.githubusercontent.com/mirai-wordpress/mirai-react-dates/master/react-dates-demo.gif)
 
 ## Live Playground
-
+This is a fork from airbnb react-dates
+ 
 To run that demo on your own computer:
 * Clone this repository
 * `npm install`
@@ -234,6 +235,8 @@ The following is a list of other *OPTIONAL* props you may provide to the `DayPic
   // day presentation and interaction related props
   renderDay: PropTypes.func,
   minimumNights: PropTypes.number,
+  // new prop to set maximum nights selectables
+  maximumNights: PropTypes.number,
   isOutsideRange: PropTypes.func,
   isDayBlocked: PropTypes.func,
   isDayHighlighted: PropTypes.func,
@@ -267,7 +270,7 @@ $react-dates-color-secondary: $some-other-color-specific-to-my-project;
 [dev-deps-svg]: https://david-dm.org/mirai-wordpress/mirai-react-dates/dev-status.svg
 [dev-deps-url]: https://david-dm.org/mirai-wordpress/mirai-react-dates#info=devDependencies
 [npm-badge-png]: https://nodei.co/npm/mirai-react-dates.png?downloads=true&stars=true
-[license-image]: http://img.shields.io/npm/l/react-dates.svg
+[license-image]: http://img.shields.io/npm/l/mirai-react-dates.svg
 [license-url]: LICENSE
 [downloads-image]: http://img.shields.io/npm/dm/mirai-react-dates.svg
 [downloads-url]: http://npm-stat.com/charts.html?package=mirai-react-dates
