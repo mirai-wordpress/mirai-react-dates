@@ -765,14 +765,14 @@ export default class DayPickerRangeController extends React.Component {
         let modifiers = new Set(month[iso]);
         // Mirai : modifier can be an Regular expression, then it compare with an object  
         if (typeof modifier == "object") {
-            modifiers.forEach(currentModifier => {
-              if (currentModifier.search(modifier) != -1) {
-                modifiers.delete(currentModifier);
-              }
-            });
-          } else {
-            modifiers.delete(modifier);
-          }
+          modifiers.forEach(currentModifier => {
+            if (currentModifier.search(modifier) != -1) {
+              modifiers.delete(currentModifier);
+            }
+          });
+        } else {
+          modifiers.delete(modifier);
+        }
         
         return {
           ...days,

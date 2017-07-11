@@ -41,6 +41,9 @@ const propTypes = forbidExtraProps({
   isOutsideRange: PropTypes.func,
   isDayBlocked: PropTypes.func,
   isDayHighlighted: PropTypes.func,
+  // Mirai: New example to set custom classes for days 
+  assignImportantCalendarClass: PropTypes.func,
+  
 
   // DayPicker props
   renderMonth: PropTypes.func,
@@ -86,6 +89,8 @@ const defaultProps = {
   isOutsideRange() {},
   isDayBlocked() {},
   isDayHighlighted() {},
+  // Mirai: New example to set custom classes for days 
+  assignImportantCalendarClass() {},
 
   // DayPicker props
   renderMonth: null,
@@ -132,6 +137,8 @@ export default class DayPickerSingleDateController extends React.Component {
       'blocked-calendar': day => props.isDayBlocked(day),
       'blocked-out-of-range': day => props.isOutsideRange(day),
       'highlighted-calendar': day => props.isDayHighlighted(day),
+      // Mirai: New prop to set custom classes for days 
+      'important-calendar-class': day => props.assignImportantCalendarClass(day),
       valid: day => !this.isBlocked(day),
       hovered: day => this.isHovered(day),
       selected: day => this.isSelected(day),
@@ -166,6 +173,7 @@ export default class DayPickerSingleDateController extends React.Component {
       isOutsideRange,
       isDayBlocked,
       isDayHighlighted,
+      assignImportantCalendarClass,
       initialVisibleMonth,
       numberOfMonths,
       enableOutsideDays,
@@ -182,6 +190,11 @@ export default class DayPickerSingleDateController extends React.Component {
 
     if (isDayHighlighted !== this.props.isDayHighlighted) {
       this.modifiers['highlighted-calendar'] = day => isDayHighlighted(day);
+    }
+
+    // Mirai: New example to set custom classes for days 
+    if (assignImportantCalendarClass !== this.props.assignImportantCalendarClass) {
+      this.modifiers['important-calendar-class'] = day => assignImportantCalendarClass(day);
     }
 
     if (
@@ -234,6 +247,15 @@ export default class DayPickerSingleDateController extends React.Component {
             modifiers = this.addModifier(modifiers, momentObj, 'highlighted-calendar');
           } else {
             modifiers = this.deleteModifier(modifiers, momentObj, 'highlighted-calendar');
+          }
+          
+          // Mirai: New example to set custom classes for days 
+          const importantCalendarClasses = assignImportantCalendarClass(momentObj);
+          modifiers = this.deleteModifier(modifiers, momentObj, /important-calendar-*/);
+          if (importantCalendarClasses != null && importantCalendarClasses.length > 0) {
+            importantCalendarClasses.forEach(importantCalendarClass => {
+              modifiers = this.addModifier(modifiers, momentObj, "important-calendar-" + importantCalendarClass);
+            });
           }
         });
       });
@@ -385,15 +407,37 @@ export default class DayPickerSingleDateController extends React.Component {
       modifiers[month] = {};
       visibleDays[month].forEach((day) => {
         modifiers[month][toISODateString(day)] = this.getModifiersForDay(day);
+        // Mirai: Add to modifers for a day new custom classes 
+        this.addImportantCalendarClasses(modifiers[month][toISODateString(day)], day);
+        
       });
     });
 
     return modifiers;
   }
 
-  getModifiersForDay(day) {
-    return new Set(Object.keys(this.modifiers).filter(modifier => this.modifiers[modifier](day)));
+  // Mirai: Callback to a function to get custom classes by day 
+  getImportantCalendarClasses(day) {
+    const modifiers = this.modifiers['important-calendar-class'](day);
+    return modifiers ? modifiers : [];
   }
+  
+  // Mirai : Assign new custom classes to a day
+  addImportantCalendarClasses(modifierByDay, day) {
+      let importantCalendarClasses = this.getImportantCalendarClasses(day);
+      importantCalendarClasses.forEach((clazz) => modifierByDay.add("important-calendar-" + clazz));
+  }
+
+  getModifiersForDay(day) {
+      return new Set(Object.keys(this.modifiers).filter(modifier => {
+        let result = this.modifiers[modifier](day);
+        // Mirai: Only filter results that return boolean
+        if (typeof(result) === "boolean") {
+            return result;
+        }
+        return false;
+      }));
+    }
 
   getStateForNewMonth(nextProps) {
     const { initialVisibleMonth, date, numberOfMonths, enableOutsideDays } = nextProps;
@@ -481,7 +525,17 @@ export default class DayPickerSingleDateController extends React.Component {
       updatedDaysAfterDeletion = monthsToUpdate.reduce((days, monthIso) => {
         const month = updatedDays[monthIso] || visibleDays[monthIso];
         const modifiers = new Set(month[iso]);
-        modifiers.delete(modifier);
+        // Mirai : modifier can be an Regular expression, then it compare with an object  
+        if (typeof modifier == "object") {
+          modifiers.forEach(currentModifier => {
+            if (currentModifier.search(modifier) != -1) {
+              modifiers.delete(currentModifier);
+            }
+          });
+        } else {
+          modifiers.delete(modifier);
+        }
+
         return {
           ...days,
           [monthIso]: {
@@ -495,7 +549,16 @@ export default class DayPickerSingleDateController extends React.Component {
       const month = updatedDays[monthIso] || visibleDays[monthIso];
 
       const modifiers = new Set(month[iso]);
-      modifiers.delete(modifier);
+      // Mirai : modifier can be an Regular expression, then it compare with an object  
+      if (typeof modifier == "object") {
+        modifiers.forEach(currentModifier => {
+          if (currentModifier.search(modifier) != -1) {
+            modifiers.delete(currentModifier);
+          }
+        });
+      } else {
+        modifiers.delete(modifier);
+      }
       updatedDaysAfterDeletion = {
         ...updatedDaysAfterDeletion,
         [monthIso]: {
