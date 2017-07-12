@@ -858,11 +858,11 @@ export default class DayPickerRangeController extends React.Component {
     const { startDate, endDate, focusedInput, maximumNights } = this.props;
     if (maximumNights <= 0) return false;
 
-    if (startDate && focusedInput === END_DATE) {
+    if ((startDate && !focusedInput) || (startDate && focusedInput === END_DATE)) {
       let dayDiff = day.diff(startDate.clone().startOf('day').hour(12), 'days');
       return dayDiff > maximumNights;
     }
-    if (endDate && focusedInput === START_DATE) {
+    if ((endDate && !focusedInput) || (endDate && focusedInput === START_DATE)) {
       let dayDiff2 = endDate.clone().startOf('day').hour(12).diff(day, 'days');
       return dayDiff2 > maximumNights;
     }

@@ -18,6 +18,10 @@ const datesList = [
   moment().add(13, 'days'),
 ];
 
+const minDate = moment().startOf('day');
+const maxDate = moment().startOf('day').add(12, 'months');
+
+
 storiesOf('DRP - Day Props', module)
   .addWithInfo('default', () => (
     <DateRangePickerWrapper autoFocus />
@@ -54,6 +58,12 @@ storiesOf('DRP - Day Props', module)
   .addWithInfo('with some blocked dates', () => (
     <DateRangePickerWrapper
       isDayBlocked={day1 => datesList.some(day2 => isSameDay(day1, day2))}
+      autoFocus
+    />
+  ))
+  .addWithInfo('with maximum date and minimum date', () => (
+    <DateRangePickerWrapper
+      isDayBlocked={currentDay => currentDay.clone().startOf('day').diff(minDate) < 0 || currentDay.clone().startOf('day').diff(maxDate) > 0}
       autoFocus
     />
   ))
