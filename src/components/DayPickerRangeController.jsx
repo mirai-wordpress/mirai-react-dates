@@ -315,6 +315,17 @@ export default class DayPickerRangeController extends React.Component {
         );
       }
       
+      if (didFocusChange || didEndDateChange) {
+        const endSpan = this.props.endDate ? this.props.endDate : this.today;
+        const numDaysToBlock = Object.keys(visibleDays).length * 31 - maximumNights;
+        modifiers = this.deleteModifierFromRange(
+          modifiers,
+          endSpan.clone().subtract(numDaysToBlock + maximumNights, 'days'),
+          endSpan.clone().subtract(maximumNights, 'days'),
+          'blocked-maximum-nights',
+        );
+      }
+
       if (startDate && focusedInput === END_DATE) {
         const startSpan = this.props.startDate ? this.props.startDate : this.today;
         const numDaysToBlock = Object.keys(visibleDays).length * 31 - maximumNights;
@@ -324,6 +335,17 @@ export default class DayPickerRangeController extends React.Component {
           startDate.clone().add(maximumNights + 1 + numDaysToBlock, 'days'),
           'blocked-maximum-nights',
         );
+      }
+      
+      if (endDate && focusedInput === START_DATE) {
+          const endSpan = this.props.endDate ? this.props.endDate : this.today;
+          const numDaysToBlock = Object.keys(visibleDays).length * 31 - maximumNights;
+          modifiers = this.addModifierToRange(
+            modifiers,
+            endSpan.clone().subtract(numDaysToBlock + maximumNights, 'days'),
+            endSpan.clone().subtract(maximumNights, 'days'),
+            'blocked-maximum-nights',
+          );
       }
     }
 
@@ -833,15 +855,18 @@ export default class DayPickerRangeController extends React.Component {
   }
 
   doesNotMeetMaximumNights(day) {
-    const { startDate, isOutsideRange, focusedInput, maximumNights } = this.props;
+    const { startDate, endDate, focusedInput, maximumNights } = this.props;
     if (maximumNights <= 0) return false;
-    if (focusedInput !== END_DATE) return false;
 
-    if (startDate) {
-      const dayDiff = day.diff(startDate.clone().startOf('day').hour(12), 'days');
+    if (startDate && focusedInput === END_DATE) {
+      let dayDiff = day.diff(startDate.clone().startOf('day').hour(12), 'days');
       return dayDiff > maximumNights;
     }
-    return isOutsideRange(moment(day).subtract(maximumNights, 'days'));
+    if (endDate && focusedInput === START_DATE) {
+      let dayDiff2 = endDate.clone().startOf('day').hour(12).diff(day, 'days');
+      return dayDiff2 > maximumNights;
+    }
+    return false;
   }
 
   isDayAfterHoveredStartDate(day) {

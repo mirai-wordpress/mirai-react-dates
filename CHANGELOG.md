@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.4
+- [fix] Fix issue related to maximumNights prop, when it is selected end date first
+
 ## 1.0.3
 - [fix] Update documentation to publish on npm
 
