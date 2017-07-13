@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.5
+- [fix] Fix issue related to maximumNights prop, Some days does not unblocked when moves throw months.
+
 ## 1.0.4
 - [fix] Fix issue related to maximumNights prop, when it is selected end date first
 

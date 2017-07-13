@@ -306,21 +306,23 @@ export default class DayPickerRangeController extends React.Component {
     if (maximumNights > 0 || maximumNights !== this.props.maximumNights) {
       if (didFocusChange || didStartDateChange) {
         const startSpan = this.props.startDate ? this.props.startDate : this.today;
-        const numDaysToBlock = Object.keys(visibleDays).length * 31 - maximumNights;
+        let maxDate = this.getMaximumDateFromVisibleDays(visibleDays);
+        const numDaysToUnblock = maxDate.clone().startOf("day").diff(startSpan.clone().startOf("day"), 'days') - maximumNights + 1;
         modifiers = this.deleteModifierFromRange(
           modifiers,
-          startSpan.clone().add(maximumNights + 1, 'days'),
-          startSpan.clone().add(maximumNights + 1 + numDaysToBlock, 'days'),
+          startSpan.clone(),
+          startSpan.clone().add(maximumNights + numDaysToUnblock, 'days'),
           'blocked-maximum-nights',
         );
       }
       
       if (didFocusChange || didEndDateChange) {
         const endSpan = this.props.endDate ? this.props.endDate : this.today;
-        const numDaysToBlock = Object.keys(visibleDays).length * 31 - maximumNights;
+        let minDate = this.getMinimumDateFromVisibleDays(visibleDays);
+        const numDaysToUnblock = endSpan.clone().startOf("day").diff(minDate.clone().startOf("day"), "days");
         modifiers = this.deleteModifierFromRange(
           modifiers,
-          endSpan.clone().subtract(numDaysToBlock + maximumNights, 'days'),
+          endSpan.clone().subtract(numDaysToUnblock + maximumNights, 'days'),
           endSpan.clone().subtract(maximumNights, 'days'),
           'blocked-maximum-nights',
         );
@@ -328,7 +330,8 @@ export default class DayPickerRangeController extends React.Component {
 
       if (startDate && focusedInput === END_DATE) {
         const startSpan = this.props.startDate ? this.props.startDate : this.today;
-        const numDaysToBlock = Object.keys(visibleDays).length * 31 - maximumNights;
+        let maxDate = this.getMaximumDateFromVisibleDays(visibleDays);
+        const numDaysToBlock = maxDate.clone().startOf("day").diff(startSpan.clone().startOf("day"), 'days') - maximumNights + 1;
         modifiers = this.addModifierToRange(
           modifiers,
           startDate.clone().add(maximumNights + 1, 'days'),
@@ -339,7 +342,8 @@ export default class DayPickerRangeController extends React.Component {
       
       if (endDate && focusedInput === START_DATE) {
           const endSpan = this.props.endDate ? this.props.endDate : this.today;
-          const numDaysToBlock = Object.keys(visibleDays).length * 31 - maximumNights;
+          let minDate = this.getMinimumDateFromVisibleDays(visibleDays);
+          const numDaysToBlock = endSpan.clone().startOf("day").diff(minDate.clone().startOf("day"), "days");
           modifiers = this.addModifierToRange(
             modifiers,
             endSpan.clone().subtract(numDaysToBlock + maximumNights, 'days'),
@@ -867,6 +871,30 @@ export default class DayPickerRangeController extends React.Component {
       return dayDiff2 > maximumNights;
     }
     return false;
+  }
+  
+  getMaximumDateFromVisibleDays(visibleDays) {
+    let maxDate = null
+    values(visibleDays).forEach((days) => {
+      let keysDays = Object.keys(days);
+      var currentDate = moment(keysDays[keysDays.length - 1]);
+      if (maxDate == null || currentDate.clone().startOf("day").diff(maxDate.clone().startOf("day"), "days") > 0) {
+        maxDate = currentDate;
+      }
+    });
+    return maxDate;
+  }
+
+  getMinimumDateFromVisibleDays(visibleDays) {
+    let minDate = null
+    values(visibleDays).forEach((days) => {
+      let keysDays = Object.keys(days);
+      var currentDate = moment(keysDays[0]);
+      if (minDate == null || currentDate.clone().startOf("day").diff(minDate.clone().startOf("day"), "days") < 0) {
+        minDate = currentDate;
+      }
+    });
+    return minDate;
   }
 
   isDayAfterHoveredStartDate(day) {
