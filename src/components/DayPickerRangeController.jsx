@@ -307,7 +307,7 @@ export default class DayPickerRangeController extends React.Component {
       if (didFocusChange || didStartDateChange) {
         const startSpan = this.props.startDate ? this.props.startDate : this.today;
         let maxDate = this.getMaximumDateFromVisibleDays(visibleDays);
-        const numDaysToUnblock = maxDate.clone().startOf("day").diff(startSpan.clone().startOf("day"), 'days') - maximumNights + 1;
+        const numDaysToUnblock = maxDate.clone().startOf("day").diff(startSpan.clone().startOf("day"), 'days') + 1;
         modifiers = this.deleteModifierFromRange(
           modifiers,
           startSpan.clone(),
@@ -331,7 +331,7 @@ export default class DayPickerRangeController extends React.Component {
       if (startDate && focusedInput === END_DATE) {
         const startSpan = this.props.startDate ? this.props.startDate : this.today;
         let maxDate = this.getMaximumDateFromVisibleDays(visibleDays);
-        const numDaysToBlock = maxDate.clone().startOf("day").diff(startSpan.clone().startOf("day"), 'days') - maximumNights + 1;
+        const numDaysToBlock = maxDate.clone().startOf("day").diff(startSpan.clone().startOf("day"), 'days') + 1;
         modifiers = this.addModifierToRange(
           modifiers,
           startDate.clone().add(maximumNights + 1, 'days'),
