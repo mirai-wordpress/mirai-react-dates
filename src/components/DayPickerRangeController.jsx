@@ -65,6 +65,9 @@ const propTypes = forbidExtraProps({
 
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
+  
+  minDate: momentPropTypes.momentObj,
+  maxDate: momentPropTypes.momentObj,
 
   onPrevMonthClick: PropTypes.func,
   onNextMonthClick: PropTypes.func,
@@ -119,6 +122,9 @@ const defaultProps = {
   onPrevMonthClick() {},
   onNextMonthClick() {},
   onOutsideClick() {},
+
+  minDate: undefined,
+  maxDate: undefined,
 
   renderDay: null,
   renderCalendarInfo: null,
@@ -929,6 +935,26 @@ export default class DayPickerRangeController extends React.Component {
 
     return (isForwardRange || isBackwardRange) && isValidDayHovered;
   }
+  
+  isMonthBlockedByMinDate() {
+    const { currentMonth } = this.state;
+    const { minDate } = this.props;
+      
+    if (minDate) {
+      return currentMonth.clone().startOf("day").diff(minDate.clone().startOf("day"), "days") <= 0;
+    }
+    return false;
+  }
+
+  isMonthBlockedByMaxDate() {
+    const { currentMonth } = this.state;
+    const { maxDate, numberOfMonths } = this.props;
+        
+    if (maxDate) {
+      return currentMonth.clone().startOf("day").diff(maxDate.clone().startOf("day"), "months") + numberOfMonths - 1 >= 0;
+    }
+    return false;
+  }
 
   isInSelectedSpan(day) {
     const { startDate, endDate } = this.props;
@@ -999,6 +1025,8 @@ export default class DayPickerRangeController extends React.Component {
         onOutsideClick={onOutsideClick}
         navPrev={navPrev}
         navNext={navNext}
+        navPrevLocked={this.isMonthBlockedByMinDate()}
+        navNextLocked={this.isMonthBlockedByMaxDate()}
         renderDay={renderDay}
         renderCalendarInfo={renderCalendarInfo}
         hideKeyboardShortcutsPanel={hideKeyboardShortcutsPanel}

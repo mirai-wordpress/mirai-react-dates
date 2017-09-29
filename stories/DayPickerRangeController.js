@@ -278,4 +278,18 @@ storiesOf('DayPickerRangeController', module)
       autoFocusEndDate
       focusedInput
     />
-  ));
+  ))
+
+  // Mirai: New prop to set minDate and maxDate 
+  .addWithInfo('set minimum date and maximum date', () => (
+    <DayPickerRangeControllerWrapper
+      onOutsideClick={action('DayPickerRangeController::onOutsideClick')}
+      onPrevMonthClick={action('DayPickerRangeController::onPrevMonthClick')}
+      onNextMonthClick={action('DayPickerRangeController::onNextMonthClick')}
+      initialStartDate={moment().add(3, 'days')}
+      autoFocusEndDate
+      focusedInput
+      minDate={moment()}
+      maxDate={moment().add(1, 'year')}
+    />
+));

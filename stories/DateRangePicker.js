@@ -117,4 +117,13 @@ storiesOf('DateRangePicker (DRP)', module)
          maximumNights={20}
       />
     );
+  })
+  // Mirai: New example to set maximum nights 
+  .addWithInfo('Maximum date and minimum date', () => {
+    return (
+      <DateRangePickerWrapper 
+         minDate={moment()}
+         maxDate={moment().add(1, "year")}
+      />
+    );
   });

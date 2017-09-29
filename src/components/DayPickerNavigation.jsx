@@ -21,6 +21,8 @@ const propTypes = forbidExtraProps({
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
   orientation: ScrollableOrientationShape,
+  navPrevLocked: PropTypes.bool,
+  navNextLocked: PropTypes.bool,
 
   onPrevMonthClick: PropTypes.func,
   onNextMonthClick: PropTypes.func,
@@ -35,6 +37,8 @@ const defaultProps = {
   navPrev: null,
   navNext: null,
   orientation: HORIZONTAL_ORIENTATION,
+  navPrevLocked: false,
+  navNextLocked: false,
 
   onPrevMonthClick() {},
   onNextMonthClick() {},
@@ -50,6 +54,8 @@ export default function DayPickerNavigation(props) {
     navNext,
     onPrevMonthClick,
     onNextMonthClick,
+    navPrevLocked,
+    navNextLocked,
     orientation,
     phrases,
     isRTL,
@@ -99,6 +105,7 @@ export default function DayPickerNavigation(props) {
           aria-label={phrases.jumpToPrevMonth}
           className={prevClassNames}
           onClick={onPrevMonthClick}
+          disabled={navPrevLocked}
           onMouseUp={(e) => {
             e.currentTarget.blur();
           }}
@@ -112,6 +119,7 @@ export default function DayPickerNavigation(props) {
         aria-label={phrases.jumpToNextMonth}
         className={nextClassNames}
         onClick={onNextMonthClick}
+        disabled={navNextLocked}
         onMouseUp={(e) => {
           e.currentTarget.blur();
         }}

@@ -72,7 +72,11 @@ const defaultProps = {
   onPrevMonthClick() {},
   onNextMonthClick() {},
   onClose() {},
-
+  
+  // Mirai: New props to delimite minDate and maxDate and lock navigation in this ways
+  minDate: undefined,
+  maxDate: undefined,
+  
   // month presentation and interaction related props
   renderMonth: null,
 
@@ -321,6 +325,8 @@ export default class SingleDatePicker extends React.Component {
       isOutsideRange,
       isDayBlocked,
       isDayHighlighted,
+      minDate,
+      maxDate
     } = this.props;
     const { dayPickerContainerStyles, isDayPickerFocused } = this.state;
 
@@ -358,6 +364,8 @@ export default class SingleDatePicker extends React.Component {
           isOutsideRange={isOutsideRange}
           isDayBlocked={isDayBlocked}
           isDayHighlighted={isDayHighlighted}
+          minDate={minDate}
+          maxDate={maxDate}
         />
 
         {withFullScreenPortal && (

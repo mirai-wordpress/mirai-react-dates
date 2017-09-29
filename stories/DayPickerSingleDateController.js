@@ -236,4 +236,15 @@ storiesOf('DayPickerSingleDateController', module)
         <TestCustomInfoPanel />
       )}
     />
+  ))
+  .addWithInfo('with minimum date and maximum date', () => (
+    <DayPickerSingleDateControllerWrapper
+      onOutsideClick={action('DayPickerSingleDateController::onOutsideClick')}
+      onPrevMonthClick={action('DayPickerSingleDateController::onPrevMonthClick')}
+      onNextMonthClick={action('DayPickerSingleDateController::onNextMonthClick')}
+      maxDate={moment().add(1, "year")}
+      minDate={moment()}
+      numberOfMonths={1}
+    />
   ));
+

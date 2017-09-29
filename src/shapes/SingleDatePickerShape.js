@@ -51,6 +51,10 @@ export default {
   onPrevMonthClick: PropTypes.func,
   onNextMonthClick: PropTypes.func,
   onClose: PropTypes.func,
+  
+  // Mirai: New props to delimite minDate and maxDate and lock navigation in this ways
+  minDate: momentPropTypes.momentObj,
+  maxDate: momentPropTypes.momentObj,
 
   // day presentation and interaction related props
   renderDay: PropTypes.func,

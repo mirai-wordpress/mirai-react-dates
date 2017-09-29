@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.7
+- [new] Allow set minimum and maximum date. It locked all months before minimum date and after maximum date. 
+
+## 1.0.6
+- [fix] Fix issue related to maximumNights prop, Some days does not unblocked when moves throw months.
+
 ## 1.0.5
 - [fix] Fix issue related to maximumNights prop, Some days does not unblocked when moves throw months.
 

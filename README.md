@@ -125,6 +125,10 @@ isDayHighlighted: PropTypes.func,
 // new function to set classes for days
 assignImportantCalendarClass: PropTypes.func,
 
+// new props to set minimum date and maximum date. This props lock the months in this ways
+minDate: undefined, // momentPropTypes.momentObj or null,
+maxDate: undefined, // momentPropTypes.momentObj or null,
+
 // internationalization props
 displayFormat: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
 monthFormat: PropTypes.string,
@@ -185,6 +189,10 @@ onPrevMonthClick: PropTypes.func,
 onNextMonthClick: PropTypes.func,
 onClose: PropTypes.func,
 
+// new props to set minimum date and maximum date. This props lock the months in this ways
+minDate: undefined, // momentPropTypes.momentObj or null,
+maxDate: undefined, // momentPropTypes.momentObj or null,
+
 // day presentation and interaction related props
 renderDay: PropTypes.func,
 enableOutsideDays: PropTypes.bool,
@@ -243,7 +251,10 @@ The following is a list of other *OPTIONAL* props you may provide to the `DayPic
   // new function to set classes for days
   assignImportantCalendarClass: PropTypes.func,
   
-
+  // new props to set minimum date and maximum date. This props lock the months in this ways
+  minDate: undefined, // momentPropTypes.momentObj or null,
+  maxDate: undefined, // momentPropTypes.momentObj or null,
+  
   // internationalization props
   monthFormat: PropTypes.string,
   phrases: PropTypes.shape(getPhrasePropTypes(DayPickerPhrases)),

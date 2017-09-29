@@ -57,6 +57,8 @@ const propTypes = forbidExtraProps({
 
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
+  minDate: momentPropTypes.momentObj,
+  maxDate: momentPropTypes.momentObj,
 
   onPrevMonthClick: PropTypes.func,
   onNextMonthClick: PropTypes.func,
@@ -108,6 +110,8 @@ const defaultProps = {
   onPrevMonthClick() {},
   onNextMonthClick() {},
   onOutsideClick() {},
+  minDate: undefined,
+  maxDate: undefined,
 
   renderDay: null,
   renderCalendarInfo: null,
@@ -570,6 +574,26 @@ export default class DayPickerSingleDateController extends React.Component {
 
     return updatedDaysAfterDeletion;
   }
+  
+  isMonthBlockedByMinDate() {
+    const { currentMonth } = this.state;
+    const { minDate } = this.props;
+    
+    if (minDate) {
+      return currentMonth.clone().startOf("day").diff(minDate.clone().startOf("day"), "months") <= 0;
+    }
+    return false;
+  }
+
+  isMonthBlockedByMaxDate() {
+    const { currentMonth } = this.state;
+    const { maxDate, numberOfMonths } = this.props;
+      
+    if (maxDate) {
+      return currentMonth.clone().startOf("day").diff(maxDate.clone().startOf("day"), "months") + numberOfMonths - 1 >= 0;
+    }
+    return false;
+  }
 
   isBlocked(day) {
     const { isDayBlocked, isOutsideRange } = this.props;
@@ -628,6 +652,8 @@ export default class DayPickerSingleDateController extends React.Component {
         initialVisibleMonth={() => currentMonth}
         navPrev={navPrev}
         navNext={navNext}
+        navPrevLocked={this.isMonthBlockedByMinDate()}
+        navNextLocked={this.isMonthBlockedByMaxDate()}
         renderMonth={renderMonth}
         renderDay={renderDay}
         renderCalendarInfo={renderCalendarInfo}

@@ -42,6 +42,9 @@ const propTypes = forbidExtraProps({
   onOutsideClick: PropTypes.func,
   renderDay: PropTypes.func,
 
+  minDate: momentPropTypes.momentObj,
+  maxDate: momentPropTypes.momentObj,
+
   // i18n
   monthFormat: PropTypes.string,
 
@@ -77,6 +80,9 @@ const defaultProps = {
   navNext: null,
   onPrevMonthClick() {},
   onNextMonthClick() {},
+  
+  minDate: undefined,
+  maxDate: undefined,
 
   // internationalization
   monthFormat: 'MMMM YYYY',
