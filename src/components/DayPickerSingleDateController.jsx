@@ -580,7 +580,8 @@ export default class DayPickerSingleDateController extends React.Component {
     const { minDate } = this.props;
     
     if (minDate) {
-      return currentMonth.clone().startOf("day").diff(minDate.clone().startOf("day"), "months") <= 0;
+        return currentMonth.clone().startOf("day").startOf("month").diff(minDate.clone().startOf("day").startOf("month"), "months") <= 0;
+
     }
     return false;
   }
@@ -590,7 +591,7 @@ export default class DayPickerSingleDateController extends React.Component {
     const { maxDate, numberOfMonths } = this.props;
       
     if (maxDate) {
-      return currentMonth.clone().startOf("day").diff(maxDate.clone().startOf("day"), "months") + numberOfMonths - 1 >= 0;
+        return currentMonth.clone().startOf("day").startOf("month").diff(maxDate.clone().startOf("day").startOf("month"), "months") + numberOfMonths - 1 >= 0;
     }
     return false;
   }
