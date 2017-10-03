@@ -941,7 +941,7 @@ export default class DayPickerRangeController extends React.Component {
     const { minDate } = this.props;
       
     if (minDate) {
-      return currentMonth.clone().startOf("day").diff(minDate.clone().startOf("day"), "days") <= 0;
+      return currentMonth.clone().startOf("day").diff(minDate.clone().startOf("day"), "months") <= 0;
     }
     return false;
   }

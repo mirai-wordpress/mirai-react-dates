@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.8
+- [fix] Fixed bug for minDate and maxDate props. 
+
 ## 1.0.7
 - [new] Allow set minimum and maximum date. It locked all months before minimum date and after maximum date. 
 
