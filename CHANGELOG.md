@@ -1,5 +1,6 @@
 # Change Log
 
+## M2.0
 ## 16.0.1
 - [fix] Add back missing onKeyDown method to `CalendarDay` ([#901](https://github.com/airbnb/react-dates/pull/901))
 
