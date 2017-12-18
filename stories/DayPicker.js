@@ -5,7 +5,7 @@ import DayPicker from '../src/components/DayPicker';
 import {
   VERTICAL_ORIENTATION,
   VERTICAL_SCROLLABLE,
-} from '../constants';
+} from '../src/constants';
 
 const TestPrevIcon = () => (
   <span
@@ -84,6 +84,13 @@ storiesOf('DayPicker', module)
       daySize={50}
     />
   ))
+  .addWithInfo('vertical with custom height', () => (
+    <DayPicker
+      numberOfMonths={2}
+      orientation={VERTICAL_ORIENTATION}
+      verticalHeight={568}
+    />
+  ))
   .addWithInfo('with custom arrows', () => (
     <DayPicker
       navPrev={<TestPrevIcon />}
@@ -92,7 +99,7 @@ storiesOf('DayPicker', module)
   ))
   .addWithInfo('with custom details', () => (
     <DayPicker
-      renderDay={day => (day.day() % 6 === 5 ? '😻' : day.format('D'))}
+      renderDayContents={day => (day.day() % 6 === 5 ? '😻' : day.format('D'))}
     />
   ))
   .addWithInfo('vertical with fixed-width container', () => (
@@ -109,4 +116,17 @@ storiesOf('DayPicker', module)
         <TestCustomInfoPanel />
       )}
     />
+  ))
+  .addWithInfo('with custom week day format', () => (
+    <DayPicker
+      weekDayFormat="ddd"
+    />
+  ))
+  .addWithInfo('with no animation', () => (
+    <DayPicker
+      transitionDuration={0}
+    />
+  ))
+  .addWithInfo('noBorder', () => (
+    <DayPicker noBorder />
   ));

@@ -2,14 +2,14 @@ import React from 'react';
 import moment from 'moment';
 import { storiesOf, action } from '@storybook/react';
 
+import InfoPanelDecorator, { monospace } from './InfoPanelDecorator';
+
 import isSameDay from '../src/utils/isSameDay';
 import isInclusivelyAfterDay from '../src/utils/isInclusivelyAfterDay';
 
-import { VERTICAL_ORIENTATION } from '../constants';
+import { VERTICAL_ORIENTATION } from '../src/constants';
 
 import DayPickerRangeControllerWrapper from '../examples/DayPickerRangeControllerWrapper';
-
-const monospace = text => `<span style="font-family:monospace;background:#f7f7f7">${text}</span>`;
 
 const dayPickerRangeControllerInfo = `The ${monospace('DayPickerRangeController')} component is a
   fully controlled version of the ${monospace('DayPicker')} that has built-in rules for selecting a
@@ -27,27 +27,6 @@ const dayPickerRangeControllerInfo = `The ${monospace('DayPickerRangeController'
   The ${monospace('DayPickerRangeController')} is particularly useful if you are interested in the
   ${monospace('DateRangePicker')} functionality and calendar presentation, but would like to
   implement your own inputs.`;
-
-const InfoPanel = ({ text }) => (
-  <div
-    style={{
-      backgroundColor: '#fff',
-      fontColor: '#3c3f40',
-      fontSize: 14,
-      margin: '8px 0',
-      padding: 16,
-    }}
-  >
-    <span dangerouslySetInnerHTML={{ __html: text }} />
-  </div>
-);
-
-const InfoPanelDecorator = story => (
-  <div>
-    <InfoPanel text={dayPickerRangeControllerInfo} />
-    {story()}
-  </div>
-);
 
 const TestPrevIcon = () => (
   <span
@@ -99,7 +78,7 @@ const datesList = [
 ];
 
 storiesOf('DayPickerRangeController', module)
-  .addDecorator(InfoPanelDecorator)
+  .addDecorator(InfoPanelDecorator(dayPickerRangeControllerInfo))
   .addWithInfo('default', () => (
     <DayPickerRangeControllerWrapper
       onOutsideClick={action('DayPickerRangeController::onOutsideClick')}
@@ -244,7 +223,7 @@ storiesOf('DayPickerRangeController', module)
       onOutsideClick={action('DayPickerRangeController::onOutsideClick')}
       onPrevMonthClick={action('DayPickerRangeController::onPrevMonthClick')}
       onNextMonthClick={action('DayPickerRangeController::onNextMonthClick')}
-      renderDay={day => day.format('ddd')}
+      renderDayContents={day => day.format('ddd')}
     />
   ))
   .addWithInfo('with info panel', () => (
@@ -292,4 +271,12 @@ storiesOf('DayPickerRangeController', module)
       minDate={moment()}
       maxDate={moment().add(1, 'year')}
     />
+    ))
+    .addWithInfo('with no animation', () => (
+        <DayPickerRangeControllerWrapper
+          onOutsideClick={action('DayPickerRangeController::onOutsideClick')}
+          onPrevMonthClick={action('DayPickerRangeController::onPrevMonthClick')}
+          onNextMonthClick={action('DayPickerRangeController::onNextMonthClick')}
+          transitionDuration={0}
+        />
 ));

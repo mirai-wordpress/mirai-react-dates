@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { storiesOf } from '@storybook/react';
 
-import { VERTICAL_ORIENTATION, ANCHOR_RIGHT } from '../constants';
+import { VERTICAL_ORIENTATION, ANCHOR_RIGHT, OPEN_UP } from '../src/constants';
 
 import DateRangePickerWrapper from '../examples/DateRangePickerWrapper';
 
@@ -47,6 +47,14 @@ const TestCustomInfoPanel = () => (
 storiesOf('DRP - Calendar Props', module)
   .addWithInfo('default', () => (
     <DateRangePickerWrapper autoFocus />
+  ))
+  .addWithInfo('open up', () => (
+    <div style={{ marginTop: '450px' }}>
+      <DateRangePickerWrapper
+        openDirection={OPEN_UP}
+        autoFocus
+      />
+    </div>
   ))
   .addWithInfo('single month', () => (
     <DateRangePickerWrapper numberOfMonths={1} autoFocus />
@@ -151,4 +159,29 @@ storiesOf('DRP - Calendar Props', module)
       isRTL
       autoFocus
     />
+  ))
+  .addWithInfo('with custom first day of week', () => (
+    <DateRangePickerWrapper
+      firstDayOfWeek={3}
+      autoFocus
+    />
+  ))
+  .addWithInfo('with onClose handler', () => (
+    <DateRangePickerWrapper
+      onClose={({ startDate, endDate }) => alert(`onClose: startDate = ${startDate}, endDate = ${endDate}`)}
+      autoFocus
+    />
+  ))
+  .addWithInfo('with no animation', () => (
+    <DateRangePickerWrapper
+      transitionDuration={0}
+      autoFocus
+    />
+  ))
+  .addWithInfo('with custom vertical spacing', () => (
+    <DateRangePickerWrapper
+      verticalSpacing={0}
+      autoFocus
+    />
   ));
+

@@ -8,7 +8,7 @@
 
 [![npm badge][npm-badge-png]][package-url]
 
-> An easily internationalizable, mobile-friendly datepicker library for the web.
+> An easily internationalizable, accessible, mobile-friendly datepicker library for the web.
 
 ![react-dates in action](https://raw.githubusercontent.com/mirai-wordpress/mirai-react-dates/master/react-dates-demo.gif)
 
@@ -19,7 +19,7 @@ To run that demo on your own computer:
 * Clone this repository
 * `npm install`
 * `npm run storybook`
-* Visit http://localhost:9001/
+* Visit http://localhost:6006/
 
 ## Getting Started
 ### Install dependencies
@@ -37,12 +37,20 @@ Ensure packages are installed with correct version numbers by running:
   npm install --save react-dates moment@>=#.## react@>=#.## react-dom@>=#.## react-addons-shallow-compare@>=#.##
   ```
 
+### Initialize
+```js
+import 'react-dates/initialize';
+```
+
+As of v13.0.0 of `react-dates`, this project relies on `react-with-styles`. If you want to continue using CSS stylesheets and classes, there is a little bit of extra set-up required to get things going. As such, you need to import `react-dates/initialize` to set up class names on our components. This import should go at the top of your application as you won't be able to import any `react-dates` components without it.
+
+Note: This component assumes `box-sizing: border-box` is set globally in your page's CSS.
+
 ### Include component
 ```js
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 ```
 
-### Include CSS
 #### Webpack
 Using Webpack with CSS loader, add the following import to your app:
 ```js
@@ -51,6 +59,30 @@ import 'react-dates/lib/css/_datepicker.css';
 
 #### Without Webpack:
 Create a CSS file with the contents of `require.resolve('react-dates/lib/css/_datepicker.css')` and include it in your html `<head>` section.
+
+To see this in action, you can check out https://github.com/majapw/react-dates-demo which adds `react-dates` on top of a simple `create-react-app` setup.
+
+#### Overriding styles
+Right now, the easiest way to tweak `react-dates` to your heart's content is to create another stylesheet to override the default react-dates styles. For example, you could create a file named `react_dates_overrides.css` with the following contents:
+
+```css
+.CalendarDay__highlighted_calendar {
+  background: #82E0AA;
+  color: #186A3B;
+}
+
+.CalendarDay__highlighted_calendar:hover {
+  background: #58D68D;
+  color: #186A3B;
+}
+
+.CalendarDay__highlighted_calendar:active {
+  background: #58D68D;
+  color: #186A3B;
+}
+```
+
+This would override the background and text colors applied to highlighted calendar days. You can use this method with the default set-up to override any aspect of the calendar to have it better fit to your particular needs.
 
 ### Make some awesome datepickers
 
@@ -91,6 +123,8 @@ showDefaultInputIcon: PropTypes.bool,
 customInputIcon: PropTypes.node,
 customArrowIcon: PropTypes.node,
 customCloseIcon: PropTypes.node,
+noBorder: PropTypes.bool,
+block: PropTypes.bool,
 
 // calendar presentation and interaction related props
 renderMonth: PropTypes.func,
@@ -102,6 +136,7 @@ withFullScreenPortal: PropTypes.bool,
 daySize: nonNegativeInteger,
 isRTL: PropTypes.bool,
 initialVisibleMonth: PropTypes.func,
+firstDayOfWeek: PropTypes.oneOf([0, 1, 2, 3, 4, 5, 6]),
 numberOfMonths: PropTypes.number,
 keepOpenOnDateSelect: PropTypes.bool,
 reopenPickerOnClearDates: PropTypes.bool,
@@ -114,9 +149,11 @@ navNext: PropTypes.node,
 onPrevMonthClick: PropTypes.func,
 onNextMonthClick: PropTypes.func,
 onClose: PropTypes.func,
+transitionDuration: nonNegativeInteger, // milliseconds
 
 // day presentation and interaction related props
-renderDay: PropTypes.func,
+renderCalendarDay: PropTypes.func,
+renderDayContents: PropTypes.func,
 minimumNights: PropTypes.number,
 enableOutsideDays: PropTypes.bool,
 isDayBlocked: PropTypes.func,
@@ -132,6 +169,7 @@ maxDate: undefined, // momentPropTypes.momentObj or null,
 // internationalization props
 displayFormat: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
 monthFormat: PropTypes.string,
+weekDayFormat: PropTypes.string,
 phrases: PropTypes.shape(getPhrasePropTypes(DateRangePickerPhrases)),
 ```
 
@@ -165,6 +203,8 @@ showClearDate: PropTypes.bool,
 customCloseIcon: PropTypes.node,
 showDefaultInputIcon: PropTypes.bool,
 customInputIcon: PropTypes.node,
+noBorder: PropTypes.bool,
+block: PropTypes.bool,
 
 // calendar presentation and interaction related props
 renderMonth: PropTypes.func,
@@ -174,6 +214,7 @@ horizontalMargin: PropTypes.number,
 withPortal: PropTypes.bool,
 withFullScreenPortal: PropTypes.bool,
 initialVisibleMonth: PropTypes.func,
+firstDayOfWeek: PropTypes.oneOf([0, 1, 2, 3, 4, 5, 6]),
 numberOfMonths: PropTypes.number,
 keepOpenOnDateSelect: PropTypes.bool,
 reopenPickerOnClearDate: PropTypes.bool,
@@ -188,13 +229,15 @@ navNext: PropTypes.node,
 onPrevMonthClick: PropTypes.func,
 onNextMonthClick: PropTypes.func,
 onClose: PropTypes.func,
+transitionDuration: nonNegativeInteger, // milliseconds
 
 // new props to set minimum date and maximum date. This props lock the months in this ways
 minDate: undefined, // momentPropTypes.momentObj or null,
 maxDate: undefined, // momentPropTypes.momentObj or null,
 
 // day presentation and interaction related props
-renderDay: PropTypes.func,
+renderCalendarDay: PropTypes.func,
+renderDayContents: PropTypes.func,
 enableOutsideDays: PropTypes.bool,
 isDayBlocked: PropTypes.func,
 isOutsideRange: PropTypes.func,
@@ -203,6 +246,7 @@ isDayHighlighted: PropTypes.func,
 // internationalization props
 displayFormat: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
 monthFormat: PropTypes.string,
+weekDayFormat: PropTypes.string,
 phrases: PropTypes.shape(getPhrasePropTypes(SingleDatePickerPhrases)),
 ```
 
@@ -233,15 +277,18 @@ The following is a list of other *OPTIONAL* props you may provide to the `DayPic
   renderCalendarInfo: PropTypes.func,
   onOutsideClick: PropTypes.func,
   keepOpenOnDateSelect: PropTypes.bool,
+  noBorder: PropTypes.bool,
 
   // navigation related props
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
   onPrevMonthClick: PropTypes.func,
   onNextMonthClick: PropTypes.func,
+  transitionDuration: nonNegativeInteger, // milliseconds
 
   // day presentation and interaction related props
-  renderDay: PropTypes.func,
+  renderCalendarDay: PropTypes.func,
+  renderDayContents: PropTypes.func,
   minimumNights: PropTypes.number,
   // new prop to set maximum nights selectables
   maximumNights: PropTypes.number,
@@ -257,31 +304,77 @@ The following is a list of other *OPTIONAL* props you may provide to the `DayPic
   
   // internationalization props
   monthFormat: PropTypes.string,
+  weekDayFormat: PropTypes.string,
   phrases: PropTypes.shape(getPhrasePropTypes(DayPickerPhrases)),
 />
 ```
 
-## Theming
+## Localization
 
-react-dates comes with a set of SCSS variables that can be overridden to add your own project-specific theming. Override any variables found in `css/variables.scss` with your own and then import `~react-dates/css/styles.scss` (and `~react-dates/css/variables.scss` if you're only overriding a few). If you were using [sass-loader](https://github.com/jtangelder/sass-loader) with webpack, the code below would properly override the selected variables:
-```scss
-//overriding default sass variables with my project's colors
-$react-dates-color-primary: $some-color-specific-to-my-project;
-$react-dates-color-secondary: $some-other-color-specific-to-my-project;
-@import '~react-dates/css/variables.scss';
-@import '~react-dates/css/styles.scss';
+[Moment.js](http://momentjs.com) is a peer dependency of `react-dates`, so `react-dates` will use a single instance of `moment` which is imported in the user's project. To load a locale it is enough to invoke `moment.locale` in the component where `moment` is imported, with the [locale key](http://momentjs.com/docs/#/i18n/) of choice, e.g.:
+```
+moment.locale('pl'); // Polish
 ```
 
-[package-url]: https://npmjs.org/package/mirai-react-dates
-[npm-version-svg]: http://versionbadg.es/mirai-wordpress/mirai-react-dates.svg
-[travis-svg]: https://travis-ci.org/mirai-wordpress/mirai-react-dates.svg
-[travis-url]: https://travis-ci.org/mirai-wordpress/mirai-react-dates
-[deps-svg]: https://david-dm.org/mirai-wordpress/mirai-react-dates.svg
-[deps-url]: https://david-dm.org/mirai-wordpress/mirai-react-dates
-[dev-deps-svg]: https://david-dm.org/mirai-wordpress/mirai-react-dates/dev-status.svg
-[dev-deps-url]: https://david-dm.org/mirai-wordpress/mirai-react-dates#info=devDependencies
-[npm-badge-png]: https://nodei.co/npm/mirai-react-dates.png?downloads=true&stars=true
-[license-image]: http://img.shields.io/npm/l/mirai-react-dates.svg
+## Advanced
+
+`react-dates` no longer relies strictly on CSS, but rather relies on `react-with-styles` as an abstraction layer between how styles are applied and how they are written. The instructions above will get the project working out of the box, but there's a lot more customization that can be done.
+
+### Interfaces
+
+The `react-dates/initialize` script actually relies on [react-with-styles-interface-css](https://github.com/airbnb/react-with-styles-interface-css) under the hood. If you are interested in a different solution for styling in your project, you can do your own initialization of a another [interface](https://github.com/airbnb/react-with-styles/blob/master/README.md#interfaces). At Airbnb, for instance, we rely on [Aphrodite](https://github.com/Khan/aphrodite) under the hood and therefore use the Aphrodite interface for `react-with-styles`. If you want to do the same, you would use the following pattern:
+```js
+import ThemedStyleSheet from 'react-with-styles/lib/ThemedStyleSheet';
+import aphroditeInterface from 'react-with-styles-interface-aphrodite';
+import DefaultTheme from 'react-dates/lib/theme/DefaultTheme';
+
+ThemedStyleSheet.registerInterface(aphroditeInterface);
+ThemedStyleSheet.registerTheme(DefaultTheme);
+```
+
+The above code has to be run before any `react-dates` component is imported. Otherwise, you will get an error. Also note that if you register any custom interface manually, you *must* also manually register a theme.
+
+### Theming
+`react-dates` also now supports a different way to theme. You can see the default theme values in [this file](https://github.com/airbnb/react-dates/blob/master/src/theme/DefaultTheme.js) and you would override them in the following manner:
+```js
+import ThemedStyleSheet from 'react-with-styles/lib/ThemedStyleSheet';
+import aphroditeInterface from 'react-with-styles-interface-aphrodite';
+import DefaultTheme from 'react-dates/lib/theme/DefaultTheme';
+
+ThemedStyleSheet.registerInterface(aphroditeInterface);
+ThemedStyleSheet.registerTheme({
+  reactDates: {
+    ...DefaultTheme.reactDates,
+    color: {
+      ...DefaultTheme.reactDates.color,
+      highlighted: {
+        backgroundColor: '#82E0AA',
+        backgroundColor_active: '#58D68D',
+        backgroundColor_hover: '#58D68D',
+        color: '#186A3B',
+        color_active: '#186A3B',
+        color_hover: '#186A3B',
+      },
+    },
+  },
+});
+```
+
+The above code would use shades of green instead of shades of yellow for the highlight color on `CalendarDay` components. Note that you *must* register an interface if you manually register a theme. One will not work without the other.
+
+#### A note on using `react-with-styles-interface-css`
+The default interface that `react-dates` ships with is the [CSS interface](https://github.com/airbnb/react-with-styles-interface-css). If you want to use this interface along with the theme registration method, you will need to rebuild the core `_datepicker.css` file. We do not currently expose a utility method to build this file, but you can follow along with the code in https://github.com/airbnb/react-dates/blob/master/scripts/buildCSS.js to build your own custom themed CSS file.
+
+[package-url]: https://npmjs.org/package/react-dates
+[npm-version-svg]: http://versionbadg.es/airbnb/react-dates.svg
+[travis-svg]: https://travis-ci.org/airbnb/react-dates.svg
+[travis-url]: https://travis-ci.org/airbnb/react-dates
+[deps-svg]: https://david-dm.org/airbnb/react-dates.svg
+[deps-url]: https://david-dm.org/airbnb/react-dates
+[dev-deps-svg]: https://david-dm.org/airbnb/react-dates/dev-status.svg
+[dev-deps-url]: https://david-dm.org/airbnb/react-dates#info=devDependencies
+[npm-badge-png]: https://nodei.co/npm/react-dates.png?downloads=true&stars=true
+[license-image]: http://img.shields.io/npm/l/react-dates.svg
 [license-url]: LICENSE
 [downloads-image]: http://img.shields.io/npm/dm/mirai-react-dates.svg
 [downloads-url]: http://npm-stat.com/charts.html?package=mirai-react-dates

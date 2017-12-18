@@ -6,8 +6,11 @@ import { DateRangePickerPhrases } from '../defaultPhrases';
 import getPhrasePropTypes from '../utils/getPhrasePropTypes';
 
 import FocusedInputShape from '../shapes/FocusedInputShape';
+import IconPositionShape from '../shapes/IconPositionShape';
 import OrientationShape from '../shapes/OrientationShape';
 import anchorDirectionShape from '../shapes/AnchorDirectionShape';
+import openDirectionShape from '../shapes/OpenDirectionShape';
+import DayOfWeekShape from '../shapes/DayOfWeekShape';
 
 export default {
   // required props for a functional interactive DateRangePicker
@@ -31,26 +34,34 @@ export default {
   screenReaderInputMessage: PropTypes.string,
   showClearDates: PropTypes.bool,
   showDefaultInputIcon: PropTypes.bool,
+  inputIconPosition: IconPositionShape,
   customInputIcon: PropTypes.node,
   customArrowIcon: PropTypes.node,
   customCloseIcon: PropTypes.node,
+  noBorder: PropTypes.bool,
+  block: PropTypes.bool,
+  small: PropTypes.bool,
 
   // calendar presentation and interaction related props
   renderMonth: PropTypes.func,
   orientation: OrientationShape,
   anchorDirection: anchorDirectionShape,
+  openDirection: openDirectionShape,
   horizontalMargin: PropTypes.number,
   withPortal: PropTypes.bool,
   withFullScreenPortal: PropTypes.bool,
   daySize: nonNegativeInteger,
   isRTL: PropTypes.bool,
-
+  firstDayOfWeek: DayOfWeekShape,
   initialVisibleMonth: PropTypes.func,
   numberOfMonths: PropTypes.number,
   keepOpenOnDateSelect: PropTypes.bool,
   reopenPickerOnClearDates: PropTypes.bool,
   renderCalendarInfo: PropTypes.func,
   hideKeyboardShortcutsPanel: PropTypes.bool,
+  verticalHeight: nonNegativeInteger,
+  transitionDuration: nonNegativeInteger,
+  verticalSpacing: nonNegativeInteger,
 
   // navigation related props
   navPrev: PropTypes.node,
@@ -63,7 +74,8 @@ export default {
   maxDate: momentPropTypes.momentObj,
 
   // day presentation and interaction related props
-  renderDay: PropTypes.func,
+  renderCalendarDay: PropTypes.func,
+  renderDayContents: PropTypes.func,
   minimumNights: PropTypes.number,
   // Mirai new prop: maximum nights availables to select
   maximumNights: PropTypes.number,
@@ -77,5 +89,6 @@ export default {
   // internationalization props
   displayFormat: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   monthFormat: PropTypes.string,
+  weekDayFormat: PropTypes.string,
   phrases: PropTypes.shape(getPhrasePropTypes(DateRangePickerPhrases)),
 };

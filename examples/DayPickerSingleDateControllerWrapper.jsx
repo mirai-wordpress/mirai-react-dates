@@ -7,11 +7,10 @@ import moment from 'moment';
 import omit from 'lodash/omit';
 
 import DayPickerSingleDateController from '../src/components/DayPickerSingleDateController';
-import { defaultProps as DayPickerDefaultProps } from '../src/components/DayPicker';
 
 import ScrollableOrientationShape from '../src/shapes/ScrollableOrientationShape';
 
-import { HORIZONTAL_ORIENTATION } from '../constants';
+import { HORIZONTAL_ORIENTATION } from '../src/constants';
 import isInclusivelyAfterDay from '../src/utils/isInclusivelyAfterDay';
 
 const propTypes = forbidExtraProps({
@@ -21,7 +20,6 @@ const propTypes = forbidExtraProps({
   showInput: PropTypes.bool,
 
   keepOpenOnDateSelect: PropTypes.bool,
-  minimumNights: PropTypes.number,
   isOutsideRange: PropTypes.func,
   isDayBlocked: PropTypes.func,
   isDayHighlighted: PropTypes.func,
@@ -40,7 +38,8 @@ const propTypes = forbidExtraProps({
   onPrevMonthClick: PropTypes.func,
   onNextMonthClick: PropTypes.func,
   onOutsideClick: PropTypes.func,
-  renderDay: PropTypes.func,
+  renderCalendarDay: PropTypes.func,
+  renderDayContents: PropTypes.func,
 
   minDate: momentPropTypes.momentObj,
   maxDate: momentPropTypes.momentObj,
@@ -58,8 +57,8 @@ const defaultProps = {
   showInput: false,
 
   // day presentation and interaction related props
-  renderDay: null,
-  minimumNights: 1,
+  renderCalendarDay: undefined,
+  renderDayContents: null,
   isDayBlocked: () => false,
   isOutsideRange: day => !isInclusivelyAfterDay(day, moment()),
   isDayHighlighted: () => false,
@@ -68,7 +67,7 @@ const defaultProps = {
   // calendar presentation and interaction related props
   orientation: HORIZONTAL_ORIENTATION,
   withPortal: false,
-  initialVisibleMonth: DayPickerDefaultProps.initialVisibleMonth,
+  initialVisibleMonth: null,
   numberOfMonths: 2,
   onOutsideClick() {},
   keepOpenOnDateSelect: false,

@@ -1,13 +1,14 @@
+const calendarLabel = 'Calendar';
 const closeDatePicker = 'Close';
 const focusStartDate = 'Interact with the calendar and add the check-in date for your trip.';
 const clearDate = 'Clear Date';
 const clearDates = 'Clear Dates';
-const jumpToPrevMonth = 'Move backward to switch to the previous month';
-const jumpToNextMonth = 'Move forward to switch to the next month';
+const jumpToPrevMonth = 'Move backward to switch to the previous month.';
+const jumpToNextMonth = 'Move forward to switch to the next month.';
 const keyboardShortcuts = 'Keyboard Shortcuts';
-const showKeyboardShortcutsPanel = 'Open the keyboard shortcuts panel';
-const hideKeyboardShortcutsPanel = 'Close the shortcuts panel';
-const openThisPanel = 'Open this panel';
+const showKeyboardShortcutsPanel = 'Open the keyboard shortcuts panel.';
+const hideKeyboardShortcutsPanel = 'Close the shortcuts panel.';
+const openThisPanel = 'Open this panel.';
 const enterKey = 'Enter key';
 const leftArrowRightArrow = 'Right and left arrow keys';
 const upArrowDownArrow = 'up and down arrow keys';
@@ -15,12 +16,12 @@ const pageUpPageDown = 'page up and page down keys';
 const homeEnd = 'Home and end keys';
 const escape = 'Escape key';
 const questionMark = 'Question mark';
-const selectFocusedDate = 'Select the date in focus';
-const moveFocusByOneDay = 'Move backward (left) and forward (right) by one day';
-const moveFocusByOneWeek = 'Move backward (up) and forward (down) by one week';
-const moveFocusByOneMonth = 'Switch months';
-const moveFocustoStartAndEndOfWeek = 'Go to the first or last day of a week';
-const returnFocusToInput = 'Return to the date input field';
+const selectFocusedDate = 'Select the date in focus.';
+const moveFocusByOneDay = 'Move backward (left) and forward (right) by one day.';
+const moveFocusByOneWeek = 'Move backward (up) and forward (down) by one week.';
+const moveFocusByOneMonth = 'Switch months.';
+const moveFocustoStartAndEndOfWeek = 'Go to the first or last day of a week.';
+const returnFocusToInput = 'Return to the date input field.';
 const keyboardNavigationInstructions = `Press the down arrow key to interact with the calendar and
   select a date. Press the question mark key to get the keyboard shortcuts for changing dates.`;
 
@@ -33,6 +34,7 @@ const chooseAvailableDate = ({ date }) => date;
 const dateIsUnavailable = ({ date }) => `Not available. ${date}`;
 
 export default {
+  calendarLabel,
   closeDatePicker,
   focusStartDate,
   clearDate,
@@ -64,6 +66,7 @@ export default {
 };
 
 export const DateRangePickerPhrases = {
+  calendarLabel,
   closeDatePicker,
   clearDates,
   focusStartDate,
@@ -99,6 +102,7 @@ export const DateRangePickerInputPhrases = {
 };
 
 export const SingleDatePickerPhrases = {
+  calendarLabel,
   closeDatePicker,
   clearDate,
   jumpToPrevMonth,
@@ -131,6 +135,7 @@ export const SingleDatePickerInputPhrases = {
 };
 
 export const DayPickerPhrases = {
+  calendarLabel,
   jumpToPrevMonth,
   jumpToNextMonth,
   keyboardShortcuts,

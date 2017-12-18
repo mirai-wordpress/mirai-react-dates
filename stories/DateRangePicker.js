@@ -4,6 +4,9 @@ import momentJalaali from 'moment-jalaali';
 import { storiesOf } from '@storybook/react';
 import isSameDay from '../src/utils/isSameDay';
 
+import {
+  VERTICAL_ORIENTATION,
+} from '../src/constants';
 
 import DateRangePickerWrapper from '../examples/DateRangePickerWrapper';
 
@@ -96,9 +99,8 @@ storiesOf('DateRangePicker (DRP)', module)
     moment.locale('fa');
     return (
       <DateRangePickerWrapper
-        placeholder="تقویم فارسی"
         renderMonth={month => momentJalaali(month).format('jMMMM jYYYY')}
-        renderDay={day => momentJalaali(day).format('jD')}
+        renderDayContents={day => momentJalaali(day).format('jD')}
       />
     )
   })
@@ -126,4 +128,10 @@ storiesOf('DateRangePicker (DRP)', module)
          maxDate={moment().add(1, "year")}
       />
     );
-  });
+  })
+  .addWithInfo('vertical with custom height', () => (
+    <DateRangePickerWrapper
+      orientation={VERTICAL_ORIENTATION}
+      verticalHeight={568}
+    />
+  ));

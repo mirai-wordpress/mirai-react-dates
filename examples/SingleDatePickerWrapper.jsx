@@ -8,7 +8,7 @@ import SingleDatePicker from '../src/components/SingleDatePicker';
 
 import { SingleDatePickerPhrases } from '../src/defaultPhrases';
 import SingleDatePickerShape from '../src/shapes/SingleDatePickerShape';
-import { HORIZONTAL_ORIENTATION, ANCHOR_LEFT } from '../constants';
+import { HORIZONTAL_ORIENTATION, ANCHOR_LEFT } from '../src/constants';
 import isInclusivelyAfterDay from '../src/utils/isInclusivelyAfterDay';
 
 const propTypes = {
@@ -38,6 +38,9 @@ const defaultProps = {
   showClearDate: false,
   showDefaultInputIcon: false,
   customInputIcon: null,
+  block: false,
+  small: false,
+  verticalSpacing: undefined,
 
   // calendar presentation and interaction related props
   renderMonth: null,
@@ -57,9 +60,11 @@ const defaultProps = {
   navNext: null,
   onPrevMonthClick() {},
   onNextMonthClick() {},
+  onClose() {},
 
   // day presentation and interaction related props
-  renderDay: null,
+  renderCalendarDay: undefined,
+  renderDayContents: null,
   enableOutsideDays: false,
   isDayBlocked: () => false,
   isOutsideRange: day => !isInclusivelyAfterDay(day, moment()),

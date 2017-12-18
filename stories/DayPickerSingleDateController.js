@@ -2,16 +2,16 @@ import React from 'react';
 import moment from 'moment';
 import { storiesOf, action } from '@storybook/react';
 
+import InfoPanelDecorator, { monospace } from './InfoPanelDecorator';
+
 import isSameDay from '../src/utils/isSameDay';
 import isInclusivelyAfterDay from '../src/utils/isInclusivelyAfterDay';
 
-import { VERTICAL_ORIENTATION } from '../constants';
+import { VERTICAL_ORIENTATION } from '../src/constants';
 
 import DayPickerSingleDateControllerWrapper from '../examples/DayPickerSingleDateControllerWrapper';
 
-const monospace = text => `<span style="font-family:monospace;background:#f7f7f7">${text}</span>`;
-
-const dayPickerRangeControllerInfo = `The ${monospace('DayPickerSingleDateController')} component is a
+const dayPickerSingleDateControllerInfo = `The ${monospace('DayPickerSingleDateController')} component is a
   fully controlled version of the ${monospace('DayPicker')} that has built-in rules for selecting a
   single date. Unlike the ${monospace('DayPicker')}, which requires the consumer to explicitly define
   ${monospace('onDayMouseEnter')}, ${monospace('onDayMouseLeave')}, and ${monospace('onDayClick')}
@@ -27,27 +27,6 @@ const dayPickerRangeControllerInfo = `The ${monospace('DayPickerSingleDateContro
   The ${monospace('DayPickerSingleDateController')} is particularly useful if you are interested in the
   ${monospace('SingleDatePicker')} functionality and calendar presentation, but would like to
   implement your own input.`;
-
-const InfoPanel = ({ text }) => (
-  <div
-    style={{
-      backgroundColor: '#fff',
-      fontColor: '#3c3f40',
-      fontSize: 14,
-      margin: '8px 0',
-      padding: 16,
-    }}
-  >
-    <span dangerouslySetInnerHTML={{ __html: text }} />
-  </div>
-);
-
-const InfoPanelDecorator = story => (
-  <div>
-    <InfoPanel text={dayPickerRangeControllerInfo} />
-    {story()}
-  </div>
-);
 
 const TestPrevIcon = () => (
   <span
@@ -99,7 +78,7 @@ const datesList = [
 ];
 
 storiesOf('DayPickerSingleDateController', module)
-  .addDecorator(InfoPanelDecorator)
+  .addDecorator(InfoPanelDecorator(dayPickerSingleDateControllerInfo))
   .addWithInfo('default', () => (
     <DayPickerSingleDateControllerWrapper
       onOutsideClick={action('DayPickerSingleDateController::onOutsideClick')}
@@ -224,7 +203,7 @@ storiesOf('DayPickerSingleDateController', module)
       onOutsideClick={action('DayPickerSingleDateController::onOutsideClick')}
       onPrevMonthClick={action('DayPickerSingleDateController::onPrevMonthClick')}
       onNextMonthClick={action('DayPickerSingleDateController::onNextMonthClick')}
-      renderDay={day => day.format('ddd')}
+      renderDayContents={day => day.format('ddd')}
     />
   ))
   .addWithInfo('with info panel', () => (
@@ -245,6 +224,16 @@ storiesOf('DayPickerSingleDateController', module)
       maxDate={moment().add(1, "year")}
       minDate={moment()}
       numberOfMonths={1}
+    />
+  ))
+  .addWithInfo('with no animation', () => (
+    <DayPickerSingleDateControllerWrapper
+      onOutsideClick={action('DayPickerSingleDateController::onOutsideClick')}
+      onPrevMonthClick={action('DayPickerSingleDateController::onPrevMonthClick')}
+      onNextMonthClick={action('DayPickerSingleDateController::onNextMonthClick')}
+      transitionDuration={0}
+
+
     />
   ));
 

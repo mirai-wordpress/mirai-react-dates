@@ -3,21 +3,23 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import momentPropTypes from 'react-moment-proptypes';
-import { forbidExtraProps } from 'airbnb-prop-types';
+import { forbidExtraProps, nonNegativeInteger } from 'airbnb-prop-types';
+import openDirectionShape from '../shapes/OpenDirectionShape';
 
 import { DateRangePickerInputPhrases } from '../defaultPhrases';
 import getPhrasePropTypes from '../utils/getPhrasePropTypes';
 
 import DateRangePickerInput from './DateRangePickerInput';
 
+import IconPositionShape from '../shapes/IconPositionShape';
+
 import toMomentObject from '../utils/toMomentObject';
 import toLocalizedDateString from '../utils/toLocalizedDateString';
-import toISODateString from '../utils/toISODateString';
 
 import isInclusivelyAfterDay from '../utils/isInclusivelyAfterDay';
-import isInclusivelyBeforeDay from '../utils/isInclusivelyBeforeDay';
+import isBeforeDay from '../utils/isBeforeDay';
 
-import { START_DATE, END_DATE } from '../../constants';
+import { START_DATE, END_DATE, ICON_BEFORE_POSITION, OPEN_DOWN } from '../constants';
 
 const propTypes = forbidExtraProps({
   startDate: momentPropTypes.momentObj,
@@ -34,21 +36,28 @@ const propTypes = forbidExtraProps({
   showClearDates: PropTypes.bool,
   showCaret: PropTypes.bool,
   showDefaultInputIcon: PropTypes.bool,
+  inputIconPosition: IconPositionShape,
   disabled: PropTypes.bool,
   required: PropTypes.bool,
   readOnly: PropTypes.bool,
+  openDirection: openDirectionShape,
+  noBorder: PropTypes.bool,
+  block: PropTypes.bool,
+  small: PropTypes.bool,
+  verticalSpacing: nonNegativeInteger,
 
   keepOpenOnDateSelect: PropTypes.bool,
   reopenPickerOnClearDates: PropTypes.bool,
   withFullScreenPortal: PropTypes.bool,
+  minimumNights: nonNegativeInteger,
   isOutsideRange: PropTypes.func,
   displayFormat: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
 
   onFocusChange: PropTypes.func,
   onClose: PropTypes.func,
   onDatesChange: PropTypes.func,
-  onArrowDown: PropTypes.func,
-  onQuestionMark: PropTypes.func,
+  onKeyDownArrowDown: PropTypes.func,
+  onKeyDownQuestionMark: PropTypes.func,
 
   customInputIcon: PropTypes.node,
   customArrowIcon: PropTypes.node,
@@ -78,21 +87,28 @@ const defaultProps = {
   showClearDates: false,
   showCaret: false,
   showDefaultInputIcon: false,
+  inputIconPosition: ICON_BEFORE_POSITION,
   disabled: false,
   required: false,
   readOnly: false,
+  openDirection: OPEN_DOWN,
+  noBorder: false,
+  block: false,
+  small: false,
+  verticalSpacing: undefined,
 
   keepOpenOnDateSelect: false,
   reopenPickerOnClearDates: false,
   withFullScreenPortal: false,
+  minimumNights: 1,
   isOutsideRange: day => !isInclusivelyAfterDay(day, moment()),
   displayFormat: () => moment.localeData().longDateFormat('L'),
 
   onFocusChange() {},
   onClose() {},
   onDatesChange() {},
-  onArrowDown() {},
-  onQuestionMark() {},
+  onKeyDownArrowDown() {},
+  onKeyDownQuestionMark() {},
 
   customInputIcon: null,
   customArrowIcon: null,
@@ -120,7 +136,12 @@ export default class DateRangePickerInputController extends React.Component {
   }
 
   onClearFocus() {
-    const { onFocusChange, onClose, startDate, endDate } = this.props;
+    const {
+      onFocusChange,
+      onClose,
+      startDate,
+      endDate,
+    } = this.props;
 
     onFocusChange(null);
     onClose({ startDate, endDate });
@@ -130,6 +151,7 @@ export default class DateRangePickerInputController extends React.Component {
     const {
       startDate,
       isOutsideRange,
+      minimumNights,
       keepOpenOnDateSelect,
       onDatesChange,
     } = this.props;
@@ -137,7 +159,7 @@ export default class DateRangePickerInputController extends React.Component {
     const endDate = toMomentObject(endDateString, this.getDisplayFormat());
 
     const isEndDateValid = endDate && !isOutsideRange(endDate) &&
-      !isInclusivelyBeforeDay(endDate, startDate);
+      !(startDate && isBeforeDay(endDate, startDate.clone().add(minimumNights, 'days')));
     if (isEndDateValid) {
       onDatesChange({ startDate, endDate });
       if (!keepOpenOnDateSelect) this.onClearFocus();
@@ -150,7 +172,12 @@ export default class DateRangePickerInputController extends React.Component {
   }
 
   onEndDateFocus() {
-    const { startDate, onFocusChange, withFullScreenPortal, disabled } = this.props;
+    const {
+      startDate,
+      onFocusChange,
+      withFullScreenPortal,
+      disabled,
+    } = this.props;
 
     if (!startDate && withFullScreenPortal && !disabled) {
       // When the datepicker is full screen, we never want to focus the end date first
@@ -166,10 +193,15 @@ export default class DateRangePickerInputController extends React.Component {
     const startDate = toMomentObject(startDateString, this.getDisplayFormat());
 
     let { endDate } = this.props;
-    const { isOutsideRange, onDatesChange, onFocusChange } = this.props;
+    const {
+      isOutsideRange,
+      minimumNights,
+      onDatesChange,
+      onFocusChange,
+    } = this.props;
     const isStartDateValid = startDate && !isOutsideRange(startDate);
     if (isStartDateValid) {
-      if (isInclusivelyBeforeDay(endDate, startDate)) {
+      if (startDate && isBeforeDay(endDate, startDate.clone().add(minimumNights, 'days'))) {
         endDate = null;
       }
 
@@ -224,33 +256,35 @@ export default class DateRangePickerInputController extends React.Component {
       showClearDates,
       showCaret,
       showDefaultInputIcon,
+      inputIconPosition,
       customInputIcon,
       customArrowIcon,
       customCloseIcon,
       disabled,
       required,
       readOnly,
+      openDirection,
       isFocused,
       phrases,
-      onArrowDown,
-      onQuestionMark,
+      onKeyDownArrowDown,
+      onKeyDownQuestionMark,
       isRTL,
+      noBorder,
+      block,
+      small,
+      verticalSpacing,
     } = this.props;
 
     const startDateString = this.getDateString(startDate);
-    const startDateValue = toISODateString(startDate);
     const endDateString = this.getDateString(endDate);
-    const endDateValue = toISODateString(endDate);
 
     return (
       <DateRangePickerInput
         startDate={startDateString}
-        startDateValue={startDateValue}
         startDateId={startDateId}
         startDatePlaceholderText={startDatePlaceholderText}
         isStartDateFocused={isStartDateFocused}
         endDate={endDateString}
-        endDateValue={endDateValue}
         endDateId={endDateId}
         endDatePlaceholderText={endDatePlaceholderText}
         isEndDateFocused={isEndDateFocused}
@@ -258,8 +292,10 @@ export default class DateRangePickerInputController extends React.Component {
         disabled={disabled}
         required={required}
         readOnly={readOnly}
+        openDirection={openDirection}
         showCaret={showCaret}
         showDefaultInputIcon={showDefaultInputIcon}
+        inputIconPosition={inputIconPosition}
         customInputIcon={customInputIcon}
         customArrowIcon={customArrowIcon}
         customCloseIcon={customCloseIcon}
@@ -273,9 +309,13 @@ export default class DateRangePickerInputController extends React.Component {
         showClearDates={showClearDates}
         onClearDates={this.clearDates}
         screenReaderMessage={screenReaderMessage}
-        onArrowDown={onArrowDown}
-        onQuestionMark={onQuestionMark}
+        onKeyDownArrowDown={onKeyDownArrowDown}
+        onKeyDownQuestionMark={onKeyDownQuestionMark}
         isRTL={isRTL}
+        noBorder={noBorder}
+        block={block}
+        small={small}
+        verticalSpacing={verticalSpacing}
       />
     );
   }
