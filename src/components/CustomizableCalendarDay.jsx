@@ -64,7 +64,7 @@ const propTypes = forbidExtraProps({
   selectedEndStyles: DayStyleShape,
   selectedStyles: DayStyleShape,
   afterHoveredStartStyles: DayStyleShape,
-
+  importantDayStyles: DayStyleShape,
   // internationalization
   phrases: PropTypes.shape(getPhrasePropTypes(CalendarDayPhrases)),
 });
@@ -162,6 +162,7 @@ class CustomizableCalendarDay extends React.Component {
       todayStyles: todayStylesWithHover,
       highlightedCalendarStyles: highlightedCalendarStylesWithHover,
       blockedMinNightsStyles: blockedMinNightsStylesWithHover,
+      blockedMaxNightsStyles: blockedMaxNightsStylesWithHover,
       blockedCalendarStyles: blockedCalendarStylesWithHover,
       blockedOutOfRangeStyles: blockedOutOfRangeStylesWithHover,
       hoveredSpanStyles: hoveredSpanStylesWithHover,
@@ -171,6 +172,7 @@ class CustomizableCalendarDay extends React.Component {
       selectedEndStyles: selectedEndStylesWithHover,
       selectedStyles: selectedStylesWithHover,
       afterHoveredStartStyles: afterHoveredStartStylesWithHover,
+      importantDayStyles: importantDayStylesWithHover
     } = this.props;
 
     const { isHovered } = this.state;
@@ -192,6 +194,7 @@ class CustomizableCalendarDay extends React.Component {
       modifiers.has('blocked-minimum-nights')
       || modifiers.has('blocked-calendar')
       || modifiers.has('blocked-out-of-range')
+      || modifiers.has('blocked-maximum-nights')
     );
 
     const selected = (
@@ -205,6 +208,12 @@ class CustomizableCalendarDay extends React.Component {
       || modifiers.has('after-hovered-start')
     );
 
+    var filterImportantDayStyles = Array.from(modifiers).filter(modifier => {
+        return modifier.startsWith("important-calendar-");
+    }).map(importantDay => {
+        return importantDay.substring("important-calendar-".length);
+    });
+    
     const isOutsideRange = modifiers.has('blocked-out-of-range');
 
     const defaultStyles = getStyles(defaultStylesWithHover, isHovered);
@@ -212,6 +221,7 @@ class CustomizableCalendarDay extends React.Component {
     const todayStyles = getStyles(todayStylesWithHover, isHovered);
     const highlightedCalendarStyles = getStyles(highlightedCalendarStylesWithHover, isHovered);
     const blockedMinNightsStyles = getStyles(blockedMinNightsStylesWithHover, isHovered);
+    const blockedMaxNightsStyles = getStyles(blockedMaxNightsStylesWithHover, isHovered);
     const blockedCalendarStyles = getStyles(blockedCalendarStylesWithHover, isHovered);
     const blockedOutOfRangeStyles = getStyles(blockedOutOfRangeStylesWithHover, isHovered);
     const hoveredSpanStyles = getStyles(hoveredSpanStylesWithHover, isHovered);
@@ -221,7 +231,23 @@ class CustomizableCalendarDay extends React.Component {
     const selectedEndStyles = getStyles(selectedEndStylesWithHover, isHovered);
     const selectedStyles = getStyles(selectedStylesWithHover, isHovered);
     const afterHoveredStartStyles = getStyles(afterHoveredStartStylesWithHover, isHovered);
-
+    
+    const importantDayStylesWithHoverFiltered = filterImportantDayStyles.filter(importantDay => {
+        return importantDayStylesWithHover[importantDay] !== undefined;
+    });
+    
+    const importantDayStylesCustom = Object.keys(importantDayStylesWithHover).filter(importantDayStyle => {
+        return importantDayStylesWithHoverFiltered.includes(importantDayStyle);
+    }).map(importantDayStyle => getStyles(importantDayStylesWithHover[importantDayStyle], isHovered));
+    
+    var hasImportantDayStyles = false;
+    var importantDayStyles = filterImportantDayStyles.map(importantDay => {
+      if (styles["CalendarDay__" + importantDay] !== undefined) {
+        hasImportantDayStyles = true;
+        return styles["CalendarDay__" + importantDay];
+      }
+    });
+    const hasCustomImportantDays = importantDayStylesWithHoverFiltered.length > 0 && importantDayStylesCustom.length > 0;
     const hasCustomSelectedStyles =
       defaultStyles ||
       (selected && selectedStyles) ||
@@ -235,12 +261,14 @@ class CustomizableCalendarDay extends React.Component {
       (modifiers.has('today') && todayStyles) ||
       (modifiers.has('highlighted-calendar') && highlightedCalendarStyles) ||
       (modifiers.has('blocked-minimum-nights') && blockedMinNightsStyles) ||
+      (modifiers.has('blocked-maximum-nights') && blockedMaxNightsStyles) ||
       (modifiers.has('blocked-calendar') && blockedCalendarStyles) ||
       (modifiers.has('last-in-range') && lastInRangeStyles) ||
       (modifiers.has('selected-span') && selectedSpanStyles) ||
       (isOutsideRange && blockedOutOfRangeStyles) ||
       hasCustomSelectedStyles ||
-      hasCustomHoveredStyles;
+      hasCustomHoveredStyles || 
+      hasCustomImportantDays;
 
     return (
       <td
@@ -253,7 +281,9 @@ class CustomizableCalendarDay extends React.Component {
             isOutsideDay && outsideStyles,
             modifiers.has('today') && todayStyles,
             modifiers.has('highlighted-calendar') && highlightedCalendarStyles,
+            hasCustomImportantDays && importantDayStylesCustom,
             modifiers.has('blocked-minimum-nights') && blockedMinNightsStyles,
+            modifiers.has('blocked-maximum-nights') && blockedMaxNightsStyles,
             modifiers.has('blocked-calendar') && blockedCalendarStyles,
             hoveredSpan && hoveredSpanStyles,
             modifiers.has('after-hovered-start') && afterHoveredStartStyles,
@@ -270,7 +300,9 @@ class CustomizableCalendarDay extends React.Component {
             isOutsideDay && styles.CalendarDay__outside,
             modifiers.has('today') && styles.CalendarDay__today,
             modifiers.has('highlighted-calendar') && styles.CalendarDay__highlighted_calendar,
+            hasImportantDayStyles && importantDayStyles,
             modifiers.has('blocked-minimum-nights') && styles.CalendarDay__blocked_minimum_nights,
+            modifiers.has('blocked-maximum-nights') && styles.CalendarDay__blocked_maximum_nights,
             modifiers.has('blocked-calendar') && styles.CalendarDay__blocked_calendar,
             hoveredSpan && styles.CalendarDay__hovered_span,
             modifiers.has('selected-span') && styles.CalendarDay__selected_span,
@@ -348,6 +380,22 @@ export default withStyles(({ reactDates: { color, font } }) => ({
     ':active': {
       background: color.minimumNights.backgroundColor_active,
       color: color.minimumNights.color_active,
+    },
+  },
+
+  CalendarDay__blocked_maximum_nights: {
+    background: color.maximumNights.backgroundColor,
+    border: `1px solid ${color.maximumNights.borderColor}`,
+    color: color.maximumNights.color,
+
+    ':hover': {
+      background: color.maximumNights.backgroundColor_hover,
+      color: color.maximumNights.color_active,
+    },
+
+    ':active': {
+      background: color.maximumNights.backgroundColor_active,
+      color: color.maximumNights.color_active,
     },
   },
 
@@ -439,7 +487,7 @@ export default withStyles(({ reactDates: { color, font } }) => ({
       background: color.blocked_calendar.backgroundColor_active,
       border: `1px solid ${color.blocked_calendar.borderColor}`,
       color: color.blocked_calendar.color_active,
-    },
+    }
   },
 
   CalendarDay__blocked_out_of_range: {
@@ -457,10 +505,47 @@ export default withStyles(({ reactDates: { color, font } }) => ({
       background: color.blocked_out_of_range.backgroundColor_active,
       border: `1px solid ${color.blocked_out_of_range.borderColor}`,
       color: color.blocked_out_of_range.color_active,
-    },
+    }
   },
 
+  CalendarDay__special_day1: {
+    background: color.special_day1.backgroundColor,
+    border: `1px solid ${color.special_day1.borderColor}`,
+    color: color.special_day1.color,
+
+    ':hover': {
+      background: color.special_day1.backgroundColor_hover,
+      border: `1px solid ${color.special_day1.borderColor}`,
+      color: color.special_day1.color_active,
+    },
+
+    ':active': {
+      background: color.special_day1.backgroundColor_active,
+      border: `1px solid ${color.special_day1.borderColor}`,
+      color: color.special_day1.color_active,
+    }
+  },
+  
+  CalendarDay__special_day2: {
+    background: color.special_day2.backgroundColor,
+    border: `1px solid ${color.special_day2.borderColor}`,
+    color: color.special_day2.color,
+
+    ':hover': {
+      background: color.special_day2.backgroundColor_hover,
+      border: `1px solid ${color.special_day2.borderColor}`,
+      color: color.special_day2.color_active,
+    },
+
+    ':active': {
+      background: color.special_day2.backgroundColor_active,
+      border: `1px solid ${color.special_day2.borderColor}`,
+      color: color.special_day2.color_active,
+    }
+  },
+    
   CalendarDay__selected_start: {},
   CalendarDay__selected_end: {},
   CalendarDay__today: {},
+  importantDayStyles: {}
 }))(CustomizableCalendarDay);

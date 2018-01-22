@@ -47,6 +47,17 @@ const customDayStyles = {
   hoveredSpanStyles: hoveredStyles,
   afterHoveredStartStyles: hoveredStyles,
 
+  importantDayStyles: {
+    clase1: {
+      background: '#e3bbbb'
+    },
+    clase2: {
+      border: '2px solid red'
+    },
+    clase3: {
+     background: '#ebebeb'
+    }
+  },
   selectedSpanStyles: {
     background: '#9b32a2',
     border: '1px solid #9b32a2',
@@ -56,8 +67,8 @@ const customDayStyles = {
       background: '#83008b',
       border: '1px solid #83008b',
       color: '#fff',
-    },
-  },
+    }
+  }
 };
 
 storiesOf('DRP - Day Props', module)
@@ -126,6 +137,7 @@ storiesOf('DRP - Day Props', module)
   .addWithInfo('one-off custom styling', () => (
     <DateRangePickerWrapper
       renderCalendarDay={props => <CustomizableCalendarDay {...props} {...customDayStyles} />}
+      assignImportantCalendarClass={day1 => datesList.some(day2 => isSameDay(day1, day2)) ? ["clase1","clase2"] : []}
       autoFocus
     />
   ));

@@ -25,6 +25,8 @@ const propTypes = forbidExtraProps({
   isOutsideRange: PropTypes.func,
   isDayBlocked: PropTypes.func,
   isDayHighlighted: PropTypes.func,
+  // Mirai: New example to set custom classes for days 
+  assignImportantCalendarClass: PropTypes.func,
 
   // DayPicker props
   enableOutsideDays: PropTypes.bool,
@@ -67,6 +69,9 @@ const defaultProps = {
   isOutsideRange: day => !isInclusivelyAfterDay(day, moment()),
   isDayHighlighted: () => false,
   enableOutsideDays: false,
+  // Mirai: New example to set custom classes for days 
+  assignImportantCalendarClass() {},
+  
 
   // calendar presentation and interaction related props
   orientation: HORIZONTAL_ORIENTATION,

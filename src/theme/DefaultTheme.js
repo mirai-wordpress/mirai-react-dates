@@ -39,6 +39,7 @@ export default {
         borderLeftFocused: 0,
         borderBottomFocused: `2px solid ${core.primary_dark}`,
         borderRightFocused: 0,
+        backgroundColor: core.primary_dark
       },
     },
 
@@ -74,6 +75,16 @@ export default {
       },
 
       minimumNights: {
+        backgroundColor: core.white,
+        backgroundColor_active: core.white,
+        backgroundColor_hover: core.white,
+        borderColor: core.borderLighter,
+        color: core.grayLighter,
+        color_active: core.grayLighter,
+        color_hover: core.grayLighter,
+      },
+
+      maximumNights: {
         backgroundColor: core.white,
         backgroundColor_active: core.white,
         backgroundColor_hover: core.white,
@@ -142,6 +153,30 @@ export default {
         color_active: core.grayLighter,
         color_hover: core.grayLighter,
       },
+      
+      special_day1: {
+        backgroundColor: '#e3bbbb',
+        backgroundColor_active: '#e3bbbb',
+        backgroundColor_hover: '#e3bbbb',
+        borderColor: core.borderLighter,
+        borderColor_active: core.borderLighter,
+        borderColor_hover: core.borderLighter,
+        color: core.gray,
+        color_active: core.gray,
+        color_hover: core.gray,
+      },
+        
+      special_day2: {
+        backgroundColor: '#72b17c',
+        backgroundColor_active: '#72b17c',
+        backgroundColor_hover: '#72b17c',
+        borderColor: core.borderLighter,
+        borderColor_active: core.borderLighter,
+        borderColor_hover: core.borderLighter,
+        color: core.gray,
+        color_active: core.gray,
+        color_hover: core.gray,
+      }
     },
 
     spacing: {

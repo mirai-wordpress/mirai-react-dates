@@ -5,6 +5,7 @@ import momentPropTypes from 'react-moment-proptypes';
 import { forbidExtraProps, nonNegativeInteger } from 'airbnb-prop-types';
 import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
 import moment from 'moment';
+import cx from 'classnames';
 
 import { CalendarDayPhrases } from '../defaultPhrases';
 import getPhrasePropTypes from '../utils/getPhrasePropTypes';
@@ -130,6 +131,7 @@ class CalendarDay extends React.Component {
       modifiers.has('blocked-minimum-nights')
       || modifiers.has('blocked-calendar')
       || modifiers.has('blocked-out-of-range')
+      || modifiers.has('blocked-maximum-nights')
     );
 
     const selected = (
@@ -143,8 +145,21 @@ class CalendarDay extends React.Component {
       || modifiers.has('after-hovered-start')
     );
 
-    const isOutsideRange = modifiers.has('blocked-out-of-range');
+    var filterImportantDayStyles = Array.from(modifiers).filter(modifier => {
+      return modifier.startsWith("important-calendar-");
+    }).map(importantDay => {
+      return importantDay.substring("important-calendar-".length);
+    });
+    
+    var hasImportantDayStyles = false;
+    var importantDayStyles = filterImportantDayStyles.map(importantDay => {
+      if (styles["CalendarDay__" + importantDay] !== undefined) {
+        hasImportantDayStyles = true;
+        return styles["CalendarDay__" + importantDay];
+      }
+    });
 
+    const isOutsideRange = modifiers.has('blocked-out-of-range');
     return (
       <td
         {...css(
@@ -154,7 +169,9 @@ class CalendarDay extends React.Component {
           isOutsideDay && styles.CalendarDay__outside,
           modifiers.has('today') && styles.CalendarDay__today,
           modifiers.has('highlighted-calendar') && styles.CalendarDay__highlighted_calendar,
+          hasImportantDayStyles && importantDayStyles,
           modifiers.has('blocked-minimum-nights') && styles.CalendarDay__blocked_minimum_nights,
+          modifiers.has('blocked-maximum-nights') && styles.CalendarDay__blocked_maximum_nights,
           modifiers.has('blocked-calendar') && styles.CalendarDay__blocked_calendar,
           hoveredSpan && styles.CalendarDay__hovered_span,
           modifiers.has('selected-span') && styles.CalendarDay__selected_span,
@@ -233,6 +250,22 @@ export default withStyles(({ reactDates: { color, font } }) => ({
     ':active': {
       background: color.minimumNights.backgroundColor_active,
       color: color.minimumNights.color_active,
+    },
+  },
+
+  CalendarDay__blocked_maximum_nights: {
+    background: color.maximumNights.backgroundColor,
+    border: `1px solid ${color.maximumNights.borderColor}`,
+    color: color.maximumNights.color,
+
+    ':hover': {
+      background: color.maximumNights.backgroundColor_hover,
+      color: color.maximumNights.color_active,
+    },
+
+    ':active': {
+      background: color.maximumNights.backgroundColor_active,
+      color: color.maximumNights.color_active,
     },
   },
 
@@ -344,7 +377,43 @@ export default withStyles(({ reactDates: { color, font } }) => ({
       color: color.blocked_out_of_range.color_active,
     },
   },
+  
+  CalendarDay__special_day1: {
+    background: color.special_day1.backgroundColor,
+    border: `1px solid ${color.special_day1.borderColor}`,
+    color: color.special_day1.color,
 
+    ':hover': {
+      background: color.special_day1.backgroundColor_hover,
+      border: `1px solid ${color.special_day1.borderColor}`,
+      color: color.special_day1.color_active,
+    },
+
+    ':active': {
+      background: color.special_day1.backgroundColor_active,
+      border: `1px solid ${color.special_day1.borderColor}`,
+      color: color.special_day1.color_active,
+    }
+  },
+  
+  CalendarDay__special_day2: {
+    background: color.special_day2.backgroundColor,
+    border: `1px solid ${color.special_day2.borderColor}`,
+    color: color.special_day2.color,
+
+    ':hover': {
+      background: color.special_day2.backgroundColor_hover,
+      border: `1px solid ${color.special_day2.borderColor}`,
+      color: color.special_day2.color_active,
+    },
+
+    ':active': {
+      background: color.special_day2.backgroundColor_active,
+      border: `1px solid ${color.special_day2.borderColor}`,
+      color: color.special_day2.color_active,
+    }
+  },
+  
   CalendarDay__selected_start: {},
   CalendarDay__selected_end: {},
   CalendarDay__today: {},

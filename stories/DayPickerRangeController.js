@@ -77,6 +77,13 @@ const datesList = [
   moment().add(13, 'days'),
 ];
 
+const datesList2 = [
+  moment(),
+  moment().add(2, 'days'),
+  moment().add(4, 'days'),
+  moment().add(5, 'days'),
+];
+
 storiesOf('DayPickerRangeController', module)
   .addDecorator(InfoPanelDecorator(dayPickerRangeControllerInfo))
   .addWithInfo('default', () => (
@@ -242,7 +249,7 @@ storiesOf('DayPickerRangeController', module)
       onOutsideClick={action('DayPickerRangeController::onOutsideClick')}
       onPrevMonthClick={action('DayPickerRangeController::onPrevMonthClick')}
       onNextMonthClick={action('DayPickerRangeController::onNextMonthClick')}
-      assignImportantCalendarClass={day1 => datesList.some(day2 => isSameDay(day1, day2)) ? ["clase1","clase2"] : []}
+      assignImportantCalendarClass={day1 => datesList.some(day2 => isSameDay(day1, day2)) ? ["special_day1"] : []}
       isDayHighlighted={day1 => datesList.some(day2 => isSameDay(day1, day2))}
     />
   ))
