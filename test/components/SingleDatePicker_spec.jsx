@@ -105,7 +105,7 @@ describe('SingleDatePicker', () => {
           expect(wrapper.find(Portal)).to.have.length(1);
         });
 
-        it('is not rendered if props.focused is falsey', () => {
+        it('is not rendered if props.focused is falsy', () => {
           const wrapper = shallow((
             <SingleDatePicker
               onDateChange={() => {}}
@@ -144,7 +144,7 @@ describe('SingleDatePicker', () => {
           expect(wrapper.find(Portal)).to.have.length(1);
         });
 
-        it('is not rendered when props.focused is falsey', () => {
+        it('is not rendered when props.focused is falsy', () => {
           const wrapper = shallow((
             <SingleDatePicker
               onDateChange={() => {}}
@@ -229,7 +229,7 @@ describe('SingleDatePicker', () => {
     });
 
     describe('matches custom display format', () => {
-      const customFormat = 'MM[foobar]DD';
+      const customFormat = 'YY|MM[foobar]DD';
       const customFormatDateString = moment().add(5, 'days').format(customFormat);
       it('calls props.onDateChange once', () => {
         const onDateChangeStub = sinon.stub();
@@ -369,8 +369,10 @@ describe('SingleDatePicker', () => {
 
   describe('#onFocus', () => {
     let onDayPickerFocusSpy;
+    let onDayPickerBlurSpy;
     beforeEach(() => {
       onDayPickerFocusSpy = sinon.spy(PureSingleDatePicker.prototype, 'onDayPickerFocus');
+      onDayPickerBlurSpy = sinon.spy(PureSingleDatePicker.prototype, 'onDayPickerBlur');
     });
 
     it('calls props.onFocusChange once', () => {
@@ -415,8 +417,45 @@ describe('SingleDatePicker', () => {
       expect(onDayPickerFocusSpy.callCount).to.equal(1);
     });
 
+    it('calls onDayPickerFocus if isTouchDevice', () => {
+      const wrapper = shallow((
+        <SingleDatePicker
+          onDateChange={sinon.stub()}
+          onFocusChange={sinon.stub()}
+        />
+      )).dive();
+      wrapper.instance().isTouchDevice = true;
+      wrapper.instance().onFocus();
+      expect(onDayPickerFocusSpy.callCount).to.equal(1);
+    });
+
+    it('calls onDayPickerBlur if !withPortal/!withFullScreenPortal and keepFocusOnInput', () => {
+      const wrapper = shallow((
+        <SingleDatePicker
+          onDateChange={sinon.stub()}
+          onFocusChange={sinon.stub()}
+          keepFocusOnInput
+        />
+      )).dive();
+      wrapper.instance().isTouchDevice = true;
+      wrapper.instance().onFocus();
+      expect(onDayPickerBlurSpy.callCount).to.equal(1);
+    });
+
+    it('calls onDayPickerFocus if withPortal/withFullScreenPortal and keepFocusOnInput', () => {
+      const wrapper = shallow((
+        <SingleDatePicker
+          onDateChange={sinon.stub()}
+          onFocusChange={sinon.stub()}
+          keepFocusOnInput
+          withFullScreenPortal
+        />
+      )).dive();
+      wrapper.instance().onFocus();
+      expect(onDayPickerFocusSpy.callCount).to.equal(1);
+    });
+
     it('calls onDayPickerBlur if !withPortal/!withFullScreenPortal', () => {
-      const onDayPickerBlurSpy = sinon.spy(PureSingleDatePicker.prototype, 'onDayPickerBlur');
       const wrapper = shallow((
         <SingleDatePicker
           onDateChange={sinon.stub()}

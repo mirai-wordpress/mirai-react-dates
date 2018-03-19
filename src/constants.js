@@ -12,6 +12,11 @@ export const VERTICAL_SCROLLABLE = 'verticalScrollable';
 export const ICON_BEFORE_POSITION = 'before';
 export const ICON_AFTER_POSITION = 'after';
 
+export const INFO_POSITION_TOP = 'top';
+export const INFO_POSITION_BOTTOM = 'bottom';
+export const INFO_POSITION_BEFORE = 'before';
+export const INFO_POSITION_AFTER = 'after';
+
 export const ANCHOR_LEFT = 'left';
 export const ANCHOR_RIGHT = 'right';
 
@@ -25,3 +30,5 @@ export const WEEKDAYS = [0, 1, 2, 3, 4, 5, 6];
 export const FANG_WIDTH_PX = 20;
 export const FANG_HEIGHT_PX = 10;
 export const DEFAULT_VERTICAL_SPACING = 22;
+
+export const MODIFIER_KEY_NAMES = new Set(['Shift', 'Control', 'Alt', 'Meta']);

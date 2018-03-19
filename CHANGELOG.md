@@ -1,5 +1,53 @@
 # Change Log
 
+## 2.2
+- [merge] Merge react-dates tag v16.3.6 in mirai-react-dates.
+
+## 16.3.6
+- [fix] Address width issues for vertical DayPickers ([#1055](https://github.com/airbnb/react-dates/pull/1055))
+
+## 16.3.5 (I promise this one is good)
+- [fix] Includes all necessary CSS ([c965348](https://github.com/airbnb/react-dates/commit/c96534896d8fe5c28ddc1f1090ef43dfaeebb5d6))
+
+## 16.3.4
+- [fix] Bumps all the RWS libraries again, now with less breakage!
+
+## 16.3.3
+- [revert] Reverts 'Bump react-with-style-interface-css dependency ([#1043](https://github.com/airbnb/react-dates/pull/1043))'
+
+## 16.3.2
+- [revert] Reverts 'Bump react-with-styles dependency ([#1041](https://github.com/airbnb/react-dates/pull/1041))'
+
+## 16.3.1
+- [deps] Bump react-with-styles dependency ([#1041](https://github.com/airbnb/react-dates/pull/1041))
+- [deps] Bump react-with-style-interface-css dependency ([#1043](https://github.com/airbnb/react-dates/pull/1043))
+
+## 16.3.0
+- [new] customInfoPanel position prop ([#989](https://github.com/airbnb/react-dates/pull/989))
+- [fix] Fix CustomizableCalendarDay selected/selected-start/selected-end specificity issues ([#979](https://github.com/airbnb/react-dates/pull/979))
+- [fix] Add modifiers for `firstDayOfWeek` and `lastDayOfWeek` ([#988](https://github.com/airbnb/react-dates/pull/988))
+- [fix] Ensure callbacks only trigger after state has been updates ([#990](https://github.com/airbnb/react-dates/pull/990))
+
+## 16.2.1
+- [fix] SDP `block` styling also makes the input full width ([#972](https://github.com/airbnb/react-dates/pull/972))
+
+## 16.2.0
+- [new] Add `startDateOffset`/`endDateOffset` props to `DayPickerRangeController` ([#884](https://github.com/airbnb/react-dates/pull/884))
+- [fix] Make all styles inline in `CustomizableCalendarDay` ([#964](https://github.com/airbnb/react-dates/pull/964))
+
+## 16.1.1
+- [fix] Address some small bugs with `CustomizableCalendarDay` ([#962](https://github.com/airbnb/react-dates/pull/962))
+
+## 16.1.0
+- [fix] Allow for changing of the input value via highlight and replace ([#955](https://github.com/airbnb/react-dates/pull/955))
+- [fix] Fix OPEN_UP styling ([#925](https://github.com/airbnb/react-dates/pull/925))
+- [fix] Don't read invisible months to the screen reader ([#940](https://github.com/airbnb/react-dates/pull/940))
+- [new] Add phrase for aria-label for the selected day ([#905](https://github.com/airbnb/react-dates/pull/905))
+
+## 16.0.2
+- [fix] Fix keyboard navigation issues ([#916](https://github.com/airbnb/react-dates/pull/916))
+- [fix] Fix React warnings when events are referenced later ([#682](https://github.com/airbnb/react-dates/pull/682))
+
 ## 2.0.1
 - [merge] Updated properties of the project
 
@@ -188,7 +236,7 @@
 ## v11.1.0
 - [fix] Patch issues with vertical scrollable datepickers, after-hovered-start and month transitions ([#503](https://github.com/airbnb/react-dates/pull/503))
 - [new] Adds a `readOnly` prop on the DRP and SDP ([#501](https://github.com/airbnb/react-dates/pull/501))
-- [fix] Disable hover when `focusedInput` is falsey ([#483](https://github.com/airbnb/react-dates/pull/483))
+- [fix] Disable hover when `focusedInput` is falsy ([#483](https://github.com/airbnb/react-dates/pull/483))
 
 ## v11.0.1
 - [fix] Fixes small modifier issues in the DRP after rearchitecture ([#489](https://github.com/airbnb/react-dates/pull/489))

@@ -13,6 +13,7 @@ import {
   FANG_HEIGHT_PX,
   FANG_WIDTH_PX,
   DEFAULT_VERTICAL_SPACING,
+  MODIFIER_KEY_NAMES,
 } from '../constants';
 
 const FANG_PATH_TOP = `M0,${FANG_HEIGHT_PX} ${FANG_WIDTH_PX},${FANG_HEIGHT_PX} ${FANG_WIDTH_PX / 2},0z`;
@@ -34,6 +35,8 @@ const propTypes = forbidExtraProps({
   showCaret: PropTypes.bool,
   verticalSpacing: nonNegativeInteger,
   small: PropTypes.bool,
+  block: PropTypes.bool,
+  regular: PropTypes.bool,
 
   onChange: PropTypes.func,
   onFocus: PropTypes.func,
@@ -59,6 +62,8 @@ const defaultProps = {
   showCaret: false,
   verticalSpacing: DEFAULT_VERTICAL_SPACING,
   small: false,
+  block: false,
+  regular: false,
 
   onChange() {},
   onFocus() {},
@@ -84,6 +89,7 @@ class DateInput extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.setInputRef = this.setInputRef.bind(this);
+    this.throttledKeyDown = throttle(this.onFinalKeyDown, 300, { trailing: false });
   }
 
   componentDidMount() {
@@ -91,7 +97,7 @@ class DateInput extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.displayValue && nextProps.displayValue) {
+    if (this.state.dateString && nextProps.displayValue) {
       this.setState({
         dateString: '',
       });
@@ -119,22 +125,26 @@ class DateInput extends React.Component {
     if (dateString[dateString.length - 1] === '?') {
       onKeyDownQuestionMark(e);
     } else {
-      this.setState({ dateString });
-      onChange(dateString);
+      this.setState({ dateString }, () => onChange(dateString));
     }
   }
 
   onKeyDown(e) {
     e.stopPropagation();
+    if (!MODIFIER_KEY_NAMES.has(e.key)) {
+      this.throttledKeyDown(e);
+    }
+  }
 
+  onFinalKeyDown(e) {
     const {
       onKeyDownShiftTab,
       onKeyDownTab,
       onKeyDownArrowDown,
       onKeyDownQuestionMark,
     } = this.props;
-
     const { key } = e;
+
     if (key === 'Tab') {
       if (e.shiftKey) {
         onKeyDownShiftTab(e);
@@ -172,6 +182,8 @@ class DateInput extends React.Component {
       openDirection,
       verticalSpacing,
       small,
+      regular,
+      block,
       styles,
       theme: { reactDates },
     } = this.props;
@@ -188,6 +200,7 @@ class DateInput extends React.Component {
         {...css(
           styles.DateInput,
           small && styles.DateInput__small,
+          block && styles.DateInput__block,
           withFang && styles.DateInput__withFang,
           disabled && styles.DateInput__disabled,
           withFang && openDirection === OPEN_DOWN && styles.DateInput__openDown,
@@ -198,6 +211,7 @@ class DateInput extends React.Component {
           {...css(
             styles.DateInput_input,
             small && styles.DateInput_input__small,
+            regular && styles.DateInput_input__regular,
             readOnly && styles.DateInput_input__readOnly,
             focused && styles.DateInput_input__focused,
             disabled && styles.DateInput_input__disabled,
@@ -209,7 +223,7 @@ class DateInput extends React.Component {
           ref={this.setInputRef}
           value={value}
           onChange={this.onChange}
-          onKeyDown={throttle(this.onKeyDown, 300)}
+          onKeyDown={this.onKeyDown}
           onFocus={onFocus}
           placeholder={placeholder}
           autoComplete="off"
@@ -228,7 +242,7 @@ class DateInput extends React.Component {
               openDirection === OPEN_DOWN && {
                 top: inputHeight + verticalSpacing - FANG_HEIGHT_PX - 1,
               },
-              openDirection === OPEN_DOWN && {
+              openDirection === OPEN_UP && {
                 bottom: inputHeight + verticalSpacing - FANG_HEIGHT_PX - 1,
               },
               openDirection == OPEN_UP && {
@@ -279,6 +293,10 @@ export default withStyles(({
     width: sizing.inputWidth_small,
   },
 
+  DateInput__block: {
+    width: '100%',
+  },
+
   DateInput__disabled: {
     background: color.disabled,
     color: color.textDisabled,
@@ -311,6 +329,10 @@ export default withStyles(({
     paddingBottom: spacing.displayTextPaddingBottom_small,
     paddingLeft: spacing.displayTextPaddingLeft_small,
     paddingRight: spacing.displayTextPaddingRight_small,
+  },
+
+  DateInput_input__regular: {
+    fontWeight: 'auto',
   },
 
   DateInput_input__readOnly: {

@@ -31,6 +31,7 @@ import {
   OPEN_UP,
   DAY_SIZE,
   ICON_BEFORE_POSITION,
+  INFO_POSITION_BOTTOM,
   FANG_HEIGHT_PX,
   DEFAULT_VERTICAL_SPACING,
 } from '../constants';
@@ -60,7 +61,9 @@ const defaultProps = {
   noBorder: false,
   block: false,
   small: false,
+  regular: false,
   verticalSpacing: DEFAULT_VERTICAL_SPACING,
+  keepFocusOnInput: false,
 
   // calendar presentation and interaction related props
   orientation: HORIZONTAL_ORIENTATION,
@@ -75,6 +78,7 @@ const defaultProps = {
   keepOpenOnDateSelect: false,
   reopenPickerOnClearDate: false,
   renderCalendarInfo: null,
+  calendarInfoPosition: INFO_POSITION_BOTTOM,
   hideKeyboardShortcutsPanel: false,
   daySize: DAY_SIZE,
   isRTL: false,
@@ -196,9 +200,12 @@ class SingleDatePicker extends React.Component {
       onFocusChange,
       withPortal,
       withFullScreenPortal,
+      keepFocusOnInput,
     } = this.props;
 
-    const moveFocusToDayPicker = withPortal || withFullScreenPortal || this.isTouchDevice;
+    const withAnyPortal = withPortal || withFullScreenPortal;
+    const moveFocusToDayPicker = withAnyPortal || (this.isTouchDevice && !keepFocusOnInput);
+
     if (moveFocusToDayPicker) {
       this.onDayPickerFocus();
     } else {
@@ -359,6 +366,7 @@ class SingleDatePicker extends React.Component {
       renderCalendarDay,
       renderDayContents,
       renderCalendarInfo,
+      calendarInfoPosition,
       hideKeyboardShortcutsPanel,
       firstDayOfWeek,
       customCloseIcon,
@@ -431,6 +439,7 @@ class SingleDatePicker extends React.Component {
           renderCalendarDay={renderCalendarDay}
           renderDayContents={renderDayContents}
           renderCalendarInfo={renderCalendarInfo}
+          calendarInfoPosition={calendarInfoPosition}
           isFocused={isDayPickerFocused}
           showKeyboardShortcuts={showKeyboardShortcuts}
           onBlur={this.onDayPickerBlur}
@@ -450,12 +459,12 @@ class SingleDatePicker extends React.Component {
 
         {withFullScreenPortal && (
           <button
+            {...css(styles.SingleDatePicker_closeButton)}
             aria-label={phrases.closeDatePicker}
-            className="SingleDatePicker__close"
             type="button"
             onClick={this.onClearFocus}
           >
-            <div className="SingleDatePicker__close-icon">
+            <div {...css(styles.SingleDatePicker_closeButton_svg)}>
               {closeIcon}
             </div>
           </button>
@@ -487,6 +496,7 @@ class SingleDatePicker extends React.Component {
       noBorder,
       block,
       small,
+      regular,
       verticalSpacing,
       styles,
     } = this.props;
@@ -536,6 +546,7 @@ class SingleDatePicker extends React.Component {
             noBorder={noBorder}
             block={block}
             small={small}
+            regular={regular}
             verticalSpacing={verticalSpacing}
           />
 
