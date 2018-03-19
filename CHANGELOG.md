@@ -1,6 +1,12 @@
 # Change Log
 
-## 2.2
+## 2.1.2
+- [merge] Merge react-dates tag v16.3.6 in mirai-react-dates.
+
+## 2.1.1
+- [fix] Fixed some bugs related with the merge with the trunk.
+
+## 2.1.0
 - [merge] Merge react-dates tag v16.3.6 in mirai-react-dates.
 
 ## 16.3.6
