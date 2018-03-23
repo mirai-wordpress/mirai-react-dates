@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.1.4
+- [fix] Fixed bug calculating fang position.
+
 ## 2.1.2
 - [merge] Merge react-dates tag v16.3.6 in mirai-react-dates.
 
