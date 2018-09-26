@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.1.5
+- [fix] Removed calculates to position dropdown calendar.
+
 ## 2.1.4
 - [fix] Fixed bug calculating fang position.
 

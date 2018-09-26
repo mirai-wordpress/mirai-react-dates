@@ -402,12 +402,6 @@ class SingleDatePicker extends React.Component {
           anchorDirection === ANCHOR_RIGHT && styles.SingleDatePicker_picker__directionRight,
           openDirection === OPEN_DOWN && styles.SingleDatePicker_picker__openDown,
           openDirection === OPEN_UP && styles.SingleDatePicker_picker__openUp,
-          openDirection === OPEN_DOWN && {
-            top: inputHeight + verticalSpacing,
-          },
-          openDirection === OPEN_UP && {
-            bottom: inputHeight + verticalSpacing,
-          },
           orientation === HORIZONTAL_ORIENTATION && styles.SingleDatePicker_picker__horizontal,
           orientation === VERTICAL_ORIENTATION && styles.SingleDatePicker_picker__vertical,
           (withPortal || withFullScreenPortal) && styles.SingleDatePicker_picker__portal,
@@ -587,6 +581,14 @@ export default withStyles(({ reactDates: { color, zIndex } }) => ({
 
   SingleDatePicker_picker__directionRight: {
     right: 0,
+  },
+  
+  SingleDatePicker_picker__openDown: {
+    top: 70
+  },
+  
+  SingleDatePicker_picker__openUp: {
+    bottom: 70
   },
 
   SingleDatePicker_picker__portal: {

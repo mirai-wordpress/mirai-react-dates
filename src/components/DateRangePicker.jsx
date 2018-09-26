@@ -384,12 +384,8 @@ class DateRangePicker extends React.Component {
           anchorDirection === ANCHOR_RIGHT && styles.DateRangePicker_picker__directionRight,
           orientation === HORIZONTAL_ORIENTATION && styles.DateRangePicker_picker__horizontal,
           orientation === VERTICAL_ORIENTATION && styles.DateRangePicker_picker__vertical,
-          openDirection === OPEN_DOWN && {
-            top: inputHeight + verticalSpacing,
-          },
-          openDirection === OPEN_UP && {
-            bottom: inputHeight + verticalSpacing,
-          },
+          openDirection === OPEN_DOWN && styles.DateRangePicker_picker__openDown,
+          openDirection === OPEN_UP && styles.DateRangePicker_picker__openUp,
           (withPortal || withFullScreenPortal) && styles.DateRangePicker_picker__portal,
           withFullScreenPortal && styles.DateRangePicker_picker__fullScreenPortal,
           isRTL && styles.DateRangePicker_picker__rtl,
@@ -589,6 +585,14 @@ export default withStyles(({ reactDates: { color, zIndex } }) => ({
 
   DateRangePicker_picker__directionRight: {
     right: 0,
+  },
+  
+  DateRangePicker_picker__openDown: {
+    top: 70
+  },
+  
+  DateRangePicker_picker__openUp: {
+    bottom: 70
   },
 
   DateRangePicker_picker__portal: {
