@@ -1,6 +1,6 @@
 const core = {
   white: '#fff',
-  gray: '#565a5c',
+  gray: '#484848',
   grayLight: '#82888a',
   grayLighter: '#cacccd',
   grayLightest: '#f2f2f2',
@@ -40,7 +40,13 @@ export default {
         borderLeftFocused: 0,
         borderBottomFocused: `2px solid ${core.primary_dark}`,
         borderRightFocused: 0,
-        backgroundColor: core.primary_dark
+        backgroundColor: core.primary_dark,
+        borderRadius: 0
+      },
+      pickerInput: {
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderRadius: 2,
       },
     },
 
@@ -52,6 +58,7 @@ export default {
       background: core.white,
       backgroundDark: '#f2f2f2',
       backgroundFocused: core.white,
+      border: 'rgb(219, 219, 219)',
       text: core.gray,
       textDisabled: core.border,
       textFocused: '#007a87',
@@ -181,38 +188,41 @@ export default {
     },
 
     spacing: {
+      dayPickerHorizontalPadding: 9,
       captionPaddingTop: 22,
       captionPaddingBottom: 37,
       inputPadding: 0,
       displayTextPaddingVertical: undefined,
-      displayTextPaddingTop: 13,
-      displayTextPaddingBottom: 11,
+      displayTextPaddingTop: 11,
+      displayTextPaddingBottom: 9,
       displayTextPaddingHorizontal: undefined,
-      displayTextPaddingLeft: 12,
-      displayTextPaddingRight: 12,
+      displayTextPaddingLeft: 11,
+      displayTextPaddingRight: 11,
       displayTextPaddingVertical_small: undefined,
-      displayTextPaddingTop_small: 8,
-      displayTextPaddingBottom_small: 6,
+      displayTextPaddingTop_small: 7,
+      displayTextPaddingBottom_small: 5,
       displayTextPaddingHorizontal_small: undefined,
-      displayTextPaddingLeft_small: 8,
-      displayTextPaddingRight_small: 8,
+      displayTextPaddingLeft_small: 7,
+      displayTextPaddingRight_small: 7,
     },
 
     sizing: {
       inputWidth: 130,
-      inputWidth_small: 90,
+      inputWidth_small: 97,
       arrowWidth: 24,
-      arrowWidth_small: 19,
     },
+
+    noScrollBarOnVerticalScrollable: false,
 
     font: {
       size: 14,
       captionSize: 18,
       input: {
-        size: 18,
+        size: 19,
         lineHeight: '24px',
-        size_small: 14,
+        size_small: 15,
         lineHeight_small: '18px',
+        letterSpacing_small: '0.2px',
         styleDisabled: 'italic',
       },
     },

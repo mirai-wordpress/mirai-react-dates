@@ -8,10 +8,11 @@ const compileCSS = require('react-with-styles-interface-css-compiler');
 const registerMaxSpecificity = require('react-with-styles-interface-css/dist/utils/registerMaxSpecificity').default;
 const registerCSSInterfaceWithDefaultTheme = require('../src/utils/registerCSSInterfaceWithDefaultTheme').default;
 
+console.error = msg => { throw new SyntaxError(msg); };
+console.warn = msg => { throw new SyntaxError(msg); };
+
 const args = process.argv.slice(2);
 const optimizeForProduction = args.includes('-o') || args.includes('--optimize');
-
-require('../test/_helpers/ignoreSVGStrings');
 
 registerMaxSpecificity(0);
 registerCSSInterfaceWithDefaultTheme();

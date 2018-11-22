@@ -20,6 +20,7 @@ const propTypes = forbidExtraProps({
   initialEndDate: momentPropTypes.momentObj,
   startDateOffset: PropTypes.func,
   endDateOffset: PropTypes.func,
+  showInputs: PropTypes.bool,
 
   keepOpenOnDateSelect: PropTypes.bool,
   minimumNights: PropTypes.number,
@@ -34,9 +35,12 @@ const propTypes = forbidExtraProps({
   enableOutsideDays: PropTypes.bool,
   numberOfMonths: PropTypes.number,
   orientation: ScrollableOrientationShape,
+  verticalHeight: PropTypes.number,
   withPortal: PropTypes.bool,
   initialVisibleMonth: PropTypes.func,
   renderCalendarInfo: PropTypes.func,
+  renderMonthElement: PropTypes.func,
+  renderMonthText: PropTypes.func,
 
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
@@ -53,8 +57,6 @@ const propTypes = forbidExtraProps({
   focusedInput: PropTypes.bool,
   // i18n
   monthFormat: PropTypes.string,
-  
-  customStyle: PropTypes.object,
 
   isRTL: PropTypes.bool,
 });
@@ -66,6 +68,7 @@ const defaultProps = {
   initialEndDate: null,
   startDateOffset: undefined,
   endDateOffset: undefined,
+  showInputs: false,
 
   // day presentation and interaction related props
   renderCalendarDay: undefined,
@@ -81,6 +84,7 @@ const defaultProps = {
 
   // calendar presentation and interaction related props
   orientation: HORIZONTAL_ORIENTATION,
+  verticalHeight: undefined,
   withPortal: false,
   initialVisibleMonth: null,
   numberOfMonths: 2,
@@ -88,6 +92,8 @@ const defaultProps = {
   keepOpenOnDateSelect: false,
   renderCalendarInfo: null,
   isRTL: false,
+  renderMonthText: null,
+  renderMonthElement: null,
 
   // navigation related props
   navPrev: null,
@@ -102,8 +108,6 @@ const defaultProps = {
 
   // internationalization
   monthFormat: 'MMMM YYYY',
-  
-  customStyle: {}
 };
 
 class DayPickerRangeControllerWrapper extends React.Component {
@@ -140,14 +144,14 @@ class DayPickerRangeControllerWrapper extends React.Component {
       'autoFocusEndDate',
       'initialStartDate',
       'initialEndDate',
-      'customStyle'
+      'showInputs',
     ]);
 
     const startDateString = startDate && startDate.format('YYYY-MM-DD');
     const endDateString = endDate && endDate.format('YYYY-MM-DD');
 
     return (
-      <div style={customStyle ? customStyle : {}}>
+      <div style={{ height: '100%' }}>
         {showInputs &&
           <div style={{ marginBottom: 16 }}>
             <input type="text" name="start date" value={startDateString} readOnly />

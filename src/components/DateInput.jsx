@@ -7,6 +7,7 @@ import isTouchDevice from 'is-touch-device';
 
 import getInputHeight from '../utils/getInputHeight';
 import openDirectionShape from '../shapes/OpenDirectionShape';
+import BaseClass, { pureComponentAvailable } from '../utils/baseClass';
 import {
   OPEN_DOWN,
   OPEN_UP,
@@ -77,7 +78,8 @@ const defaultProps = {
   isFocused: false,
 };
 
-class DateInput extends React.Component {
+/** @extends React.Component */
+class DateInput extends BaseClass {
   constructor(props) {
     super(props);
 
@@ -97,7 +99,8 @@ class DateInput extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.state.dateString && nextProps.displayValue) {
+    const { dateString } = this.state;
+    if (dateString && nextProps.displayValue) {
       this.setState({
         dateString: '',
       });
@@ -110,8 +113,6 @@ class DateInput extends React.Component {
 
     if (focused && isFocused) {
       this.inputRef.focus();
-    } else {
-      this.inputRef.blur();
     }
   }
 
@@ -188,7 +189,7 @@ class DateInput extends React.Component {
       theme: { reactDates },
     } = this.props;
 
-    const value = displayValue || dateString || '';
+    const value = dateString || displayValue || '';
     const screenReaderMessageId = `DateInput__screen-reader-message-${id}`;
 
     const withFang = showCaret && focused;
@@ -316,11 +317,13 @@ export default withStyles(({
     borderRight: border.input.borderRight,
     borderBottom: border.input.borderBottom,
     borderLeft: border.input.borderLeft,
+    borderRadius: border.input.borderRadius,
   },
 
   DateInput_input__small: {
     fontSize: font.input.size_small,
     lineHeight: font.input.lineHeight_small,
+    letterSpacing: font.input.letterSpacing_small,
     padding: `${spacing.displayTextPaddingVertical_small}px ${spacing.displayTextPaddingHorizontal_small}px`,
     paddingTop: spacing.displayTextPaddingTop_small,
     paddingBottom: spacing.displayTextPaddingBottom_small,
@@ -378,4 +381,4 @@ export default withStyles(({
     stroke: color.core.border,
     fill: 'transparent',
   },
-}))(DateInput);
+}), { pureComponent: pureComponentAvailable })(DateInput);

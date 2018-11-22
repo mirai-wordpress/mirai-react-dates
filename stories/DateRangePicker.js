@@ -97,9 +97,14 @@ storiesOf('DateRangePicker (DRP)', module)
   })
   .addWithInfo('non-english locale (Persian)', () => {
     moment.locale('fa');
+    momentJalaali.loadPersian({ dialect: 'persian-modern', usePersianDigits: true });
     return (
       <DateRangePickerWrapper
-        renderMonth={month => momentJalaali(month).format('jMMMM jYYYY')}
+        isRTL
+        stateDateWrapper={momentJalaali}
+        startDatePlaceholderText="تاریخ شروع"
+        endDatePlaceholderText="تاریخ پایان"
+        renderMonthText={month => momentJalaali(month).format('jMMMM jYYYY')}
         renderDayContents={day => momentJalaali(day).format('jD')}
       />
     )
@@ -108,7 +113,9 @@ storiesOf('DateRangePicker (DRP)', module)
   .addWithInfo('Assign important classes to calendar', () => {
     return (
       <DateRangePickerWrapper 
-        assignImportantCalendarClass={day1 => datesList.some(day2 => isSameDay(day1, day2)) ? ["clase1","clase2"] : []}
+        assignImportantCalendarClass={day1 => 
+            datesList.some(day2 => isSameDay(day1, day2)) ? ["special_day1","special_day2"] : []
+        }
       />
     );
   })

@@ -15,6 +15,74 @@
 ## 2.1.0
 - [merge] Merge react-dates tag v16.3.6 in mirai-react-dates.
 
+## 18.0.0
+- [fix] Conditionally use `PureComponent` instead of `Component` ([#1335](https://github.com/airbnb/react-dates/pull/1335))
+- [breaking] Remove propTypes in production ([#1322](https://github.com/airbnb/react-dates/pull/1322))
+- [fix] Change border-styles to minimise overlap ([#1328](https://github.com/airbnb/react-dates/pull/1328))
+- [fix] Only blur the `activeElement` when available ([#1345](https://github.com/airbnb/react-dates/pull/1345))
+
+## 17.2.0
+- [fix] Add modifiers for next months in the vertical scrollable datepickers ([#1293](https://github.com/airbnb/react-dates/pull/1293))
+- [fix] Fix cursor jumping to the end of the controlled input when typing ([#1287](https://github.com/airbnb/react-dates/pull/1287))
+- [new] Add `horizontalMonthPadding` prop and `dayPickerHorizontalPadding` and `noScrollBarOnVerticalScrollable` theme variables ([#1298](https://github.com/airbnb/react-dates/pull/1298))
+- [fix] Fix issue where custom month navigation was not clickable in FF ([#1305](https://github.com/airbnb/react-dates/pull/1305))
+
+## 17.1.1
+- [fix] Set `DayPickerNavigation__horizontal` height to zero ([#1265](https://github.com/airbnb/react-dates/pull/1265))
+
+## 17.1.0
+- [new] Add `ModifiersShape` and use throughout the codebase ([#1231](https://github.com/airbnb/react-dates/pull/1231))
+- [fix] Fix minimum nights `blocked` modifiers being applied incorrectly ([#1259](https://github.com/airbnb/react-dates/pull/1259))
+- [fix] Update conditions where `adjustDayPickerHeight` is called ([#1241](https://github.com/airbnb/react-dates/pull/1241))
+- [fix] Do not render `OutsideClickHandler` unnecessarily ([#1256](https://github.com/airbnb/react-dates/pull/1256))
+
+## 17.0.0
+- [fix] Replace dumb quotes with smart quotes in default phrases ([#1168](https://github.com/airbnb/react-dates/pull/1168))
+- [fix] Fix outside day movement on hover ([#1178](https://github.com/airbnb/react-dates/pull/1178))
+- [fix] Add `focusable="false"` to SVGs ([#1190](https://github.com/airbnb/react-dates/pull/1190))
+- [fix] Use `react-outside-click-handler` instead of the internal component ([#1191](https://github.com/airbnb/react-dates/pull/1191))
+- [breaking] Change the way month heights are calculated and update the name of some `CalendarMonth`/`CalendarMonthGrid` props ([#1192](https://github.com/airbnb/react-dates/pull/1192))
+- [new] Pass nextMonth to `onPrevMonthClick`/`onNextMonthClick` ([#1207](https://github.com/airbnb/react-dates/pull/1207))
+- [new] Allow input border styles to be overridden in the theme ([#1201](https://github.com/airbnb/react-dates/pull/1201))
+- [new] Allow consolidated-events@2.0.0 ([#1218](https://github.com/airbnb/react-dates/pull/1218))
+- [fix] Remove input.blur() call to fix a focus trap in Safari/IE ([#1214](https://github.com/airbnb/react-dates/pull/1214))
+- [new] Add support for month/year transitions ([#1106](https://github.com/airbnb/react-dates/pull/1106))
+- [breaking] Rename renderMonth=>renderMonthText and renderCaption=>renderMonthElement ([#1220](https://github.com/airbnb/react-dates/pull/1220))
+- [breaking] Remove default styling *completely* from the `navNext`/`navPrev` props, including position ([#1204](https://github.com/airbnb/react-dates/pull/1204))
+- [fix] Fix propType warnings for `onMonthChange`/`onYearChange` ([#1222](https://github.com/airbnb/react-dates/pull/1222))
+- [breaking] Remove `OutsideClickHandler` export entirely ([#1225](https://github.com/airbnb/react-dates/pull/1225))
+
+## 16.7.1
+- [fix] react-with-styles v3 requires react-with-direction as a peer dep; this provides it but forwards the peer dep requirement ([#1348](https://github.com/airbnb/react-dates/issues/1348))
+
+## 16.7.0
+- [fix] Force border-radius to be 0 on the inputs ([#1157](https://github.com/airbnb/react-dates/pull/1157))
+- [fix] Clear previous min nights modifiers, not current ([#994](https://github.com/airbnb/react-dates/pull/994))
+- [fix] Tweak default input styling ([#1158](https://github.com/airbnb/react-dates/pull/1158))
+- [fix] Round transform3d values to fix font blur ([#1155](https://github.com/airbnb/react-dates/pull/1155))
+- [new] Add `noNavButtons` prop ([#1160](https://github.com/airbnb/react-dates/pull/1160))
+
+## 16.6.1
+- [fix] Fix selective disabling of the `DateRangePicker` ([#1116](https://github.com/airbnb/react-dates/pull/1116))
+- [fix] Fix `onOutsideClick` refactor ([#1115](https://github.com/airbnb/react-dates/pull/1115))
+
+## 16.6.0
+- [new] Add `appendToBody`/`disableScroll` props ([#1069](https://github.com/airbnb/react-dates/pull/1069))
+- [fix] Address unexpected blur call ([#1107](https://github.com/airbnb/react-dates/pull/1107))
+- [new] Add `verticalBorderSpacing` prop to `DayPickerSingleDateController`/`DayPickerRangeController` ([#1096](https://github.com/airbnb/react-dates/pull/1096))
+- [fix] Move focus to `DayPicker` when readOnly is true ([#961](https://github.com/airbnb/react-dates/pull/961))
+
+## 16.5.0
+- [new] Export `CustomizeableCalendarDay` default styles ([#1095](https://github.com/airbnb/react-dates/pull/1095))
+- [new] Allow selectively disabling either input in the DRP ([#](https://github.com/airbnb/react-dates/pull/606))
+- [new] Add `dayAriaLabelFormat` prop to the SDP/DRP ([#](https://github.com/airbnb/react-dates/pull/984))
+
+## 16.4.0
+- [new] Export `OutsideClickHandler` in index.js ([#1089](https://github.com/airbnb/react-dates/pull/1089))
+- [fix] Do not apply `verticalSpacing` when `withPortal` or `withFullScreenPortal` is true ([#980](https://github.com/airbnb/react-dates/pull/980))
+- [fix] Handle minimum nights when selecting `startDate` ([#1015](https://github.com/airbnb/react-dates/pull/1015))
+- [fix] Fix style of `CloseIcon` in the SDP ([#1058](https://github.com/airbnb/react-dates/pull/1058))
+
 ## 16.3.6
 - [fix] Address width issues for vertical DayPickers ([#1055](https://github.com/airbnb/react-dates/pull/1055))
 
@@ -59,12 +127,6 @@
 ## 16.0.2
 - [fix] Fix keyboard navigation issues ([#916](https://github.com/airbnb/react-dates/pull/916))
 - [fix] Fix React warnings when events are referenced later ([#682](https://github.com/airbnb/react-dates/pull/682))
-
-## 2.0.1
-- [merge] Updated properties of the project
-
-## 2.0.0
-- [merge] Merged from main brach
 
 ## 16.0.1
 - [fix] Add back missing onKeyDown method to `CalendarDay` ([#901](https://github.com/airbnb/react-dates/pull/901))
@@ -187,40 +249,6 @@
 
 ## 12.2.2
 - [fix] Reevaluate `--blocked` and `--blocked-outside-range` modifiers in the SDP componentWilLReceiveProps ([#550](https://github.com/airbnb/react-dates/pull/550))
-## 1.0.8
-- [fix] Fixed bug for minDate and maxDate props. 
-
-## 1.0.7
-- [new] Allow set minimum and maximum date. It locked all months before minimum date and after maximum date. 
-
-## 1.0.6
-- [fix] Fix issue related to maximumNights prop, Some days does not unblocked when moves throw months.
-
-## 1.0.5
-- [fix] Fix issue related to maximumNights prop, Some days does not unblocked when moves throw months.
-
-## 1.0.4
-- [fix] Fix issue related to maximumNights prop, when it is selected end date first
-
-## 1.0.3
-- [fix] Update documentation to publish on npm
-
-## 1.0.2
-- [fix] Fix warning showing invalid props for new attributes
-
-## 1.0.1
-- [fix] Fix issue when mark days with maximum-nights-blocked
-- [fix] Update documentation
- 
-## 1.0.0
-- [new] Allow set custom classes for days
-- [new] Allow set maximum nights. If it is not specified there is not maximum nights limitation
-
-# FORKED
-- Done fork from airbnb-react-dates
- 
-## 12.2.2
-- [fix] Reevaluate `--blocked` and `--blocked-outside-range` modifiers in the SDP componentWilLReceiveProps ([https://github.com/airbnb/react-dates/pull/550](550))
 
 ## 12.2.1
 - [fix] Fix `isTouchDevice` warning in `DayPickerSingleDateController` ([77e2135](https://github.com/airbnb/react-dates/commit/77e2135d2009994fbf2c62e3ff68ce82e5786194))
