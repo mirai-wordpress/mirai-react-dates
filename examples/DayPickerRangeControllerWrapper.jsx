@@ -53,6 +53,8 @@ const propTypes = forbidExtraProps({
   focusedInput: PropTypes.bool,
   // i18n
   monthFormat: PropTypes.string,
+  
+  customStyle: PropTypes.object,
 
   isRTL: PropTypes.bool,
 });
@@ -100,6 +102,8 @@ const defaultProps = {
 
   // internationalization
   monthFormat: 'MMMM YYYY',
+  
+  customStyle: {}
 };
 
 class DayPickerRangeControllerWrapper extends React.Component {
@@ -128,7 +132,7 @@ class DayPickerRangeControllerWrapper extends React.Component {
   }
 
   render() {
-    const { showInputs } = this.props;
+    const { showInputs, customStyle } = this.props;
     const { focusedInput, startDate, endDate } = this.state;
 
     const props = omit(this.props, [
@@ -136,13 +140,14 @@ class DayPickerRangeControllerWrapper extends React.Component {
       'autoFocusEndDate',
       'initialStartDate',
       'initialEndDate',
+      'customStyle'
     ]);
 
     const startDateString = startDate && startDate.format('YYYY-MM-DD');
     const endDateString = endDate && endDate.format('YYYY-MM-DD');
 
     return (
-      <div>
+      <div style={customStyle ? customStyle : {}}>
         {showInputs &&
           <div style={{ marginBottom: 16 }}>
             <input type="text" name="start date" value={startDateString} readOnly />

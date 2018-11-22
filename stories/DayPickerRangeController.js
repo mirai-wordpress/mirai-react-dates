@@ -7,7 +7,7 @@ import InfoPanelDecorator, { monospace } from './InfoPanelDecorator';
 import isSameDay from '../src/utils/isSameDay';
 import isInclusivelyAfterDay from '../src/utils/isInclusivelyAfterDay';
 
-import { VERTICAL_ORIENTATION } from '../src/constants';
+import { VERTICAL_ORIENTATION, VERTICAL_SCROLLABLE } from '../src/constants';
 
 import DayPickerRangeControllerWrapper from '../examples/DayPickerRangeControllerWrapper';
 
@@ -171,6 +171,21 @@ storiesOf('DayPickerRangeController', module)
       orientation={VERTICAL_ORIENTATION}
     />
   ))
+  .addWithInfo('vertically scrollable with 4 months', () => (
+    <div
+      style={{
+        height: 568,
+        width: 320,
+      }}
+    >
+      <DayPickerRangeControllerWrapper
+        numberOfMonths={4}
+        customStyle={{height: "100%"}}
+        orientation={VERTICAL_SCROLLABLE}
+      />
+    </div>
+  ))
+
   .addWithInfo('with custom month navigation', () => (
     <DayPickerRangeControllerWrapper
       onOutsideClick={action('DayPickerRangeController::onOutsideClick')}

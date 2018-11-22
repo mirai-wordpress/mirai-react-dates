@@ -750,7 +750,7 @@ export default class DayPickerRangeController extends React.Component {
       visibleDays: {
         ...visibleDays,
         ...this.getModifiers(newVisibleDays),
-      },
+      } 
     });
   }
 
@@ -861,7 +861,9 @@ export default class DayPickerRangeController extends React.Component {
 
     let currentMonth = firstVisibleMonth;
     let numberOfMonths = numberOfVisibleMonths;
-    if (orientation !== VERTICAL_SCROLLABLE) {
+    if (orientation === VERTICAL_SCROLLABLE) {
+      numberOfMonths = Object.values(visibleDays).length;
+    } else {
       currentMonth = currentMonth.clone().subtract(1, 'month');
       numberOfMonths += 2;
     }
@@ -925,7 +927,9 @@ export default class DayPickerRangeController extends React.Component {
 
     let currentMonth = firstVisibleMonth;
     let numberOfMonths = numberOfVisibleMonths;
-    if (orientation !== VERTICAL_SCROLLABLE) {
+    if (orientation === VERTICAL_SCROLLABLE) {
+      numberOfMonths = Object.values(visibleDays).length;
+    } else {
       currentMonth = currentMonth.clone().subtract(1, 'month');
       numberOfMonths += 2;
     }
