@@ -113,6 +113,7 @@ storiesOf('DateRangePicker (DRP)', module)
   .addWithInfo('Assign important classes to calendar', () => {
     return (
       <DateRangePickerWrapper 
+        hideKeyboardShortcutsPanel
         assignImportantCalendarClass={day1 => 
             datesList.some(day2 => isSameDay(day1, day2)) ? ["special_day1","special_day2"] : []
         }
@@ -122,7 +123,8 @@ storiesOf('DateRangePicker (DRP)', module)
   // Mirai: New example to set maximum nights 
   .addWithInfo('Maximum nights selected', () => {
     return (
-      <DateRangePickerWrapper 
+      <DateRangePickerWrapper
+         hideKeyboardShortcutsPanel
          maximumNights={20}
       />
     );
@@ -130,7 +132,8 @@ storiesOf('DateRangePicker (DRP)', module)
   // Mirai: New example to set maximum nights 
   .addWithInfo('Maximum date and minimum date', () => {
     return (
-      <DateRangePickerWrapper 
+      <DateRangePickerWrapper
+         hideKeyboardShortcutsPanel
          minDate={moment()}
          maxDate={moment().add(1, "year")}
       />

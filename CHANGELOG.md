@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.2.0
+- [merge] Merge react-dates airbnb tag v18.2.2 in mirai-react-dates
+
 ## 2.1.5
 - [fix] Removed calculates to position dropdown calendar.
 
