@@ -354,8 +354,6 @@ class DayPicker extends BaseClass {
   }
 
   onMouseWheelHandler(event) {
-    this.setState({ withMouseInteractions: false });
-
     const { orientation } = this.props;
     const { focusedDate } = this.state;
     console.log(focusedDate);
@@ -363,27 +361,16 @@ class DayPicker extends BaseClass {
 
     event.preventDefault();
 
-    let didTransitionMonth = false;
-
     const newFocusedDate = focusedDate.clone();
     var e = window.event || event; // old IE support
     var delta = Math.max(-1, Math.min(1, (event.wheelDelta || -e.detail)));
     if (delta < 0) {
         newFocusedDate.add(1, 'month');
-        didTransitionMonth = this.maybeTransitionNextMonth(newFocusedDate);
+        this.onNextMonthClick(newFocusedDate);
     }
     if (delta > 0) {
         newFocusedDate.subtract(1, 'month');
-        didTransitionMonth = this.maybeTransitionPrevMonth(newFocusedDate);
-    }
-    
-    // If there was a month transition, do not update the focused date until the transition has
-    // completed. Otherwise, attempting to focus on a DOM node may interrupt the CSS animation. If
-    // didTransitionMonth is true, the focusedDate gets updated in #updateStateAfterMonthTransition
-    if (!didTransitionMonth) {
-      this.setState({
-        focusedDate: newFocusedDate,
-      });
+        this.onPrevMonthClick(newFocusedDate);
     }
   }
   

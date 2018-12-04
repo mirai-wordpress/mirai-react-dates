@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.2.3
+- [fix] Fixed calendar mouse wheel to move to the next and previous month
+
 ## 2.2.2
 - [fix] Fixed calendar mouse wheel on vertical orientation
 
