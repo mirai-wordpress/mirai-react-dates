@@ -211,6 +211,7 @@ class DayPicker extends BaseClass {
 
     this.onKeyDown = this.onKeyDown.bind(this);
     this.throttledKeyDown = throttle(this.onFinalKeyDown, 200, { trailing: false });
+    this.onMouseWheelHandler = this.onMouseWheelHandler.bind(this);
     this.onPrevMonthClick = this.onPrevMonthClick.bind(this);
     this.onNextMonthClick = this.onNextMonthClick.bind(this);
     this.onMonthChange = this.onMonthChange.bind(this);
@@ -240,6 +241,9 @@ class DayPicker extends BaseClass {
     }
 
     this.setCalendarMonthWeeks(currentMonth);
+    
+    document.querySelector("div[role=application]").addEventListener("mousewheel", this.onMouseWheelHandler, false);
+    document.querySelector("div[role=application]").addEventListener("DOMMouseScroll", this.onMouseWheelHandler);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -349,6 +353,36 @@ class DayPicker extends BaseClass {
     clearTimeout(this.setCalendarInfoWidthTimeout);
   }
 
+  onMouseWheelHandler(event) {
+    event.preventDefault();
+    const { orientation } = this.props;
+    const { focusedDate } = this.state;
+    if (orientation != VERTICAL_ORIENTATION || !focusedDate) return;
+
+    let didTransitionMonth = false;
+
+    const newFocusedDate = focusedDate.clone();
+    var e = window.event || event; // old IE support
+    var delta = Math.max(-1, Math.min(1, (event.wheelDelta || -e.detail)));
+    if (delta < 0) {
+        newFocusedDate.add(1, 'month');
+        didTransitionMonth = this.maybeTransitionNextMonth(newFocusedDate);
+    }
+    if (delta > 0) {
+        newFocusedDate.subtract(1, 'month');
+        didTransitionMonth = this.maybeTransitionPrevMonth(newFocusedDate);
+    }
+    
+    // If there was a month transition, do not update the focused date until the transition has
+    // completed. Otherwise, attempting to focus on a DOM node may interrupt the CSS animation. If
+    // didTransitionMonth is true, the focusedDate gets updated in #updateStateAfterMonthTransition
+    if (!didTransitionMonth) {
+      this.setState({
+        focusedDate: newFocusedDate,
+      });
+    }
+  }
+  
   onKeyDown(e) {
     e.stopPropagation();
     if (!MODIFIER_KEY_NAMES.has(e.key)) {

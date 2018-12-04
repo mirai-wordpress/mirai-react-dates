@@ -1,22 +1,10 @@
 # Change Log
 
+## 2.2.1
+- [new] Use wheel mouse in orientation vertical in order to navigate to months
+
 ## 2.2.0
 - [merge] Merge react-dates airbnb tag v18.2.2 in mirai-react-dates
-
-## 2.1.5
-- [fix] Removed calculates to position dropdown calendar.
-
-## 2.1.4
-- [fix] Fixed bug calculating fang position.
-
-## 2.1.2
-- [merge] Merge react-dates tag v16.3.6 in mirai-react-dates.
-
-## 2.1.1
-- [fix] Fixed some bugs related with the merge with the trunk.
-
-## 2.1.0
-- [merge] Merge react-dates tag v16.3.6 in mirai-react-dates.
 
 ## 18.0.0
 - [fix] Conditionally use `PureComponent` instead of `Component` ([#1335](https://github.com/airbnb/react-dates/pull/1335))
@@ -85,6 +73,21 @@
 - [fix] Do not apply `verticalSpacing` when `withPortal` or `withFullScreenPortal` is true ([#980](https://github.com/airbnb/react-dates/pull/980))
 - [fix] Handle minimum nights when selecting `startDate` ([#1015](https://github.com/airbnb/react-dates/pull/1015))
 - [fix] Fix style of `CloseIcon` in the SDP ([#1058](https://github.com/airbnb/react-dates/pull/1058))
+
+## 2.1.5
+- [fix] Removed calculates to position dropdown calendar.
+
+## 2.1.4
+- [fix] Fixed bug calculating fang position.
+
+## 2.1.2
+- [merge] Merge react-dates tag v16.3.6 in mirai-react-dates.
+
+## 2.1.1
+- [fix] Fixed some bugs related with the merge with the trunk.
+
+## 2.1.0
+- [merge] Merge react-dates tag v16.3.6 in mirai-react-dates.
 
 ## 16.3.6
 - [fix] Address width issues for vertical DayPickers ([#1055](https://github.com/airbnb/react-dates/pull/1055))
