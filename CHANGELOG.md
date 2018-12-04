@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.2.2
+- [fix] Fixed calendar mouse wheel on vertical orientation
+
 ## 2.2.1
 - [new] Use wheel mouse in orientation vertical in order to navigate to months
 

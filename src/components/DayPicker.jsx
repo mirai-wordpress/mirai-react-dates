@@ -354,10 +354,14 @@ class DayPicker extends BaseClass {
   }
 
   onMouseWheelHandler(event) {
-    event.preventDefault();
+    this.setState({ withMouseInteractions: false });
+
     const { orientation } = this.props;
     const { focusedDate } = this.state;
+    console.log(focusedDate);
     if (orientation != VERTICAL_ORIENTATION || !focusedDate) return;
+
+    event.preventDefault();
 
     let didTransitionMonth = false;
 
@@ -487,9 +491,14 @@ class DayPicker extends BaseClass {
 
   onPrevMonthClick(nextFocusedDate, e) {
     const { daySize, isRTL, numberOfMonths } = this.props;
-    const { calendarMonthWidth, monthTitleHeight } = this.state;
+    const { calendarMonthWidth, monthTitleHeight, focusedDate } = this.state;
 
     if (e) e.preventDefault();
+
+    let newNextFocusedDate = nextFocusedDate;
+    if (!nextFocusedDate && focusedDate) {
+      newNextFocusedDate = focusedDate.clone().subtract(1, 'month');
+    }
 
     let translationValue;
     if (this.isVertical()) {
@@ -511,7 +520,7 @@ class DayPicker extends BaseClass {
       monthTransition: PREV_TRANSITION,
       translationValue,
       focusedDate: null,
-      nextFocusedDate,
+      nextFocusedDate: newNextFocusedDate,
     });
   }
 
@@ -547,12 +556,15 @@ class DayPicker extends BaseClass {
 
   onNextMonthClick(nextFocusedDate, e) {
     const { isRTL, numberOfMonths, daySize } = this.props;
-    const { calendarMonthWidth, monthTitleHeight } = this.state;
+    const { calendarMonthWidth, monthTitleHeight, focusedDate } = this.state;
 
     if (e) e.preventDefault();
 
     let translationValue;
-
+    let newNextFocusedDate = nextFocusedDate;
+    if (!nextFocusedDate && focusedDate) {
+      newNextFocusedDate = focusedDate.clone().add(1, 'month');
+    }
     if (this.isVertical()) {
       const firstVisibleMonthWeeks = this.calendarMonthWeeks[1];
       const calendarMonthWeeksHeight = firstVisibleMonthWeeks * (daySize - 1);
@@ -575,7 +587,7 @@ class DayPicker extends BaseClass {
       monthTransition: NEXT_TRANSITION,
       translationValue,
       focusedDate: null,
-      nextFocusedDate,
+      nextFocusedDate: newNextFocusedDate,
     });
   }
 
@@ -744,6 +756,7 @@ class DayPicker extends BaseClass {
       if (onYearChange) onYearChange(newMonth);
     }
 
+    console.log(nextFocusedDate);
     let newFocusedDate = null;
     if (nextFocusedDate) {
       newFocusedDate = nextFocusedDate;
@@ -751,6 +764,7 @@ class DayPicker extends BaseClass {
       newFocusedDate = this.getFocusedDay(newMonth);
     }
 
+    console.log(newFocusedDate);
     this.setState({
       currentMonth: newMonth,
       monthTransition: null,
