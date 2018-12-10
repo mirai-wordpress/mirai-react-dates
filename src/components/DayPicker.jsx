@@ -30,6 +30,8 @@ import ScrollableOrientationShape from '../shapes/ScrollableOrientationShape';
 import DayOfWeekShape from '../shapes/DayOfWeekShape';
 import CalendarInfoPositionShape from '../shapes/CalendarInfoPositionShape';
 import BaseClass, { pureComponentAvailable } from '../utils/baseClass';
+import { withGesture } from 'react-with-gesture';
+import Gesture from './Gesture.jsx';
 
 import {
   HORIZONTAL_ORIENTATION,
@@ -107,6 +109,20 @@ const propTypes = forbidExtraProps({
   weekDayFormat: PropTypes.string,
   phrases: PropTypes.shape(getPhrasePropTypes(DayPickerPhrases)),
   dayAriaLabelFormat: PropTypes.string,
+  
+  touch: PropTypes.bool, 
+  mouse: PropTypes.bool, 
+  x: PropTypes.number,
+  y: PropTypes.number,
+  xDelta: PropTypes.number,
+  yDelta: PropTypes.number,
+  xInitial: PropTypes.number,
+  yInitial: PropTypes.number,
+  xPrev: PropTypes.number,
+  yPrev: PropTypes.number,
+  xVelocity: PropTypes.number,
+  yVelocity: PropTypes.number,
+  down: PropTypes.bool
 });
 
 export const defaultProps = {
@@ -356,7 +372,6 @@ class DayPicker extends BaseClass {
   onMouseWheelHandler(event) {
     const { orientation } = this.props;
     const { focusedDate } = this.state;
-    console.log(focusedDate);
     if (orientation != VERTICAL_ORIENTATION || !focusedDate) return;
 
     event.preventDefault();
@@ -743,7 +758,6 @@ class DayPicker extends BaseClass {
       if (onYearChange) onYearChange(newMonth);
     }
 
-    console.log(nextFocusedDate);
     let newFocusedDate = null;
     if (nextFocusedDate) {
       newFocusedDate = nextFocusedDate;
@@ -751,7 +765,6 @@ class DayPicker extends BaseClass {
       newFocusedDate = this.getFocusedDay(newMonth);
     }
 
-    console.log(newFocusedDate);
     this.setState({
       currentMonth: newMonth,
       monthTransition: null,
@@ -911,6 +924,32 @@ class DayPicker extends BaseClass {
       </div>
     );
   }
+  
+  onSwipeTop() {
+      return function() {
+          const { orientation } = this.props;
+          const { focusedDate } = this.state;
+          if (orientation != VERTICAL_ORIENTATION || !focusedDate) return;
+
+          const newFocusedDate = focusedDate.clone();
+          newFocusedDate.subtract(1, 'month');
+          this.onPrevMonthClick(newFocusedDate);
+          console.log("ON SWIPE TOP");
+      }
+  }
+
+  onSwipeBottom() {
+      return function(data) {
+          const { orientation } = this.props;
+          const { focusedDate } = this.state;
+          if (orientation != VERTICAL_ORIENTATION || !focusedDate) return;
+
+          const newFocusedDate = focusedDate.clone();
+          newFocusedDate.add(1, 'month');
+          this.onNextMonthClick(newFocusedDate);
+          console.log("ON SWIPE BOTTOM");
+      }
+  }
 
   render() {
     const {
@@ -1050,7 +1089,6 @@ class DayPicker extends BaseClass {
       >
         <OutsideClickHandler onOutsideClick={onOutsideClick}>
           {(calendarInfoPositionTop || calendarInfoPositionBefore) && calendarInfo}
-
           <div
             {...css(
               dayPickerWrapperStyle,
@@ -1090,6 +1128,7 @@ class DayPicker extends BaseClass {
                 )}
                 ref={this.setTransitionContainerRef}
               >
+                <Gesture onSwipeTop={this.onSwipeTop().bind(this)} onSwipeBottom={this.onSwipeBottom().bind(this)}>
                 <CalendarMonthGrid
                   setMonthTitleHeight={!monthTitleHeight ? this.setMonthTitleHeight : undefined}
                   translationValue={translationValue}
@@ -1122,7 +1161,9 @@ class DayPicker extends BaseClass {
                   verticalBorderSpacing={verticalBorderSpacing}
                   horizontalMonthPadding={horizontalMonthPadding}
                 />
+              </Gesture>
                 {verticalScrollable && this.renderNavigation()}
+
               </div>
 
               {!isTouch && !hideKeyboardShortcutsPanel && (
@@ -1283,4 +1324,4 @@ export default withStyles(({
       },
     }),
   },
-}), { pureComponent: pureComponentAvailable })(DayPicker);
+}), { pureComponent: pureComponentAvailable })(withGesture(DayPicker));

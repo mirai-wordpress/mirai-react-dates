@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.2.4
+- [new] Support to gestures. Added swipe events(onSwipeTop, onSwipeBottom, onSwipeLeft, onSwipeRight) to Daypicker on vertical Orientation to move to the next and previous month.
+
 ## 2.2.3
 - [fix] Fixed calendar mouse wheel to move to the next and previous month
 
