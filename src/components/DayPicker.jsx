@@ -31,7 +31,7 @@ import DayOfWeekShape from '../shapes/DayOfWeekShape';
 import CalendarInfoPositionShape from '../shapes/CalendarInfoPositionShape';
 import BaseClass, { pureComponentAvailable } from '../utils/baseClass';
 import { withGesture } from 'react-with-gesture';
-import Gesture from './Gesture.jsx';
+import Gesture from './Gesture';
 
 import {
   HORIZONTAL_ORIENTATION,
