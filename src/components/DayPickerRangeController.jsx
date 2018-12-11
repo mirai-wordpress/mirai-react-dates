@@ -28,7 +28,6 @@ import FocusedInputShape from '../shapes/FocusedInputShape';
 import ScrollableOrientationShape from '../shapes/ScrollableOrientationShape';
 import DayOfWeekShape from '../shapes/DayOfWeekShape';
 import CalendarInfoPositionShape from '../shapes/CalendarInfoPositionShape';
-import BaseClass from '../utils/baseClass';
 
 import {
   START_DATE,
@@ -47,6 +46,8 @@ const propTypes = forbidExtraProps({
   onDatesChange: PropTypes.func,
   startDateOffset: PropTypes.func,
   endDateOffset: PropTypes.func,
+  minDate: momentPropTypes.momentObj,
+  maxDate: momentPropTypes.momentObj,
 
   focusedInput: FocusedInputShape,
   onFocusChange: PropTypes.func,
@@ -99,6 +100,8 @@ const propTypes = forbidExtraProps({
   onBlur: PropTypes.func,
   isFocused: PropTypes.bool,
   showKeyboardShortcuts: PropTypes.bool,
+  onTab: PropTypes.func,
+  onShiftTab: PropTypes.func,
 
   // i18n
   monthFormat: PropTypes.string,
@@ -112,6 +115,8 @@ const propTypes = forbidExtraProps({
 const defaultProps = {
   startDate: undefined, // TODO: use null
   endDate: undefined, // TODO: use null
+  minDate: null,
+  maxDate: null,
   onDatesChange() {},
   startDateOffset: undefined,
   endDateOffset: undefined,
@@ -168,6 +173,8 @@ const defaultProps = {
   onBlur() {},
   isFocused: false,
   showKeyboardShortcuts: false,
+  onTab() {},
+  onShiftTab() {},
 
   // i18n
   monthFormat: 'MMMM YYYY',
@@ -188,8 +195,7 @@ const getChooseAvailableDatePhrase = (phrases, focusedInput) => {
   return phrases.chooseAvailableDate;
 };
 
-/** @extends React.Component */
-export default class DayPickerRangeController extends BaseClass {
+export default class DayPickerRangeController extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -232,6 +238,8 @@ export default class DayPickerRangeController extends BaseClass {
         chooseAvailableDate,
       },
       visibleDays,
+      disablePrev: this.shouldDisableMonthNavigation(props.minDate, currentMonth),
+      disableNext: this.shouldDisableMonthNavigation(props.maxDate, currentMonth),
     };
 
     this.onDayClick = this.onDayClick.bind(this);
@@ -709,7 +717,7 @@ export default class DayPickerRangeController extends BaseClass {
     modifiers = this.deleteModifier(modifiers, hoverDate, 'hovered');
 
     if (dateOffset) {
-      modifiers = this.deleteModifierFromRange(modifiers, this.state.dateOffset.start, this.state.dateOffset.end, 'hovered-offset');
+      modifiers = this.deleteModifierFromRange(modifiers, dateOffset.start, dateOffset.end, 'hovered-offset');
     }
 
     if (startDate && !endDate && isAfterDay(hoverDate, startDate)) {
@@ -737,7 +745,13 @@ export default class DayPickerRangeController extends BaseClass {
   }
 
   onPrevMonthClick() {
-    const { onPrevMonthClick, numberOfMonths, enableOutsideDays } = this.props;
+    const {
+      enableOutsideDays,
+      maxDate,
+      minDate,
+      numberOfMonths,
+      onPrevMonthClick,
+    } = this.props;
     const { currentMonth, visibleDays } = this.state;
 
     const newVisibleDays = {};
@@ -751,6 +765,8 @@ export default class DayPickerRangeController extends BaseClass {
     const newCurrentMonth = currentMonth.clone().subtract(1, 'month');
     this.setState({
       currentMonth: newCurrentMonth,
+      disablePrev: this.shouldDisableMonthNavigation(minDate, newCurrentMonth),
+      disableNext: this.shouldDisableMonthNavigation(maxDate, newCurrentMonth),
       visibleDays: {
         ...newVisibleDays,
         ...this.getModifiers(prevMonthVisibleDays),
@@ -761,7 +777,13 @@ export default class DayPickerRangeController extends BaseClass {
   }
 
   onNextMonthClick() {
-    const { onNextMonthClick, numberOfMonths, enableOutsideDays } = this.props;
+    const {
+      enableOutsideDays,
+      maxDate,
+      minDate,
+      numberOfMonths,
+      onNextMonthClick,
+    } = this.props;
     const { currentMonth, visibleDays } = this.state;
 
     const newVisibleDays = {};
@@ -771,10 +793,11 @@ export default class DayPickerRangeController extends BaseClass {
 
     const nextMonth = currentMonth.clone().add(numberOfMonths + 1, 'month');
     const nextMonthVisibleDays = getVisibleDays(nextMonth, 1, enableOutsideDays, true);
-
     const newCurrentMonth = currentMonth.clone().add(1, 'month');
     this.setState({
       currentMonth: newCurrentMonth,
+      disablePrev: this.shouldDisableMonthNavigation(minDate, newCurrentMonth),
+      disableNext: this.shouldDisableMonthNavigation(maxDate, newCurrentMonth),
       visibleDays: {
         ...newVisibleDays,
         ...this.getModifiers(nextMonthVisibleDays),
@@ -927,6 +950,17 @@ export default class DayPickerRangeController extends BaseClass {
       withoutTransitionMonths,
     ));
     return { currentMonth, visibleDays };
+  }
+
+  shouldDisableMonthNavigation(date, visibleMonth) {
+    if (!date) return false;
+
+    const {
+      numberOfMonths,
+      enableOutsideDays,
+    } = this.props;
+
+    return isDayVisible(date, visibleMonth, numberOfMonths, enableOutsideDays);
   }
 
   addModifier(updatedDays, day, modifier) {
@@ -1248,6 +1282,8 @@ export default class DayPickerRangeController extends BaseClass {
       renderMonthElement,
       calendarInfoPosition,
       onBlur,
+      onShiftTab,
+      onTab,
       isFocused,
       showKeyboardShortcuts,
       isRTL,
@@ -1260,7 +1296,13 @@ export default class DayPickerRangeController extends BaseClass {
       horizontalMonthPadding,
     } = this.props;
 
-    const { currentMonth, phrases, visibleDays } = this.state;
+    const {
+      currentMonth,
+      phrases,
+      visibleDays,
+      disablePrev,
+      disableNext,
+    } = this.state;
 
     return (
       <DayPicker
@@ -1274,6 +1316,8 @@ export default class DayPickerRangeController extends BaseClass {
         onPrevMonthClick={this.onPrevMonthClick}
         onNextMonthClick={this.onNextMonthClick}
         onMonthChange={this.onMonthChange}
+        onTab={onTab}
+        onShiftTab={onShiftTab}
         onYearChange={this.onYearChange}
         onMultiplyScrollableMonths={this.onMultiplyScrollableMonths}
         monthFormat={monthFormat}
@@ -1283,6 +1327,8 @@ export default class DayPickerRangeController extends BaseClass {
         initialVisibleMonth={() => currentMonth}
         daySize={daySize}
         onOutsideClick={onOutsideClick}
+        disablePrev={disablePrev}
+        disableNext={disableNext}
         navPrev={navPrev}
         navNext={navNext}
         navPrevLocked={this.isMonthBlockedByMinDate()}

@@ -1,7 +1,47 @@
 # Change Log
 
+## 2.2.6
+- [fix] Fixed bug publishing lib in npm
+
 ## 2.2.5
-- [fix] Fixed bug related to compile sources and imports.
+- [merge] Merged with upstream into fork
+
+## 18.3.0
+- [fix] Update the SDP and DRP to be compatible with `react-with-direction` ([#1482](https://github.com/airbnb/react-dates/pull/1482))
+- [new] Add `minDate` and `maxDate` props to block month navigation ([#1311](https://github.com/airbnb/react-dates/pull/1311))
+- [fix][a11y] Remove space/enter onKeyDown handling for open/close keyboard shortcuts panel ([#1464](https://github.com/airbnb/react-dates/pull/1464))
+- [fix][a11y] Fix lack of visible focus in Firefox and IE on "?" keyboard shortcuts button ([#1463](https://github.com/airbnb/react-dates/pull/1463))
+
+## 18.2.2
+- [fix] Conditionally apply the `shouldComponentUpdate` method in the babel transform ([#1457](https://github.com/airbnb/react-dates/pull/1457))
+- [fix] Fix incorrect VO for selected check-in date  ([#1451](https://github.com/airbnb/react-dates/pull/1451))
+
+## 18.2.1
+- [fix] Add babel transform to handle PureComponent fallbacks ([#1452](https://github.com/airbnb/react-dates/pull/1452))
+
+## 18.2.0
+- [new] Add `onTab`/`onShiftTab` callbacks to the DayPicker (and its controllers) ([#1427](https://github.com/airbnb/react-dates/pull/1427))
+
+## 18.1.1
+- [fix] Prevent outside range dates from being selected by typing ([#1370](https://github.com/airbnb/react-dates/pull/1370))
+
+## 18.1.0
+- [fix] Default the `calendarMonthPadding` theme variable to 0 when undefined ([#1355](https://github.com/airbnb/react-dates/pull/1355))
+- [new] Add `SingleDatePickerInputController` component ([#1360](https://github.com/airbnb/react-dates/pull/1360))
+- [new] Add `horizontalMonthPadding` as a prop to the DRP ([#1364](https://github.com/airbnb/react-dates/pull/1364))
+- [fix] Fix unnecessary rerender in `DayPickerNavigation` ([#1363](https://github.com/airbnb/react-dates/pull/1363))
+
+## 18.0.4
+- [fix] revert 'revert 'Conditionally use `PureComponent` instead of `Component`'' ([4f8eb01](https://github.com/airbnb/react-dates/commit/4f8eb01168ef6c4ae7d74e95ad14acb28960e43e))
+
+## 18.0.3
+- [fix] revert 'Conditionally use `PureComponent` instead of `Component`' ([50c382f](https://github.com/airbnb/react-dates/commit/50c382f7cf3e3ba60f4fdaa00eae53cf06d3c97b))
+
+## 18.0.2
+- [fix] Remove svgo from "inline-react-svg" babel plugin options ([#1350](https://github.com/airbnb/react-dates/pull/1350))
+
+## 18.0.1
+- [fix] Center vertical month navigation ([#1347](https://github.com/airbnb/react-dates/pull/1347))
 
 ## 2.2.4
 - [new] Support to gestures. Added swipe events(onSwipeTop, onSwipeBottom, onSwipeLeft, onSwipeRight) to Daypicker on vertical Orientation to move to the next and previous month.

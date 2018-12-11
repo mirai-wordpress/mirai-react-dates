@@ -8,7 +8,6 @@ import moment from 'moment';
 import { CalendarDayPhrases } from '../defaultPhrases';
 import getPhrasePropTypes from '../utils/getPhrasePropTypes';
 import getCalendarDaySettings from '../utils/getCalendarDaySettings';
-import BaseClass, { pureComponentAvailable } from '../utils/baseClass';
 
 import { DAY_SIZE } from '../constants';
 import DefaultTheme from '../theme/DefaultTheme';
@@ -253,7 +252,7 @@ const defaultProps = {
   phrases: CalendarDayPhrases,
 };
 
-class CustomizableCalendarDay extends React.Component {
+class CustomizableCalendarDay extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
@@ -262,10 +261,6 @@ class CustomizableCalendarDay extends React.Component {
     };
 
     this.setButtonRef = this.setButtonRef.bind(this);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
   }
 
   componentDidUpdate(prevProps) {
@@ -437,4 +432,4 @@ export default withStyles(({ reactDates: { font } }) => ({
   CalendarDay__defaultCursor: {
     cursor: 'default',
   },
-}), { pureComponent: pureComponentAvailable })(CustomizableCalendarDay);
+}), { pureComponent: typeof React.PureComponent !== 'undefined' })(CustomizableCalendarDay);

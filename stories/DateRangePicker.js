@@ -2,10 +2,13 @@ import React from 'react';
 import moment from 'moment';
 import momentJalaali from 'moment-jalaali';
 import { storiesOf } from '@storybook/react';
+import { withInfo } from '@storybook/addon-info';
+import DirectionProvider, { DIRECTIONS } from 'react-with-direction/dist/DirectionProvider';
 import isSameDay from '../src/utils/isSameDay';
 
 import {
   VERTICAL_ORIENTATION,
+  ANCHOR_RIGHT,
 } from '../src/constants';
 
 import DateRangePickerWrapper from '../examples/DateRangePickerWrapper';
@@ -66,21 +69,21 @@ const datesList = [
 	];
 
 storiesOf('DateRangePicker (DRP)', module)
-  .addWithInfo('default', () => (
+  .add('default', withInfo()(() => (
     <DateRangePickerWrapper />
-  ))
-  .addWithInfo('hidden with display: none', () => (
+  )))
+  .add('hidden with display: none', withInfo()(() => (
     <TestWrapper />
-  ))
-  .addWithInfo('as part of a form', () => (
+  )))
+  .add('as part of a form', withInfo()(() => (
     <div>
       <DateRangePickerWrapper />
       <TestInput placeholder="Input 1" />
       <TestInput placeholder="Input 2" />
       <TestInput placeholder="Input 3" />
     </div>
-  ))
-  .addWithInfo('non-english locale', () => {
+  )))
+  .add('non-english locale', withInfo()(() => {
     moment.locale('zh-cn');
     return (
       <DateRangePickerWrapper
@@ -94,8 +97,8 @@ storiesOf('DateRangePicker (DRP)', module)
         }}
       />
     );
-  })
-  .addWithInfo('non-english locale (Persian)', () => {
+  }))
+  .add('non-english locale (Persian)', withInfo()(() => {
     moment.locale('fa');
     momentJalaali.loadPersian({ dialect: 'persian-modern', usePersianDigits: true });
     return (
@@ -108,9 +111,9 @@ storiesOf('DateRangePicker (DRP)', module)
         renderDayContents={day => momentJalaali(day).format('jD')}
       />
     )
-  })
+  }))
   // Mirai: New example to set custom classes for days 
-  .addWithInfo('Assign important classes to calendar', () => {
+  .add('Assign important classes to calendar', withInfo()(() => {
     return (
       <DateRangePickerWrapper 
         hideKeyboardShortcutsPanel
@@ -119,18 +122,18 @@ storiesOf('DateRangePicker (DRP)', module)
         }
       />
     );
-  })
+  }))
   // Mirai: New example to set maximum nights 
-  .addWithInfo('Maximum nights selected', () => {
+  .add('Maximum nights selected', withInfo()(() => {
     return (
       <DateRangePickerWrapper
          hideKeyboardShortcutsPanel
          maximumNights={20}
       />
     );
-  })
+  }))
   // Mirai: New example to set maximum nights 
-  .addWithInfo('Maximum date and minimum date', () => {
+  .add('Maximum date and minimum date', withInfo()(() => {
     return (
       <DateRangePickerWrapper
          hideKeyboardShortcutsPanel
@@ -138,10 +141,22 @@ storiesOf('DateRangePicker (DRP)', module)
          maxDate={moment().add(1, "year")}
       />
     );
-  })
-  .addWithInfo('vertical with custom height', () => (
+  }))
+  .add('with DirectionProvider', withInfo()(() => (
+    <DirectionProvider direction={DIRECTIONS.RTL}>
+      <DateRangePickerWrapper
+        startDatePlaceholderText="تاریخ شروع"
+        endDatePlaceholderText="تاریخ پایان"
+        anchorDirection={ANCHOR_RIGHT}
+        showDefaultInputIcon
+        showClearDates
+        isRTL
+      />
+    </DirectionProvider>
+  )))
+  .add('vertical with custom height', withInfo()(() => (
     <DateRangePickerWrapper
       orientation={VERTICAL_ORIENTATION}
       verticalHeight={568}
     />
-  ));
+  )));
