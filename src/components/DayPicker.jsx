@@ -30,8 +30,7 @@ import ScrollableOrientationShape from '../shapes/ScrollableOrientationShape';
 import DayOfWeekShape from '../shapes/DayOfWeekShape';
 import CalendarInfoPositionShape from '../shapes/CalendarInfoPositionShape';
 import BaseClass, { pureComponentAvailable } from '../utils/baseClass';
-import { withGesture } from 'react-with-gesture';
-import Gesture from './Gesture';
+import Gesture from './Gesture.jsx';
 
 import {
   HORIZONTAL_ORIENTATION,
@@ -1324,4 +1323,4 @@ export default withStyles(({
       },
     }),
   },
-}), { pureComponent: pureComponentAvailable })(withGesture(DayPicker));
+}), { pureComponent: pureComponentAvailable })(DayPicker);
