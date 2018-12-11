@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.2.8
+- [fix] To take account disablePrev and disableNext on mouse wheel or swipe
+
 ## 2.2.7
 - [fix] Fixed bug related with lib of gestures
 

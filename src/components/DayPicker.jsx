@@ -380,7 +380,7 @@ class DayPicker extends React.PureComponent {
   }
 
   onMouseWheelHandler(event) {
-    const { orientation } = this.props;
+    const { orientation, disablePrev, disableNext } = this.props;
     const { focusedDate } = this.state;
     if (orientation != VERTICAL_ORIENTATION || !focusedDate) return;
 
@@ -389,11 +389,11 @@ class DayPicker extends React.PureComponent {
     const newFocusedDate = focusedDate.clone();
     var e = window.event || event; // old IE support
     var delta = Math.max(-1, Math.min(1, (event.wheelDelta || -e.detail)));
-    if (delta < 0) {
+    if (delta < 0 && !disableNext) {
         newFocusedDate.add(1, 'month');
         this.onNextMonthTransition(newFocusedDate);
     }
-    if (delta > 0) {
+    if (delta > 0 && !disablePrev) {
         newFocusedDate.subtract(1, 'month');
         this.onPrevMonthTransition(newFocusedDate);
     }
@@ -958,27 +958,25 @@ class DayPicker extends React.PureComponent {
   
   onSwipeTop() {
       return function() {
-          const { orientation } = this.props;
+          const { orientation, disablePrev } = this.props;
           const { focusedDate } = this.state;
-          if (orientation != VERTICAL_ORIENTATION || !focusedDate) return;
+          if (orientation != VERTICAL_ORIENTATION || !focusedDate || disablePrev) return;
 
           const newFocusedDate = focusedDate.clone();
           newFocusedDate.subtract(1, 'month');
           this.onPrevMonthTransition(newFocusedDate);
-          console.log("ON SWIPE TOP");
       }
   }
 
   onSwipeBottom() {
       return function(data) {
-          const { orientation } = this.props;
+          const { orientation, disableNext } = this.props;
           const { focusedDate } = this.state;
-          if (orientation != VERTICAL_ORIENTATION || !focusedDate) return;
+          if (orientation != VERTICAL_ORIENTATION || !focusedDate || disableNext) return;
 
           const newFocusedDate = focusedDate.clone();
           newFocusedDate.add(1, 'month');
           this.onNextMonthTransition(newFocusedDate);
-          console.log("ON SWIPE BOTTOM");
       }
   }
 

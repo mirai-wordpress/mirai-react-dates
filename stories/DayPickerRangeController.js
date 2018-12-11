@@ -199,6 +199,8 @@ storiesOf('DayPickerRangeController', module)
   )))
   .add('vertical', withInfo()(() => (
     <DayPickerRangeControllerWrapper
+      minDate={moment()}
+      maxDate={moment().add(390, "days")}
       onOutsideClick={action('DayPickerRangeController::onOutsideClick')}
       onPrevMonthClick={action('DayPickerRangeController::onPrevMonthClick')}
       onNextMonthClick={action('DayPickerRangeController::onNextMonthClick')}
