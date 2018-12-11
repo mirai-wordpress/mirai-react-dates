@@ -1,6 +1,6 @@
 {
   "name": "mirai-react-dates",
-  "version": "2.2.6",
+  "version": "2.2.7",
   "description": "A customization of the react-dates project of Airbnb",
   "main": "index.js",
   "scripts": {

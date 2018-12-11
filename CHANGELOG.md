@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.2.7
+- [fix] Fixed bug related with lib of gestures
+
 ## 2.2.6
 - [fix] Fixed bug publishing lib in npm
 

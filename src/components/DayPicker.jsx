@@ -375,6 +375,8 @@ class DayPicker extends React.PureComponent {
 
   componentWillUnmount() {
     clearTimeout(this.setCalendarInfoWidthTimeout);
+    document.querySelector("div[role=application]").removeEventListener("mousewheel", this.onMouseWheelHandler, false);
+    document.querySelector("div[role=application]").removeEventListener("DOMMouseScroll", this.onMouseWheelHandler);
   }
 
   onMouseWheelHandler(event) {
