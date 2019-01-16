@@ -86,6 +86,40 @@ const datesList2 = [
   moment().add(5, 'days'),
 ];
 
+class NavToDateWrapper extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      month: moment(),
+    };
+  }
+
+  render() {
+    const { month } = this.state;
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div>
+          <select
+            value={month.month()}
+            onChange={(e) => { this.setState({month : month.clone().set('month', e.target.value)})}}
+          >
+            {moment.months().map((label, value) => (
+              <option value={value}>{label}</option>
+            ))}
+          </select>
+        </div>
+
+        <DayPickerRangeControllerWrapper
+          onOutsideClick={action('DayPickerRangeController::onOutsideClick')}
+          onPrevMonthClick={action('DayPickerRangeController::onPrevMonthClick')}
+          onNextMonthClick={action('DayPickerRangeController::onNextMonthClick')}
+          navToDate={month}
+        />
+      </div>
+    );
+  }
+}
+
 storiesOf('DayPickerRangeController', module)
   .addDecorator(InfoPanelDecorator(dayPickerRangeControllerInfo))
   .add('default', withInfo()(() => (
@@ -261,6 +295,9 @@ storiesOf('DayPickerRangeController', module)
         }
       />
     </div>
+  )))
+  .add('navigation to date', withInfo()(() => (
+    <NavToDateWrapper/>
   )))
   .add('with custom month navigation', withInfo()(() => (
     <DayPickerRangeControllerWrapper

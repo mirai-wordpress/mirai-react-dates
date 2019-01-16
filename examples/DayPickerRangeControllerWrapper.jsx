@@ -46,6 +46,7 @@ const propTypes = forbidExtraProps({
 
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
+  navToDate: momentPropTypes.momentObj,
   
   minDate: momentPropTypes.momentObj,
   maxDate: momentPropTypes.momentObj,
@@ -102,6 +103,7 @@ const defaultProps = {
   // navigation related props
   navPrev: null,
   navNext: null,
+  navToDate: null,
   onPrevMonthClick() {},
   onNextMonthClick() {},
   

@@ -81,6 +81,7 @@ const propTypes = forbidExtraProps({
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
   noNavButtons: PropTypes.bool,
+  navToDate: momentPropTypes.momentObj,
   
   minDate: momentPropTypes.momentObj,
   maxDate: momentPropTypes.momentObj,
@@ -149,6 +150,7 @@ const defaultProps = {
   navPrev: null,
   navNext: null,
   noNavButtons: false,
+  navToDate: null,
 
   onPrevMonthClick() {},
   onNextMonthClick() {},
@@ -268,6 +270,9 @@ export default class DayPickerRangeController extends React.PureComponent {
       initialVisibleMonth,
       numberOfMonths,
       enableOutsideDays,
+      navToDate,
+      minDate,
+      maxDate
     } = nextProps;
 
     const {
@@ -282,6 +287,7 @@ export default class DayPickerRangeController extends React.PureComponent {
       initialVisibleMonth: prevInitialVisibleMonth,
       numberOfMonths: prevNumberOfMonths,
       enableOutsideDays: prevEnableOutsideDays,
+      navToDate: prevNavToDate
     } = this.props;
 
     let { visibleDays } = this.state;
@@ -334,6 +340,16 @@ export default class DayPickerRangeController extends React.PureComponent {
         currentMonth,
         visibleDays,
       });
+    }
+    if (navToDate && navToDate != prevNavToDate) {
+      const newMonthNavToDate = this.getStateForNavToDate(nextProps);
+      this.setState({
+          currentMonth : newMonthNavToDate.newMonth,
+          disablePrev: this.shouldDisableMonthNavigation(minDate, newMonthNavToDate.newMonth),
+          disableNext: this.shouldDisableMonthNavigation(maxDate, newMonthNavToDate.newMonth),
+          visibleDays : newMonthNavToDate.visibleDays,
+          focusedDate: newMonthNavToDate.newMonth
+        });
     }
 
     let modifiers = {};
@@ -805,6 +821,24 @@ export default class DayPickerRangeController extends React.PureComponent {
     }, () => {
       onNextMonthClick(newCurrentMonth.clone());
     });
+  }
+  
+  getStateForNavToDate(nextProps) {
+    const {
+      navToDate,
+      numberOfMonths,
+      enableOutsideDays,
+      orientation
+    } = nextProps;
+    const newMonth = navToDate.clone().startOf("month");
+    const withoutTransitionMonths = orientation === VERTICAL_SCROLLABLE;
+    const visibleDays = this.getModifiers(getVisibleDays(
+      newMonth,
+      numberOfMonths,
+      enableOutsideDays,
+      withoutTransitionMonths
+    ));
+    return { newMonth, visibleDays };
   }
 
   onMonthChange(newMonth) {
@@ -1294,6 +1328,7 @@ export default class DayPickerRangeController extends React.PureComponent {
       transitionDuration,
       verticalBorderSpacing,
       horizontalMonthPadding,
+      navToDate
     } = this.props;
 
     const {
@@ -1331,6 +1366,7 @@ export default class DayPickerRangeController extends React.PureComponent {
         disableNext={disableNext}
         navPrev={navPrev}
         navNext={navNext}
+        navToDate={navToDate}
         navPrevLocked={this.isMonthBlockedByMinDate()}
         navNextLocked={this.isMonthBlockedByMaxDate()}
         noNavButtons={noNavButtons}

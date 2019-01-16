@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import momentPropTypes from 'react-moment-proptypes';
+
 import { forbidExtraProps, mutuallyExclusiveProps, nonNegativeInteger } from 'airbnb-prop-types';
 import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
 
@@ -78,6 +80,7 @@ const propTypes = forbidExtraProps({
   disableNext: PropTypes.bool,
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
+  navToDate: momentPropTypes.momentObj,
   noNavButtons: PropTypes.bool,
   onPrevMonthClick: PropTypes.func,
   onNextMonthClick: PropTypes.func,
@@ -154,6 +157,7 @@ export const defaultProps = {
   disableNext: false,
   navPrev: null,
   navNext: null,
+  navToDate: null,
   noNavButtons: false,
   onPrevMonthClick() {},
   onNextMonthClick() {},
@@ -278,9 +282,10 @@ class DayPicker extends React.PureComponent {
       onBlur,
       renderMonthText,
       horizontalMonthPadding,
+      navToDate
     } = nextProps;
     const { currentMonth } = this.state;
-
+    const {navToDate: prevNavToDate} = this.props;
     if (!hidden) {
       if (!this.hasSetInitialVisibleMonth) {
         this.hasSetInitialVisibleMonth = true;
@@ -290,6 +295,16 @@ class DayPicker extends React.PureComponent {
       }
     }
 
+    if (navToDate && navToDate != prevNavToDate) {
+        this.setCalendarMonthWeeks(navToDate);
+        this.calculateAndSetDayPickerHeight();
+
+        this.setState({
+            currentMonth: navToDate.clone().startOf("month"),
+            monthTransition: MONTH_SELECTION_TRANSITION,
+            translationValue: 0.00001,
+        });
+    }
     const {
       daySize,
       isFocused: prevIsFocused,
@@ -1100,7 +1115,6 @@ class DayPicker extends React.PureComponent {
       marginLeft: isHorizontal && withPortal ? -fullHorizontalWidth / 2 : null,
       marginTop: isHorizontal && withPortal ? -calendarMonthWidth / 2 : null,
     };
-
     return (
       <div
         role="application"
