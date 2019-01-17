@@ -318,6 +318,7 @@ The following is a list of other *OPTIONAL* props you may provide to the `DayPic
   // navigation related props
   navPrev: PropTypes.node,
   navNext: PropTypes.node,
+  navToDate: momentPropTypes.momentObj,
   onPrevMonthClick: PropTypes.func,
   onNextMonthClick: PropTypes.func,
   transitionDuration: nonNegativeInteger, // milliseconds

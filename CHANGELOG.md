@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.2.9
+- [new] New prop navToDate with a date to navigate to a specific month
+
 ## 2.2.8
 - [fix] To take account disablePrev and disableNext on mouse wheel or swipe
 
