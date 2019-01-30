@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.2.10
+- [fix] Prevent default on swipe top to prevent reload page
+
 ## 2.2.9
 - [new] New prop navToDate with a date to navigate to a specific month
 
