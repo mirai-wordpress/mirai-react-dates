@@ -1002,7 +1002,7 @@ class DayPicker extends React.PureComponent {
           var node = gestureProperties.target;
           do {
               if (node.getAttribute("role") == "application") {
-                  gestureProperties.event.preventDefault();
+                  event.preventDefault();
                   return;
               }
           } while ( node = node.parentNode );

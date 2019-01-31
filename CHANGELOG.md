@@ -1,6 +1,6 @@
 # Change Log
 
-## 2.2.11
+## 2.2.12
 - [fix] Prevent default on swipe top to prevent reload page
 
 ## 2.2.9
