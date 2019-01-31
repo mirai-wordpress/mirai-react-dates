@@ -12,11 +12,11 @@ class Gesture extends React.Component {
         startTime: null,
         gestureRecognized : false
       }
+      debugger;
     }
     
     shouldComponentUpdate(nextProps, nextState) {
-      const {xDelta, yDelta,event} = nextProps;
-      event && console.log(event) && event.preventDefault();
+      const {xDelta, yDelta, event, passive} = nextProps;
       if (nextState.startTime) {
           let diff = new Date().getTime() - nextState.startTime.getTime();
           if (!this.state.gestureRecognized && diff > 150) {
