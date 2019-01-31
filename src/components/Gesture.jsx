@@ -12,7 +12,6 @@ class Gesture extends React.Component {
         startTime: null,
         gestureRecognized : false
       }
-      debugger;
     }
     
     shouldComponentUpdate(nextProps, nextState) {
