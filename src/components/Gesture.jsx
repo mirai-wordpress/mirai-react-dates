@@ -15,7 +15,7 @@ class Gesture extends React.Component {
     }
     
     shouldComponentUpdate(nextProps, nextState) {
-      const {xDelta, yDelta, event, passive} = nextProps;
+      const {delta: [xDelta, yDelta], event, passive} = nextProps;
       if (nextState.startTime) {
           let diff = new Date().getTime() - nextState.startTime.getTime();
           if (!this.state.gestureRecognized && diff > 150) {
@@ -91,4 +91,4 @@ class Gesture extends React.Component {
     }
 }
 
-export default withGesture(Gesture);
+export default withGesture()(Gesture);
