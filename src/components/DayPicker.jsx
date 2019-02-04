@@ -997,18 +997,6 @@ class DayPicker extends React.PureComponent {
       }
   }
   
-  onGesture(gestureProperties) {
-      if (gestureProperties.down && (gestureProperties.xDelta != 0 || gestureProperties.yDelta != 0)) {
-          var node = gestureProperties.target;
-          do {
-              if (node.getAttribute("role") == "application") {
-                  event.preventDefault();
-                  return;
-              }
-          } while ( node = node.parentNode );
-      }
-  }
-
   render() {
     const {
       calendarMonthWidth,
@@ -1185,7 +1173,7 @@ class DayPicker extends React.PureComponent {
                 )}
                 ref={this.setTransitionContainerRef}
               >
-                <Gesture onAction={this.onGesture} passive="true" onSwipeTop={this.onSwipeTop().bind(this)} onSwipeBottom={this.onSwipeBottom().bind(this)}>
+                <Gesture passive="false" onSwipeTop={this.onSwipeTop().bind(this)} onSwipeBottom={this.onSwipeBottom().bind(this)}>
                     <CalendarMonthGrid
                       setMonthTitleHeight={!monthTitleHeight ? this.setMonthTitleHeight : undefined}
                       translationValue={translationValue}

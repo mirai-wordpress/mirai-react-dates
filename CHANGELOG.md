@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.2.13
+- [fix] Removed all code to check reload page on swipe in top page. 
+
 ## 2.2.12
 - [fix] Prevent default on swipe top to prevent reload page
 
