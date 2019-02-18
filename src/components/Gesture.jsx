@@ -21,7 +21,6 @@ class Gesture extends React.Component {
     shouldComponentUpdate(nextProps, nextState) {
       const {delta: [xDelta, yDelta], event, passive, down} = nextProps;
       if (!this.disabledScroll && down) {
-          console.log("DISABLING SCROLL");
           this.disabledScroll = true;
           this.disableScroll();
       }
@@ -44,7 +43,6 @@ class Gesture extends React.Component {
           }
       }
       if (this.disabledScroll && !down) {
-          console.log("ENABLING SCROLL");
           this.enableScroll();
           this.disabledScroll = false;
       }
@@ -58,6 +56,7 @@ class Gesture extends React.Component {
         window.onwheel = this.preventDefault; // modern standard
         window.onmousewheel = document.onmousewheel = this.preventDefault; // older browsers, IE
         window.addEventListener('touchmove', this.preventDefault, {passive: false});
+//        window.ontouchmove  = this.preventDefault; // mobile
     }
     
     enableScroll() {
@@ -71,10 +70,7 @@ class Gesture extends React.Component {
     preventDefault(e) {
         e = e || window.event;
         if (e.preventDefault && e.cancelable) {
-            console.log("PREVENT DEFAULT");
             e.preventDefault();
-        } else if (!e.cancelable) {
-            console.log("IS NOT CANCELABLE");
         }
         e.returnValue = false;
       }
