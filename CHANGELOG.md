@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.2.15
+- [fix] Disabled scolling and tap events on gesture.
+
 ## 2.2.13
 - [fix] Removed all code to check reload page on swipe in top page. 
 

@@ -8,14 +8,23 @@ const SWIPE_THRESHOLD_VELOCITY = 0.3;
 class Gesture extends React.Component {
     constructor(props) {
       super(props);
+      this.disabledScroll = false,
       this.state = {
         startTime: null,
         gestureRecognized : false
       }
+      
+      this.disableScroll = this.disableScroll.bind(this);
+      this.enableScroll = this.enableScroll.bind(this);
     }
     
     shouldComponentUpdate(nextProps, nextState) {
-      const {delta: [xDelta, yDelta], event, passive} = nextProps;
+      const {delta: [xDelta, yDelta], event, passive, down} = nextProps;
+      if (!this.disabledScroll && down) {
+          console.log("DISABLING SCROLL");
+          this.disabledScroll = true;
+          this.disableScroll();
+      }
       if (nextState.startTime) {
           let diff = new Date().getTime() - nextState.startTime.getTime();
           if (!this.state.gestureRecognized && diff > 150) {
@@ -34,8 +43,41 @@ class Gesture extends React.Component {
               this.setState({gestureRecognized : false, startTime: null});
           }
       }
+      if (this.disabledScroll && !down) {
+          console.log("ENABLING SCROLL");
+          this.enableScroll();
+          this.disabledScroll = false;
+      }
       return true;
     }
+    
+    disableScroll() {
+        if (window.addEventListener) { // older FF
+            window.addEventListener('DOMMouseScroll', this.preventDefault, {passive: false});
+        }
+        window.onwheel = this.preventDefault; // modern standard
+        window.onmousewheel = document.onmousewheel = this.preventDefault; // older browsers, IE
+        window.addEventListener('touchmove', this.preventDefault, {passive: false});
+    }
+    
+    enableScroll() {
+        if (window.removeEventListener)
+            window.removeEventListener('DOMMouseScroll', this.preventDefault, {passive: false});
+        window.onmousewheel = document.onmousewheel = null; 
+        window.onwheel = null; 
+        window.removeEventListener('touchmove', this.preventDefault, {passive: false});
+    }
+    
+    preventDefault(e) {
+        e = e || window.event;
+        if (e.preventDefault && e.cancelable) {
+            console.log("PREVENT DEFAULT");
+            e.preventDefault();
+        } else if (!e.cancelable) {
+            console.log("IS NOT CANCELABLE");
+        }
+        e.returnValue = false;
+      }
     
     isSwipe(xDelta, yDelta, xVelocity, yVelocity) {
       if (Math.abs(yDelta) > SWIPE_MAX_OFF_PATH) { return false; }
@@ -84,11 +126,11 @@ class Gesture extends React.Component {
     
     render() {
       return (
-          <div>
+          <div style={{touchAction: "none"}}>
               {this.props.children}
           </div>
       );
     }
 }
 
-export default withGesture()(Gesture);
+export default withGesture({passive: false})(Gesture);
