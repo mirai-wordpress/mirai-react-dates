@@ -1,9 +1,9 @@
 import React from 'react';
 import { withGesture } from 'react-with-gesture';
 
-const SWIPE_MIN_DISTANCE = 120;
-const SWIPE_MAX_OFF_PATH = 250;
-const SWIPE_THRESHOLD_VELOCITY = 0.3;
+const SWIPE_MIN_DISTANCE = 50;
+const SWIPE_MAX_OFF_PATH = 300;
+const SWIPE_THRESHOLD_VELOCITY = 0.1;
 
 class Gesture extends React.Component {
     constructor(props) {
