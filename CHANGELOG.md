@@ -1,6 +1,6 @@
 # Change Log
 
-## 2.2.16
+## 2.2.17
 - [fix] Adjust swipe to reduce velocity and distance.
 
 ## 2.2.15

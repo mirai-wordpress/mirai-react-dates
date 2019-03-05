@@ -1,7 +1,7 @@
 import React from 'react';
 import { withGesture } from 'react-with-gesture';
 
-const SWIPE_MIN_DISTANCE = 50;
+const SWIPE_MIN_DISTANCE = 30;
 const SWIPE_MAX_OFF_PATH = 300;
 const SWIPE_THRESHOLD_VELOCITY = 0.1;
 
@@ -80,6 +80,23 @@ class Gesture extends React.Component {
 
       let enoughSpeedX = Math.abs(xVelocity) > SWIPE_THRESHOLD_VELOCITY;
       let enoughSpeedY = Math.abs(yVelocity) > SWIPE_THRESHOLD_VELOCITY;
+      if (yDelta > SWIPE_MIN_DISTANCE && enoughSpeedY) {
+          if (this.props.onSwipeTop) {
+              this.props.onSwipeTop();
+          }
+          if (this.props.onSwipe) {
+              this.props.onSwipe({direction: "TOP"});
+          }
+          return true;
+      } else if (yDelta < -SWIPE_MIN_DISTANCE && enoughSpeedY) {
+          if (this.props.onSwipeBottom) {
+              this.props.onSwipeBottom();
+          }
+          if (this.props.onSwipe) {
+              this.props.onSwipe({direction: "BOTTOM"});
+          }
+          return true;
+      }
       if(xDelta > SWIPE_MIN_DISTANCE && enoughSpeedX) {
           // right to left swipe
           if (this.props.onSwipeLeft) {
@@ -96,24 +113,6 @@ class Gesture extends React.Component {
           }
           if (this.props.onSwipe) {
               this.props.onSwipe({direction: "RIGHT"});
-          }
-          return true;
-      }
-      
-      if (yDelta > SWIPE_MIN_DISTANCE && enoughSpeedY) {
-          if (this.props.onSwipeTop) {
-              this.props.onSwipeTop();
-          }
-          if (this.props.onSwipe) {
-              this.props.onSwipe({direction: "TOP"});
-          }
-          return true;
-      } else if (yDelta < -SWIPE_MIN_DISTANCE && enoughSpeedY) {
-          if (this.props.onSwipeBottom) {
-              this.props.onSwipeBottom();
-          }
-          if (this.props.onSwipe) {
-              this.props.onSwipe({direction: "BOTTOM"});
           }
           return true;
       }
