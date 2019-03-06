@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.2.19
+- [new] New library to manage swipe gesture.
+
 ## 2.2.17
 - [fix] Adjust swipe to reduce velocity and distance.
 
