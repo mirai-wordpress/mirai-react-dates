@@ -56,7 +56,6 @@ class Gesture extends React.Component {
         window.onwheel = this.preventDefault; // modern standard
         window.onmousewheel = document.onmousewheel = this.preventDefault; // older browsers, IE
         window.addEventListener('touchmove', this.preventDefault, {passive: false});
-//        window.ontouchmove  = this.preventDefault; // mobile
     }
     
     enableScroll() {

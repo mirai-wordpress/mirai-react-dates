@@ -33,6 +33,7 @@ import ScrollableOrientationShape from '../shapes/ScrollableOrientationShape';
 import DayOfWeekShape from '../shapes/DayOfWeekShape';
 import CalendarInfoPositionShape from '../shapes/CalendarInfoPositionShape';
 import Gesture from './Gesture';
+import { Swipeable } from 'react-swipeable'
 
 import {
   HORIZONTAL_ORIENTATION,
@@ -1171,7 +1172,18 @@ class DayPicker extends React.PureComponent {
                 )}
                 ref={this.setTransitionContainerRef}
               >
-                <Gesture passive="false" onSwipeTop={this.onSwipeTop().bind(this)} onSwipeBottom={this.onSwipeBottom().bind(this)}>
+                <Swipeable 
+                  onSwipedUp={this.onSwipeTop().bind(this)}
+                  onSwipedDown={this.onSwipeBottom().bind(this)} 
+                  delta={10}                             // min distance(px) before a swipe starts
+                  preventDefaultTouchmoveEvent={true}   // preventDefault on touchmove, *See Details*
+                  trackTouch={true}                      // track touch input
+                  trackMouse={false}                     // track mouse input
+                  rotationAngle={0}                      // set a rotation angle
+                  touchHandlerOption={         // overwrite touch handler 3rd argument
+                      {passive: false}         // defaults opposite of preventDefaultTouchmoveEvent *See Details*
+                  }
+               >
                     <CalendarMonthGrid
                       setMonthTitleHeight={!monthTitleHeight ? this.setMonthTitleHeight : undefined}
                       translationValue={translationValue}
@@ -1204,7 +1216,7 @@ class DayPicker extends React.PureComponent {
                       verticalBorderSpacing={verticalBorderSpacing}
                       horizontalMonthPadding={horizontalMonthPadding}
                     />
-                </Gesture>
+                </Swipeable>
                 {verticalScrollable && this.renderNavigation()}
 
               </div>
